@@ -3,9 +3,8 @@
 ##4.1 Plan Introduction
 ###4.1.1 Project Deliverables
 
-- _Alpha - Nov 3rd_ - Preliminary version of the app. Our vision of what the app should start to look like based on all the meetings we have had with SPY about their needs and expectations
-- _Beta - Dec 13th_ - After meeting with SPY with our alphas, we are ready to release the software to them for testing purposes, both with software stability and trying out the workflow
-- _1.0 - Early January_ - We transfer ownership of the app over to SPY and take up a maintenance and additional features development role
+- _Beta - January 1st - May 6th - After meeting with SPY staff throughout the Fall to demonstrate alpha prototypes, we will continue to gradually release features to them throughout the Spring for testing purposes.
+- _2.0 - Late May_ - We transfer ownership of the app over to SPY and take up a maintenance and additional features development role.
 
 ##4.2 Project Resources
 
