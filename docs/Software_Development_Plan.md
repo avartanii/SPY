@@ -219,7 +219,7 @@ Each week the development team meets 6-7:30 on Friday evenings. On Mondays, the 
 
 Installation and running instructions are on [README](../README.md)
 
-Users will need to simply navigate to a url to access the website. The current url for the prototype of the system is http://spfy-test.herokuapp.com/
+Users will need to simply navigate to a url to access the website. The current url for the prototype of the system is http://spy-test.herokuapp.com/
 
 Users can use their username and password credentials to login to the application on the top right of the any page on the web application.
 

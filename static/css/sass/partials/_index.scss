@@ -13,7 +13,7 @@ img#big-logo {
 
 #bubbles i.fa {
     font-size: 40px;
-    border: 4px solid $spfy-blue;
+    border: 4px solid $spy-blue;
     width: 100px;
     height: 100px;
     padding: 27px 25px;
@@ -28,11 +28,11 @@ img#big-logo {
 }
 
 #bubbles .bubble:hover>i.fa{
-    background: $spfy-blue;
+    background: $spy-blue;
     color: #ffffff;
 }
 
 #bubbles i.fa:hover{
-    background: $spfy-blue;
+    background: $spy-blue;
     color: #ffffff;
 }

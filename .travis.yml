@@ -1,21 +1,21 @@
 language: node_js
 node_js:
-  - '4.5'
+- '4.5'
 addons:
   apt:
     sources:
-      - ubuntu-toolchain-r-test
+    - ubuntu-toolchain-r-test
     packages:
-      - gcc-4.8
-      - g++-4.8
+    - gcc-4.8
+    - g++-4.8
 env:
-  - TRAVIS=travis CXX=g++-4.8
+- TRAVIS=travis CXX=g++-4.8
 script:
-  - npm test
-  - npm run lint
+- npm run travis-test
+- npm run lint
 after_script:
-  - npm run codecov
+- npm run codecov
 notifications:
   email: false
   slack:
-    secure: CepJM0G3cUvYdbglWpLqE8PoE4tmqk7yLxwfJ5Uk2esdWkTqJ6APbdXFlDQCxLq8YzESbXK1abDc0zCUrSdLwPPVXvEp/niTTo+KmXMfGcoKrmROobr9njeLO6djIQ4NrnMAtwRcEsuhLmxNWQo8hFtjrVAeiGcx3ZpWs8LezGPlhGYucvyPRD6oGZcbC76wSxm1qeAxxIc4VOgl2qjI5bLsEq/rwIFCw7ZLedUDMaq3AaQkAb0IpI6sPnxwOmMjIoen+Za/ZV0Q2+gdlBKydq9TLNgFpcWwRr8H7E1s9jkpBlqnAPG+uEA2TVPmXVEdu5ypl7luIyKj22N1A35XWENJZ++OwxMExR7//f9niZLoQJQZ3EmLhieMvu2HU+5nlExob6AQA3Uc2jig53PqZSGrGeVfGb6l6ND7Xc+Zu5s/7+T8vnqUIbu/npz4K4tbutg2KmaVupU9bHKwXz5ivgltg4as1oTzbJYpXPt7ltDsix6CWhESLjyGALs/fpO4QAF1+WtaCx5Z7SFppmgEZczDsGZbjwl518SsMvRLzInyXePZQ7LmvpwWQe9HFZlJvWL9AYRY3BHncueQY5jTQyWX/wI196XgEKJ5zYUdXj3VVG0niaXyerQtqpGp29daIloYPujZCwLnH0tLTgLT18ZLyqSevSJMiozYVncB5F4=
+    secure: XPl0bhie+kn46CKap25gKrcue9YwQbCgB4QNXHbxyJZocsgzuVI4fFVzbEsLXC0v/zHmt+0XPRV+PiPXyDRlmER2l+nIutZ6QEoKmFiJ+bOsjQyovsZaqTiUc4ZYhARY1QgFb1uKOH6EgKGZmJITUqyrLPWPwx1nSewFUip0azYe6P5Ac/2cLGQUWp88jCgiUelNnMW/JAqoF9JtOjH6ZLBdvABAGtclGjFvOVTYj5rWIOtC8Dh6W4KBaW7CqootaRLEqcOrlxFYH7BArqzKo2vC0jljICW46PxhhXZRWKcXWS4rZOdqEP6upDXytlBhVvBEe8FjRdXYgLMDxtC+ZLvJ/3BaUSnJVYNu6G7ZopSxYXQdp2dbCPV7U3aPQb4KNvQH9CZYhFeEDKCrioI9dz187sc1XaZ/UxXYjQiWDXqhJ8TXB3iCy4tQ1nuPQ716fQIzyzhKVgbECQbbhgAV0YztYDYaTCeKS3SvkiumI7F+b48WBwVNvYMIfVJO6ZVTfcfSJ6dtLVQeBWwp64SZcJy3Ol8zHKm4GUZcP6tvB0HER5onUwutlzA3SMdZmHaakldxNP32b0VfiVo+tm2LS8k0J9NNeajSWqfGZJLZFnq98+P6R4C5coxrEaREir1nIW0N2H4kHaPfwpS5TN4kx7+cYPpqO0nMEGhgmg4P2GE=

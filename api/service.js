@@ -639,7 +639,7 @@ var service = {
     },
 
     genToken: function (session, callback) {
-        JWT.sign(session, process.env.SPFY_KEY, jwtOptions, callback);
+        JWT.sign(session, process.env.SPY_KEY, jwtOptions, callback);
     },
 
     getUsersNotifications: function (postgres, userId, callback) {
@@ -1083,6 +1083,60 @@ var service = {
 
     getPrograms: function (postgres, callback) {
         Query.getPrograms(postgres, function (err, result) {
+            if (err) {
+                return callback(err);
+            }
+            callback(undefined, result);
+        });
+    },
+
+    getAllFollowUps: function (postgres, callback) {
+        Query.getAllFollowUps(postgres, function (err, result) {
+            if (err) {
+                return callback(err);
+            }
+            callback(undefined, result);
+        });
+    },
+
+    getFollowUp: function (postgres, id, callback) {
+        Query.geFollowUp(postgres, id, function (err, result) {
+            if (err) {
+                return callback(err);
+            }
+            callback(undefined, result);
+        });
+    },
+
+    getCaseManagerFollowUps: function (postgres, casemanagerID, callback) {
+        Query.getCaseManagerFollowUps(postgres, casemanagerID, function (err, result) {
+            if (err) {
+                return callback(err);
+            }
+            callback(undefined, result);
+        });
+    },
+
+    editFollowUp: function (postgres, payload, callback) {
+        Query.editFollowUp(postgres, payload, function (err, result) {
+            if (err) {
+                return callback(err);
+            }
+            callback(undefined, result);
+        });
+    },
+
+    createFollowUp: function (postgres, payload, callback) {
+        Query.createFollowUp(postgres, payload, function (err, result) {
+            if (err) {
+                return callback(err);
+            }
+            callback(undefined, result);
+        });
+    },
+
+    deleteFollowUp: function (postgres, id, callback) {
+        Query.deleteFollowUp(postgres, id, function (err, result) {
             if (err) {
                 return callback(err);
             }

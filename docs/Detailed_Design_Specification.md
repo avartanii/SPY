@@ -2,7 +2,7 @@
 
 **7.1	Introduction**
 
-This document presents a detailed description of the software for the Safe Place for Youth (SPY) database as described in the [*Requirements Specification*](https://github.com/SirSeim/SPFY/blob/master/docs/Requirements_Specification.md). The SPY Database will allow users to store and retrieve data over the Internet from any platform, be it a desktop computer, tablet, or smartphone. 
+This document presents a detailed description of the software for the Safe Place for Youth (SPY) database as described in the [*Requirements Specification*](https://github.com/SirSeim/spy/blob/master/docs/Requirements_Specification.md). The SPY Database will allow users to store and retrieve data over the Internet from any platform, be it a desktop computer, tablet, or smartphone. 
 
 **7.2 Detailed Design Description**
 
@@ -312,7 +312,7 @@ Attributes: id, month, year, unduplicated_youth, total_youth
 
 **7.4.1 Socket CSC Description**
 		- Frontend to backend communication
-	SPFY application uses NodeJS server to handle any requests that the frontend sends, so the frontend pages will initiate requests which are received and processed by the NodeJS server.
+	spy application uses NodeJS server to handle any requests that the frontend sends, so the frontend pages will initiate requests which are received and processed by the NodeJS server.
 
 - The NodeJS server initiates connections with the Postgres Database server
 	The frontend utilizes ajax calls to pass JSON data to the server, which retrieves the payload data and utilizes it for API calls. During API calls, the NodeJS server initializes a connection to the Postgres database server and executes a query string along the established connection. 
@@ -321,6 +321,6 @@ Attributes: id, month, year, unduplicated_youth, total_youth
 	The Postgres database server retrieves the queried data and passes it back to the NodeJS server, which converts it to JSON. The NodeJS server passes the necessary JSON data, along with a response code, back to the frontend to be displayed in the page. 
 
 - How does the browser handle frontend pages/files?
-	SPFY uses React’s Virtual DOM to update the view in SPFY application, so that it can update efficiently and render pages faster. All CSS is compiled into one screen.css file from the screen.scss file, which is made up of various imports of modularized SASS, including Bootstrap 4. Compass is used to automatically compile these files.
+	spy uses React’s Virtual DOM to update the view in spy application, so that it can update efficiently and render pages faster. All CSS is compiled into one screen.css file from the screen.scss file, which is made up of various imports of modularized SASS, including Bootstrap 4. Compass is used to automatically compile these files.
 
 

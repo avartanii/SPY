@@ -94,9 +94,9 @@ CREATE TABLE casemanager (
   position varchar(45) NOT NULL
 );
 
-INSERT INTO casemanager VALUES (1, 'jew@spfy.org','tables','Jeanine','Espejo-Watkins','Case Manager');
-INSERT INTO casemanager VALUES (2, 'bp@spfy.org','tables','Ben','Perkins','Case Manager');
-INSERT INTO casemanager VALUES (3, 'rh@spfy.org','tables','Rob','Hanna','Case Manager');
+INSERT INTO casemanager VALUES (1, 'jew@spy.org','tables','Jeanine','Espejo-Watkins','Case Manager');
+INSERT INTO casemanager VALUES (2, 'bp@spy.org','tables','Ben','Perkins','Case Manager');
+INSERT INTO casemanager VALUES (3, 'rh@spy.org','tables','Rob','Hanna','Case Manager');
 
 
 
@@ -664,7 +664,6 @@ CREATE TABLE monthly_statistics (
   total_youth integer DEFAULT 0
 );
 
-
 -- ============== intake form schema ==============
 
 DROP TABLE IF EXISTS form_type;
@@ -734,3 +733,16 @@ INSERT INTO form_element_list_values (form_element_id, value) VALUES (1, 'Hospit
 INSERT INTO form_element_list_values (form_element_id, value) VALUES (1, 'Hospital - Psychiatric');
 INSERT INTO form_element_list_values (form_element_id, value) VALUES (1, 'Hotel/motel');
 INSERT INTO form_element_list_values (form_element_id, value) VALUES (1, 'Car');
+
+DROP TABLE IF EXISTS follow_up;
+
+CREATE TABLE follow_up (
+  id SERIAL PRIMARY KEY,
+  timestamp timestamp DEFAULT NULL,
+  note varchar(500) DEFAULT NULL,
+  casemanager_id integer REFERENCES users (id),
+  client_id integer REFERENCES client (id),
+  location varchar(50) DEFAULT NULL
+);
+
+INSERT INTO follow_up (timestamp, note, casemanager_id, client_id, location) VALUES('1999-01-08 04:05:06', 'test', 1, 1, 'patio');

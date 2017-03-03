@@ -27,22 +27,22 @@ brew install postgresql
 ### Installation
 download and install packages
 ```
-git clone https://github.com/SirSeim/SPFY.git
-cd SPFY
+git clone https://github.com/SirSeim/spy.git
+cd spy
 npm install
 ```
 
-configure database with user and database for project by having `config/create_spfy.sql`
+configure database with user and database for project by having `config/create_spy.sql`
 ```
 CREATE USER {user} WITH PASSWORD '{password}';
-CREATE DATABASE {db, default spfy} OWNER {user};
+CREATE DATABASE {db, default spy} OWNER {user};
 ALTER USER {user} WITH SUPERUSER;
-GRANT ALL PRIVILEGES ON DATABASE "{db, default spfy}" to "{user}";
+GRANT ALL PRIVILEGES ON DATABASE "{db, default spy}" to "{user}";
 ```
 
 configure server with database access by having `config/set_env.sh`
 ```
-echo 'postgres://{user}:{password}@{host, default localhost}:{port, default 5432}/{db, default spfy}'
+echo 'postgres://{user}:{password}@{host, default localhost}:{port, default 5432}/{db, default spy}'
 ```
 
 Alternately, get the most recent config folder from Team member/Slack.
@@ -50,7 +50,7 @@ The most recent config is from _Oct, 30_.
 
 ### Using Database
 
-Initialize PostgreSQL for SPFY
+Initialize PostgreSQL for spy
 ```
 npm run db-init
 ```
@@ -92,19 +92,19 @@ npm run lint
 To view a coverage report, run `npm test`, then `npm run report`, then open up `coverage/lcov-report/index.html` in a webbrowser
 
 [version-img]: https://img.shields.io/badge/version-beta%202-yellow.svg
-[version-url]: https://github.com/SirSeim/SPFY
+[version-url]: https://github.com/SirSeim/spy
 
-[build-img]: https://travis-ci.org/SirSeim/SPFY.svg?branch=master
-[build-url]: https://travis-ci.org/SirSeim/SPFY
+[build-img]: https://travis-ci.org/cf7/SPY.svg?branch=master
+[build-url]: https://travis-ci.org/cf7/SPY
 
-[codecov-img]: https://codecov.io/gh/SirSeim/SPFY/branch/master/graph/badge.svg
-[codecov-url]: https://codecov.io/gh/SirSeim/SPFY
+[codecov-img]: https://codecov.io/gh/SirSeim/spy/branch/master/graph/badge.svg
+[codecov-url]: https://codecov.io/gh/SirSeim/spy
 
-[dependency-img]: https://david-dm.org/SirSeim/SPFY.svg
-[dependency-url]: https://david-dm.org/SirSeim/SPFY
+[dependency-img]: https://david-dm.org/SirSeim/spy.svg
+[dependency-url]: https://david-dm.org/SirSeim/spy
 
-[dev-dependency-img]: https://david-dm.org/SirSeim/SPFY/dev-status.svg
-[dev-dependency-url]: https://david-dm.org/SirSeim/SPFY?type=dev
+[dev-dependency-img]: https://david-dm.org/SirSeim/spy/dev-status.svg
+[dev-dependency-url]: https://david-dm.org/SirSeim/spy?type=dev
 
-[snyk-img]: https://snyk.io/test/github/SirSeim/SPFY.git/badge.svg
-[snyk-url]: https://snyk.io/test/github/SirSeim/SPFY.git
+[snyk-img]: https://snyk.io/test/github/SirSeim/spy.git/badge.svg
+[snyk-url]: https://snyk.io/test/github/SirSeim/spy.git

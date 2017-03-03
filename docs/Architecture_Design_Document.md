@@ -4,7 +4,7 @@
 
 This document presents the architecture for the software for the Safe
 Place for Youth (SPY) database as described in the [*Requirements
-Specification*](https://github.com/SirSeim/SPFY/blob/master/docs/Requirements_Specification.md).
+Specification*](https://github.com/SirSeim/spy/blob/master/docs/Requirements_Specification.md).
 The SPY Database will allow users to store and retrieve data over the
 Internet from any platform, be it a desktop computer, tablet, or
 smartphone.
@@ -117,7 +117,7 @@ information.
 
 ![Concept of Execution Diagram](../resources/concept_of_execution.png)
 
-> Spfy application has a lot of linked use cases. There are five
+> spy application has a lot of linked use cases. There are five
 > important use cases within this application. The five are Add Client,
 > Data Browser, Drop In, Case Management and Front Desk. The main use
 > case would be Add Client, the user of this application would be able
@@ -127,7 +127,7 @@ information.
 > retrieve detailed client information. Everything works around the Case
 > Management system, in this system the user would be able to schedule
 > appointments for the client, add/client information, add case notes
-> and upload image files and documents. SPFY has different programs and
+> and upload image files and documents. spy has different programs and
 > activities on certain days, Drop In enables the users to add drop in,
 > edit drop in and view the history of the drop in. Lastly, Front Desk
 > is a homepage where the user, after adding the new clients information
@@ -170,7 +170,7 @@ each segment.
 
 **Initialize Webpage**
 
-Navigate to [*http://spfy-test.herokuapp.com/*](http://spfy-test.herokuapp.com/). 
+Navigate to [*http://spy-test.herokuapp.com/*](http://spy-test.herokuapp.com/). 
 By scrolling down, text prompts, “What would you
 like to do?” From here, there are four options that will navigate to
 different locations and that satisfy different use cases. The five

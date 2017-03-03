@@ -56,7 +56,7 @@ var validate = function (decoded, request, callback) {
     return callback(null, true);
 };
 
-var SPFY = new Hapi.Server({
+var SPY = new Hapi.Server({
     connections: {
         routes: {
             files: {
@@ -65,27 +65,27 @@ var SPFY = new Hapi.Server({
         }
     }
 });
-SPFY.connection({
+SPY.connection({
     host: setup.host,
     port: setup.port
 });
 
-SPFY.register(require('hapi-auth-jwt2'), function (err) {
+SPY.register(require('hapi-auth-jwt2'), function (err) {
  
     if (err) {
-        SPFY.log(['error', 'hapi-auth-jwt2'], err);
+        SPY.log(['error', 'hapi-auth-jwt2'], err);
     }
 
-    SPFY.auth.strategy('jwt', 'jwt', {
-        key: process.env.SPFY_KEY,          // Never Share your secret key 
+    SPY.auth.strategy('jwt', 'jwt', {
+        key: process.env.SPY_KEY,          // Never Share your secret key 
         validateFunc: validate,            // validate function defined above 
         verifyOptions: { algorithms: [ 'HS256' ] } // pick a strong algorithm 
     });
  
-    SPFY.auth.default('jwt');
+    SPY.auth.default('jwt');
  
     // EXAMPLE ROUTES
-    // SPFY.route([
+    // SPY.route([
     //   {
     //     method: "GET", path: "/", config: { auth: false },
     //     handler: function(request, reply) {
@@ -102,25 +102,25 @@ SPFY.register(require('hapi-auth-jwt2'), function (err) {
     // ]);
 });
 
-SPFY.register(postgresqlPool, function () {});
-SPFY.register(Api, {
+SPY.register(postgresqlPool, function () {});
+SPY.register(Api, {
     routes: {
         prefix: '/api'
     }
 });
 
-SPFY.register(Inert, function () {});
-SPFY.register(Vision, function () {
-    SPFY.views({
+SPY.register(Inert, function () {});
+SPY.register(Vision, function () {
+    SPY.views({
         engines: {
             html: require('nunjucks-hapi')
         },
         path: Path.join(__dirname, 'templates')
     });
-    SPFY.route(viewRoutes);
+    SPY.route(viewRoutes);
 });
 
-SPFY.register({
+SPY.register({
     register: require('good'),
     options: {
         ops: {
@@ -141,13 +141,13 @@ SPFY.register({
     }
 }, function (err) {
     if (err) {
-        SPFY.log(['error', 'good'], err);
+        SPY.log(['error', 'good'], err);
     }
 });
 
-SPFY.start(function () {
-    SPFY.log(['info', 'SPFY'], "Server started on " + setup.host + ":" + setup.port);
-    SPFY.log(['info', 'SPFY'], process.env.DATABASE_URL);
+SPY.start(function () {
+    SPY.log(['info', 'SPY'], "Server started on " + setup.host + ":" + setup.port);
+    SPY.log(['info', 'SPY'], process.env.DATABASE_URL);
 });
 
-module.exports = SPFY;
+module.exports = SPY;
