@@ -9,7 +9,8 @@
   "scripts": {
     "start": "if [ -f $(npm bin)/../../config/set_env.sh ]; then DATABASE_URL=$($(npm bin)/../../config/set_env.sh) SPY_KEY=$($(npm bin)/../../config/set_key.sh) node server.js; else node server.js; fi;",
     "nodemon": "DATABASE_URL=$($(npm bin)/../../config/set_env.sh) SPY_KEY=$($(npm bin)/../../config/set_key.sh) nodemon -e js,json,html,css server.js",
-    "test": "mocha --recursive --require mocha-istanbul 'test' && istanbul report text-summary lcov",
+    "test": "DATABASE_URL=$($(npm bin)/../../config/set_env.sh) SPY_KEY=$($(npm bin)/../../config/set_key.sh) mocha --recursive --require mocha-istanbul 'test' && istanbul report text-summary lcov",
+    "travis-test": "mocha --recursive --require mocha-istanbul 'test' && istanbul report text-summary lcov",
     "lint": "eslint server.js **/*.js",
     "report": "istanbul report",
     "report-summary": "istanbul report text-summary lcov",
@@ -75,9 +76,9 @@
   ],
   "license": "GPL-3.0",
   "bugs": {
-    "url": "https://github.com/SirSeim/spy/issues"
+    "url": "https://github.com/cf7/SPY/issues"
   },
-  "homepage": "https://github.com/SirSeim/spy#readme",
+  "homepage": "https://github.com/cf7/SPY#README",
   "dependencies": {
     "bcrypt": "^0.8.7",
     "good": "^7.0.2",

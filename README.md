@@ -94,8 +94,8 @@ To view a coverage report, run `npm test`, then `npm run report`, then open up `
 [version-img]: https://img.shields.io/badge/version-beta%202-yellow.svg
 [version-url]: https://github.com/SirSeim/spy
 
-[build-img]: https://travis-ci.org/SirSeim/spy.svg?branch=master
-[build-url]: https://travis-ci.org/SirSeim/spy
+[build-img]: https://travis-ci.org/cf7/SPY.svg?branch=master
+[build-url]: https://travis-ci.org/cf7/SPY
 
 [codecov-img]: https://codecov.io/gh/SirSeim/spy/branch/master/graph/badge.svg
 [codecov-url]: https://codecov.io/gh/SirSeim/spy
