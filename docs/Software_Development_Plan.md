@@ -21,11 +21,6 @@
   Ethernet connection | ✓ | ✓
   Linux Computer       |               | ✓
   Intel or ARM processor | ✓ | ✓
-  2 GB RAM | ✓ | ✓
-  16 GB Storage | ✓ | ✓
-  screen | ✓ | 
-  Wifi connection | ✓ | 
-  Ethernet connection | ✓ | ✓
 
 
 ###4.2.2 Software Resources
@@ -33,11 +28,16 @@
   Resource              | Development   | Execution
   --------------------- | ------------- | -----------
   Google Chrome         | ✓             | ✓
+  Safari                | ✓             | ✓
+  Firefox               | ✓             | ✓
   Sublime Text Editor   | ✓             |  
+  Atom Text Editor      | ✓             |
   PostgreSQL            | ✓             | ✓
+  Sequelize             | ✓             | ✓
   Node.js               | ✓             | ✓
   macOS                 | ✓             | ✓
   Windows OS            | ✓             | ✓
+  Linux OS              | ✓             | ✓
   Heroku                | ✓             | ✓
   GitHub                | ✓             | 
   Postico               | ✓             |
@@ -51,11 +51,11 @@ The project demands integration between database, front end, and back end. Howev
 
 ###4.3.2 External Interfaces
 
-The team will communicate directly with SPY staff through any means necessary, whether it be email, text, or in-person. Meetings between the team and SPY staff will be documented on notes saved in cloud storage as well as audio recorded so the team has direct resources for user needs.
+The team will communicate directly with SPY staff through any means necessary, whether it be email, text, or in-person. Meetings between the team and SPY staff will be documented on notes saved in cloud storage as well as audio recorded so the team has direct resources for investigating user needs.
 
 ###4.3.3 Roles and Responsibilities
 
-Each week the development team meets 5:45 PM - 7:00 PM on Thursday evenings. Roles are defined by requirements, features, and components that are being implemented (see Section 5.0 Requirements Specification document). Team members' responsbilities will dynamically change based on which aspects of these features need to be worked on.
+Each week the development team meets 5:45 PM - 7:00 PM on Thursday evenings. Roles are defined by requirements, features, and components that are being implemented (see Section 5.0 Requirements Specification document). Team members' responsbilities will dynamically change based on which aspects of these features need to be worked on. Ideally, each team member will be working on at least one feature to have its minimum requirements implemented for testing.
 
 ##4.4 Project Schedule
 
