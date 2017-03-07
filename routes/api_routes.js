@@ -5,9 +5,9 @@ var Schema = require(Path.join(__dirname, '../api/schema.js'));
 /* ajax calls from frontend js files use the path properties
     Example:
     $.ajax({
-        url: "api/casemanagers",
+        url: "api/clients",
         data: data,
-        method: "GET",
+        method: "POST",
         success: function (data) {
             console.log(data);
         },
@@ -415,6 +415,11 @@ var apiRoutes = [
         method: 'POST',
         path: '/files/delete/{fileID}',
         handler: Api.deleteFile
+    },
+    {
+        method: 'GET',
+        path: '/clients/{clientID}/forms',
+        handler: Api.getClientForms
     },
     {
         method: 'GET',
