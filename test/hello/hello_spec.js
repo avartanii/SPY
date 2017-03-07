@@ -3,11 +3,6 @@ var expect = chai.expect;
 var apiroutes = require("../../routes/api_routes.js");
 var request = require('supertest');
 var SPY = require('../../server.js');
-<<<<<<< HEAD
-
-///
-=======
->>>>>>> viewclient-experiment
 
 describe("Hello", function() {
     it("tests the Testing", function (done) {
@@ -16,25 +11,12 @@ describe("Hello", function() {
     });
 });
 
-<<<<<<< HEAD
-describe("Routes", function () {
-=======
 describe("View Routes", function () {
->>>>>>> viewclient-experiment
     it("retrieve the main page", function (done) {
         var options = {
             method: "GET",
             url: '/'
         };
-<<<<<<< HEAD
-        // request.get('/').expect(200); // if expect() gets a number, automatically thinks it's a status code
-        SPY.inject(options, function (response) {
-            // expect(response.statusCode).to.eql(200);
-            done();
-        });
-    });
-});
-=======
         SPY.inject(options, function (response) {
             expect(response.statusCode).to.eql(200);
             done();
@@ -76,4 +58,3 @@ describe("View Routes", function () {
 //         });
 //     });
 // });
->>>>>>> viewclient-experiment
