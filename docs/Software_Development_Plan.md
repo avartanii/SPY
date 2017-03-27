@@ -1,6 +1,9 @@
 #4.0 Software Development Plan
 
 ##4.1 Plan Introduction
+
+This section will layout the approach by which the development team will design and build the SPY Database system. Deliverables, Resources, Organization method, and Schedules will be described and/or illustrated.
+
 ###4.1.1 Project Deliverables
 
 - _Beta - January 1st - May 6th - After meeting with SPY staff throughout the Fall to demonstrate alpha prototypes, we will continue to gradually release features to them throughout the Spring for testing purposes.
@@ -16,8 +19,8 @@
   2008 or newer machine | ✓ | ✓
   2 GB RAM | ✓ | ✓
   16 GB Storage | ✓ | ✓
-  screen | ✓ | 
-  Wifi connection | ✓ | 
+  screen | ✓ |
+  Wifi connection | ✓ |
   Ethernet connection | ✓ | ✓
   Linux Computer       |               | ✓
   Intel or ARM processor | ✓ | ✓
@@ -39,7 +42,7 @@
   Windows OS            | ✓             | ✓
   Linux OS              | ✓             | ✓
   Heroku                | ✓             | ✓
-  GitHub                | ✓             | 
+  GitHub                | ✓             |
   Postico               | ✓             |
   Postman               | ✓             |
 
@@ -47,15 +50,19 @@
 
 ###4.3.1 Organization Structure
 
-The project demands integration between database, front end, and back end. However, rather than divide the team by section of the app, the app's features have been sectioned horizantally (that is, each team member assigned to implement a feature is responsible for the frontend, backend, and database design of that feature end-to-end). In this manner, each team member gains full-stack development experience, the team can scale effectively while being sensitive to required work and member availability, and base implementations can be delivered for features much more quickly.
+The project demands integration between database, front end, and back end. However, rather than divide the team by section of the app, the app's features have been sectioned horizontally (that is, each team member assigned to implement a feature is responsible for the front end, backend, and database design of that feature end-to-end). In this manner, each team member gains full-stack development experience, the team can scale effectively while being sensitive to required work and member availability, and base implementations can be delivered for features much more quickly.
 
-###4.3.2 External Interfaces
+###4.3.2 Internal Interfaces
+
+In order to make development for the application more ubiquitous and accessible, it is imperative that some of the custom tools the team uses for development, such as node js scripts, are cross-compatible with mainstream operating systems such as Windows, Linux, and Mac OSX. Therefore, the team will work to ensure that any code, frameworks, and/or packages are compatible in these different environments.
+
+###4.3.3 External Interfaces
 
 The team will communicate directly with SPY staff through any means necessary, whether it be email, text, or in-person. Meetings between the team and SPY staff will be documented on notes saved in cloud storage as well as audio recorded so the team has direct resources for investigating user needs.
 
-###4.3.3 Roles and Responsibilities
+###4.3.4 Roles and Responsibilities
 
-Each week the development team meets 5:45 PM - 7:00 PM on Thursday evenings. Roles are defined by requirements, features, and components that are being implemented (see Section 5.0 Requirements Specification document). Team members' responsbilities will dynamically change based on which aspects of these features need to be worked on. Ideally, each team member will be working on at least one feature to have its minimum requirements implemented for testing.
+Each week the development team meets 5:45 PM - 7:00 PM on Thursday evenings. Roles are defined by requirements, features, and components that are being implemented (see Section 5.0 Requirements Specification document). Team members' responsibilities will dynamically change based on which aspects of these features need to be worked on. Ideally, each team member will be working on at least one feature to have its minimum requirements implemented for testing. Currently, the project also has a database administrator who is responsible for developing the schema/model for the database as well as the SQL code to build the database. Two other developers are responsible for continuing to the build the API on the web server and the front end interface web pages.
 
 ##4.4 Project Schedule
 
@@ -105,7 +112,7 @@ Each week the development team meets 5:45 PM - 7:00 PM on Thursday evenings. Rol
     -   Project proposal Presentations (continued . . .)
 
     -   Requirements
-    
+
     -   Project Management
 
 -   [Week 05](http://myweb.lmu.edu/bjohnson/cmsi402web2/week05.html)
@@ -117,7 +124,7 @@ Each week the development team meets 5:45 PM - 7:00 PM on Thursday evenings. Rol
     -   Software Architecture: insights, basics, evolution, and design
 
 -   [Week 06](http://myweb.lmu.edu/bjohnson/cmsi402web2/week06.html)
-    
+
     -   Detailed Design and Modeling
 
     -   Design Reviews: Preliminary and Critical
