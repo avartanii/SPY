@@ -657,6 +657,28 @@ CREATE TABLE users (
   role_id integer REFERENCES roles (id)
 );
 
+/*
+to hash a password
+manually
+CREATE EXTENSION pgcrypto;
+SELECT crypt('thisisapassword#%&', gen_salt('bf',10));
+                                   ^^^ this is random data (random salt generator)
+                                   jumbles up the random data based on the degree
+outputs encrypted password:
+$2a$10$8x0nZZ2Co7DufVriZa.O1Og.EBMKqi..XV3c6Y1dUrYS1ccii8fHG
+
+When the user logs in, if you rehash the password against the above hash
+and the newly outputted hash is identical, then the password matches the user's password:
+
+SELECT crypt('thisisapassword#%&', '$2a$10$8x0nZZ2Co7DufVriZa.O1Og.EBMKqi..XV3c6Y1dUrYS1ccii8fHG');
+
+outputs:
+$2a$10$8x0nZZ2Co7DufVriZa.O1Og.EBMKqi..XV3c6Y1dUrYS1ccii8fHG
+which is the same
+the passwords match
+authenticate login
+*/
+
 -- inserting user 'test' to login with password 'passwordisnone'
 INSERT INTO users (username, hashed_password, role_id) VALUES ('test', '$2a$10$DAInVRGKZJ4pmb64YDJxXe2zgt4N3/FbxHkhC23yv8Dwv0uHeov6u', 1);
 
