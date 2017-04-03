@@ -29,7 +29,7 @@ $(function (event) {
         to retrieve options and labels for checkboxes
         (rather than the hard-coded arrays)
     */
-    
+
     // provide identifier with '#'
     var buildListItems = function (array, identifier, classname) {
         array.forEach(function (element) {
@@ -212,4 +212,23 @@ $(function (event) {
     ];
 
     buildOptions(trimester, '#trimester');
+
+
+
+
+    var reunification = [
+        'yes',
+        'no'
+    ];
+
+    var contact = [
+        'yes',
+        'no'
+    ];
+
+    buildOptions(reunification, '#reunification-interest1');
+    buildOptions(reunification, '#reunification-interest2');
+    buildOptions(contact, '#okay-to-contact1');
+    buildOptions(contact, '#okay-to-contact2');
+
 });
