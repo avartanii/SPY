@@ -877,6 +877,20 @@ var respond = {
             result: result
         }).code(200);
     },
+    failedToRemoveClientFlag: function (reply, err) {
+        reply({
+            statusCode: 500,
+            message: "Unable to remove client flag!",
+            error: err,
+        }).code(500);
+    },
+    removeClientFlag: function (reply, result) {
+        reply({
+            statusCode: 200,
+            message: "Success removing client flag!",
+            result: result
+        }).code(200);
+    },
     failedToUploadFile: function (reply, err) {
         reply({
             statusCode: 500,
@@ -930,6 +944,20 @@ var respond = {
         reply({
             statusCode: 200,
             message: "Successfully deleted file",
+            result: result
+        }).code(200);
+    },
+    failedToGetClientForms: function (reply, err) {
+        reply({
+            statusCode: 500,
+            message: "Unable to get client forms!",
+            error: err
+        }).code(500);
+    },
+    getClientForms: function (reply, result) {
+        reply({
+            statusCode: 200,
+            message: "Successfully got client forms!",
             result: result
         }).code(200);
     },

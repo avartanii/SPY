@@ -10,21 +10,44 @@ $(function (event) {
         var flags = JSON.parse(window.sessionStorage.flags); // if getting Uncaught SyntaxError: Unexpected token u in JSON at position 0
         // var flags = JSON.parse(window.sessionStorage.flags);        // means value is probably undefined
         var clients = JSON.parse(window.sessionStorage.clients);
-
+        var spanLimit = 3;
 
         table.empty();
         clients.forEach(function (client) {
-            var spans = '';
+            var spans = [];
+            client.checkinalerts = [];
             flags.forEach(function (flag) {
                 if (client.id === flag.clientID) {
-                    if (flag.settings && flag.settings.dot) {
-                        var color = window.getDataById(flagTypes, flag.type).color;
-                        spans += '<span class="dot" data-flag="' + flag.id + '" data-color="' + color + '"></span>';
+                    if (flag.settings) { // check setflag, editflag files to see which settings are present
+                        if (flag.settings.dot) {
+                            var color = window.getDataById(flagTypes, flag.type).color;
+                            spans.push('<span class="dot" data-flag="' + flag.id + '" data-color="' + color + '"></span>');
+                        }
+                        if (flag.settings.checkinalert) {
+                            // make sure it doesn't overwrite previous alerts
+                            client.checkinalerts.push(flag.settings.checkinalert);
+                        }
                     }
                 }
             });
-            var display = [spans + client.firstName + ' ' +
-            client.lastName];
+            client.checkinalerts = JSON.stringify(client.checkinalerts);
+
+            // color dots display logic
+            var display = [];
+            if (spans.length > spanLimit) {
+                var shortSpans = [];
+                for (var i = 0; i < spanLimit; i++) {
+                    shortSpans.push(spans[i]);
+                }
+                shortSpans.push('&#x2026;');
+                display.push(client.firstName + ' ' + client.lastName + ' ' +
+                             '<label class="client-dots closed" title="Flags" data-content=\'' + spans.join(',') + '\'>' +
+                             shortSpans.join('') + '</label>');
+            } else {
+                display.push(client.firstName + ' ' + client.lastName + ' ' +
+                             '<label class="client-dots">' + 
+                             spans.join('') + '</label>');
+            }
             table.append(window.buildRow(client, display));
         });
         // what if profiles don't come through?
@@ -35,6 +58,33 @@ $(function (event) {
             });
         });
         
+        // handles span overflow display folding and unfolding
+        $('.client-dots').click(function (event) {
+            if ($(this).hasClass("closed")) {
+                $(this).html($(this).data("content").split(',').join(''));
+                $(this).find('.dot').get().forEach(function (dot) {
+                    $(dot).css('background-color', $(dot).data("color"));
+                });
+                $(this).removeClass("closed");
+                $(this).addClass("open");
+            } else if ($(this).hasClass("open")) { // possible to not have either open or closed, so must check again with elseif
+                var spans = $(this).data("content").split(',');
+                var shortSpans = [];
+                for (var i = 0; i < spanLimit; i++) {
+                    shortSpans.push(spans[i]);
+                }
+                shortSpans.push('&#x2026;');
+                $(this).html(shortSpans.join(''));
+                $(this).find('.dot').get().forEach(function (dot) {
+                    $(dot).css('background-color', $(dot).data("color"));
+                });
+                $(this).removeClass("open");
+                $(this).addClass("closed");
+            }
+            // event.preventDefault();
+            event.stopPropagation();
+        });
+
         $('#client-search').keyup(function () {
             var search = $('#client-search');
             var clients = $('#clients td');

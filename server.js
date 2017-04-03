@@ -1,3 +1,4 @@
+require('dotenv').config();
 var Hapi = require('hapi');
 var Path = require('path');
 var Inert = require('inert');
@@ -71,19 +72,19 @@ SPY.connection({
 });
 
 SPY.register(require('hapi-auth-jwt2'), function (err) {
- 
+
     if (err) {
         SPY.log(['error', 'hapi-auth-jwt2'], err);
     }
 
     SPY.auth.strategy('jwt', 'jwt', {
-        key: process.env.SPY_KEY,          // Never Share your secret key 
-        validateFunc: validate,            // validate function defined above 
-        verifyOptions: { algorithms: [ 'HS256' ] } // pick a strong algorithm 
+        key: process.env.SPY_KEY,          // Never Share your secret key
+        validateFunc: validate,            // validate function defined above
+        verifyOptions: { algorithms: [ 'HS256' ] } // pick a strong algorithm
     });
- 
+
     SPY.auth.default('jwt');
- 
+
     // EXAMPLE ROUTES
     // SPY.route([
     //   {

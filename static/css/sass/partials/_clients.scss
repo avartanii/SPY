@@ -12,6 +12,10 @@
 #clients thead, #clients tbody, #clients tr, #clients td, #clients th {
   display: block;
 }
+.client-dots:hover {
+  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.09);
+}
 /*#clients tbody td, #clients thead > tr> th {
   float: left;
   border-bottom-width: 0;
@@ -66,4 +70,11 @@
 #identifyingFeatures {
   width: 400px;
   height: 100px;
+}
+
+// column count is hard-coded for now
+.client-info-checkboxes {
+  -webkit-column-count: 3;
+     -moz-column-count: 3;
+          column-count: 3;
 }
