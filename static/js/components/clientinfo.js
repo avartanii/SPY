@@ -1,5 +1,53 @@
 $(function (event) {
 
+
+    $.ajax({
+        xhrFields: {
+            withCredentials: true
+        },
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader('Authorization', localStorage.getItem("authorization"));
+        },
+        url: "/api/clients/" + 1 + "/forms",
+        method: "GET",
+        success: function (data) {
+            console.log(data);
+        },
+        error: function (xhr) {
+            console.error(xhr);
+
+            if (xhr.status === 401) {
+                localStorage.removeItem("authorization");
+            }
+        }
+    });
+    /*
+        TODO:
+        - text boxes for 'Other' and 'More than' options
+
+        - once database tables are set up, use ajax
+        to retrieve options and labels for checkboxes
+        (rather than the hard-coded arrays)
+    */
+
+    // provide identifier with '#'
+    var buildListItems = function (array, identifier, classname) {
+        array.forEach(function (element) {
+            $(identifier).append(
+                '<li><label><input type="checkbox" class="' + classname + '">' +
+                element + '</input></label></li>'
+            );
+        });
+    };
+
+    var buildOptions = function (array, identifier) {
+        array.forEach(function (element, index) {
+            $(identifier).append(
+                '<option value="' + index + '">' + element + '</option>'
+            );
+        });
+    };
+
     var sleepingLocations = [
         'Venice Boardwalk',
         'Street/alley/park',
@@ -21,13 +69,7 @@ $(function (event) {
         'Car'
     ];
 
-    console.log($('#housing-history div.card-block'));
-    sleepingLocations.forEach(function (location) {
-        $('#housing-history-checkboxes').append(
-            '<li><label><input type="checkbox" class="housing-history-checkbox">' +
-            location + '</input></label></li>'
-        );
-    });
+    buildListItems(sleepingLocations, '#housing-history-checkboxes', 'housing-history-checkbox');
 
     var sleepingDurations = [
         '1 day',
@@ -36,23 +78,15 @@ $(function (event) {
         '1-3 months',
         '4-12 months',
         '> 1 year',
-        'other'
+        'Other' // add text box
     ];
 
-    sleepingDurations.forEach(function (duration, index) {
-        $('#how-long-sleeping-there').append(
-            '<option value="' + index + '">' + duration + '</option>'
-        );
-    });
+    buildOptions(sleepingDurations, '#how-long-sleeping-there');
 
-    var numberEpisodes = ['1', '2', '3', '4', 'more than 4'];
+    var numberEpisodes = ['1', '2', '3', '4', 'more than 4']; // add text box
 
-    numberEpisodes.forEach(function (number, index) {
-        $('#number-episodes').append(
-            '<option value="' + index + '">' + number + '</option>'
-        );
-    });
-    
+    buildOptions(numberEpisodes, '#number-episodes');
+
     var initialCauses = [
         'Abuse by parent/caregiver',
         'Domestic violence',
@@ -63,12 +97,7 @@ $(function (event) {
         'adding more soon . . .'
     ];
 
-    initialCauses.forEach(function (cause) {
-        $('#initial-causes').append(
-            '<li><label><input type="checkbox" class="initial-causes-checkbox">' +
-            cause + '</input></label></li>'
-        );
-    });
+    buildListItems(initialCauses, '#initial-causes', 'initial-causes-checkbox');
 
     var genderIdentity = [
         'Man',
@@ -76,15 +105,10 @@ $(function (event) {
         'Trans*',
         'Non-gender binary',
         'Refuse to answer',
-        'other'
+        'Other'
     ];
 
-    genderIdentity.forEach(function (identity) {
-        $('#gender-identity').append(
-            '<li><label><input type="checkbox" class="gender-identity-checkbox">' +
-            identity + '</input></label></li>'
-        );
-    });
+    buildListItems(genderIdentity, '#gender-identity', 'gender-identity-checkbox');
 
     var genderAssigned = [
         'Male',
@@ -92,24 +116,119 @@ $(function (event) {
         'Refuse to answer'
     ];
 
-    genderAssigned.forEach(function (assigned) {
-        $('#gender-assigned').append(
-            '<li><label><input type="checkbox" class="gender-assigned-checkbox">' +
-            assigned + '</input></label></li>'
-        );
-    });
+    buildListItems(genderAssigned, '#gender-assigned', 'gender-assigned-checkbox');
 
     var preferredPronoun = [
         'he/him/his',
         'she/her/hers',
         'they/them/theirs',
-        'other'
+        'Other'
     ];
 
-    preferredPronoun.forEach(function (assigned) {
-        $('#preferred-pronoun').append(
-            '<li><label><input type="checkbox" class="preferred-pronoun-checkbox">' +
-            assigned + '</input></label></li>'
-        );
-    });
+    buildListItems(preferredPronoun, '#preferred-pronoun', 'preferred-pronoun-checkbox');
+
+    var ethnicities = [
+        'Non-latinx',
+        'Latinx',
+        'Don\'t know',
+        'Refused to answer'
+    ];
+
+    buildListItems(ethnicities, '#ethnicity', 'ethnicity-checkbox');
+
+    var races = [
+        'Asian',
+        'Black',
+        'Native Hawaiian/Pacific Islander',
+        'White',
+        'Native American/Alaskan Native',
+        'Don\'t know',
+        'Refuse to answer',
+        'Other'
+    ];
+
+    buildListItems(races, '#race', 'race-checkbox');
+
+    var education = [
+        'High School',
+        'Community College',
+        'Trade School',
+        '4 year college',
+        'Grad School'
+    ];
+
+    buildListItems(education, '#some-education', 'some-education-checkbox');
+
+    buildListItems(education, '#currently-attending', 'curently-attending-checkbox');
+
+    buildListItems(education, '#graduated', 'graduated-checkbox');
+
+    var languages = [
+        'English',
+        'Spanish',
+        'Other'
+    ];
+
+    buildOptions(languages, '#first-language');
+
+    var preferredLanguage = [
+        'Spanish',
+        'Other'
+    ];
+
+    buildOptions(preferredLanguage, '#preferred-language');
+
+    var disabilities = [
+        'Mental Health',
+        'Physical',
+        'Developmental',
+        'Learning',
+        'No',
+        'Don\'t Know',
+        'Refuse to Answer'
+    ];
+
+    buildListItems(disabilities, '#disability', 'disability-checkbox');
+
+    var pregnant = [
+        'yes',
+        'no',
+        'not sure'
+    ];
+
+    buildOptions(pregnant, '#currently-pregnant');
+
+    var firstPregnancy = [
+        'yes',
+        'no'
+    ];
+
+    buildListItems(firstPregnancy, '#first-pregnancy', 'first-pregnancy-checkbox');
+
+    var trimester = [
+        '1st',
+        '2nd',
+        '3rd'
+    ];
+
+    buildOptions(trimester, '#trimester');
+
+
+
+
+    var reunification = [
+        'yes',
+        'no'
+    ];
+
+    var contact = [
+        'yes',
+        'no'
+    ];
+
+    buildOptions(reunification, '#reunification-interest1');
+    buildOptions(reunification, '#reunification-interest2');
+    buildOptions(contact, '#okay-to-contact1');
+    buildOptions(contact, '#okay-to-contact2');
+
 });
