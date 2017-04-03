@@ -1,6 +1,6 @@
 var chai = require("chai");
 var expect = chai.expect;
-var apiroutes = require("../../routes/api_routes.js");
+// var apiroutes = require("../../routes/api_routes.js");
 var request = require('supertest');
 var SPY = require('../../server.js');
 
@@ -11,6 +11,21 @@ describe("Hello", function() {
     });
 });
 
+// can use supertest
+describe("Server", function() {
+    it("tests the server", function (done) {
+        request(SPY.listener).get('/').expect(200, done);
+    });
+
+    /*
+      When the server contains exactly one connection,
+      listener is the node HTTP server object of the sole connection.
+      When the server contains more than one connection,
+      each server.connections array member provides its own connection.listener.
+    */
+});
+
+// or Hapi's native inject() function
 describe("View Routes", function () {
     it("retrieve the main page", function (done) {
         var options = {

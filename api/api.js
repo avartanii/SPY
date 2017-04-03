@@ -823,12 +823,31 @@ var api = {
             }
         });
     },
+    removeClientFlag: function (request, reply) {
+        Service.removeClientFlag(request.postgres, request.payload, function (err, result) {
+            if (err) {
+                Respond.failedToRemoveClientFlag(reply, err);
+            } else {
+                Respond.removeClientFlag(reply, result);
+            }
+        });
+    },
     getProfilePicture: function (request, reply) {
         Service.getProfilePicture(request.postgres, request.params.clientID, function (err, result) {
             if (err) {
                 Respond.failedToGetProfilePicture(reply, err);
             } else {
                 Respond.getProfilePicture(reply, result);
+            }
+        });
+    },
+
+    getClientForms: function (request, reply) {
+        Service.getClientForms(request.postgres, request.params.clientID, function (err, result) {
+            if (err) {
+                Respond.failedToGetClientForms(reply, err);
+            } else {
+                Respond.getClientForms(reply, result);
             }
         });
     },
