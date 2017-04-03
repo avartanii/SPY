@@ -1,0 +1,88 @@
+
+extends: eslint:recommended
+plugins:
+  - import
+env:
+  browser: true
+  jasmine: true
+  jquery: true
+  node: true
+  es6: true
+rules:
+  no-extra-parens:
+    error
+  curly:
+    error
+  eqeqeq:
+    error
+  no-eval:
+    error
+  no-global-assign:
+    error
+  no-lone-blocks:
+    error
+  no-multi-spaces:
+    error
+  no-return-assign:
+    error
+  brace-style:
+    - error
+    - 1tbs
+    - allowSingleLine: true
+  camelcase:
+    - error
+    - properties:
+        never
+  func-style:
+    - error
+    - expression
+  comma-spacing:
+    error
+  computed-property-spacing:
+    error
+  func-call-spacing:
+    error
+  indent:
+    - error
+    - 4
+  key-spacing:
+    error
+  keyword-spacing:
+    error
+  semi-spacing:
+    error
+  space-in-parens:
+    error
+  space-infix-ops:
+    error
+  space-unary-ops:
+    error
+  spaced-comment:
+    error
+  lines-around-comment:
+    error
+  max-len:
+    - error
+    - 128
+  new-parens:
+    error
+  no-tabs:
+    error
+  operator-linebreak:
+    - error
+    - after
+  no-console:
+    warn
+  semi:
+    - error
+    - always
+  comma-dangle:
+    off
+  no-trailing-spaces:
+    off
+  object-shorthand:
+    off
+  quotes:
+    off
+  quote-props:
+    off
