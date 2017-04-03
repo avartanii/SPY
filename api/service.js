@@ -991,6 +991,29 @@ var service = {
             callback(undefined, result);
         });
     },
+    removeClientFlag: function (postgres, payload, callback) {
+        Query.removeClientFlag(postgres, payload, function (err, result) {
+            if (err) {
+                return callback(err);
+            }
+            if (!result.rows[0]) {
+                return callback();
+            }
+            // var arr = [];
+            // for (var i = 0; i < result.rows.length; i++) {
+            //     var local = result.rows[i];
+            //     arr.push({
+            //         id: local.id,
+            //         type: local.type,
+            //         color: local.color,
+            //         message: local.message,
+            //         note: local.note
+            //     });
+            // }
+            // callback(undefined, arr);
+            callback(undefined, result);
+        });
+    },
     uploadFile: function (postgres, payload, callback) {
         Query.uploadFile(postgres, payload, function (err, result) {
             if (err) {
@@ -1033,6 +1056,28 @@ var service = {
                 return callback(err);
             }
             callback(undefined, result);
+        });
+    },
+
+    getClientForms: function (postgres, clientID, callback) {
+        Query.getClientForms(postgres, clientID, function (err, result) {
+            if (err) {
+                return callback(err);
+            }
+            var arr = [];
+            for (var i = 0; i < result.rows.length; i++) {
+                var local = result.rows[i];
+                arr.push({
+                    clientID: local.client_id,
+                    formElementTypeID: local.form_element_type_id,
+                    formElementTypeName: local.form_element_type_name,
+                    formID: local.form_id,
+                    formTypeName: local.form_type_name,
+                    formTypeID: local.form_type_id
+                });
+            }
+            callback(undefined, arr);
+            // callback(undefined, result);
         });
     },
 

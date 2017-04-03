@@ -1048,6 +1048,24 @@ var query = {
             });
         });
     },
+    removeClientFlag: function (postgres, payload, callback) {
+        postgres.connect(function (err, client, done) {
+            if (err) {
+                return callback(err);
+            }
+            // var data = Queries.editFlag(clientID);
+            // // unstringify the data passed in
+            client.query(Queries.removeClientFlag(payload), function (err, result) {
+            // client.query(data.string, data.params, function (err, result) {
+                done();
+                if (err) {
+                    return callback(err);
+                }
+
+                return callback(undefined, result);
+            });
+        });
+    },
     editCasePlan: function (postgres, payload, callback) {
         postgres.connect(function (err, client, done) {
             if (err) {
@@ -1110,6 +1128,24 @@ var query = {
             });
         });
     },
+
+    getClientForms: function (postgres, clientID, callback) {
+        postgres.connect(function (err, client, done) {
+            if (err) {
+                return callback(err);
+            }
+
+            client.query(Queries.getClientForms(clientID), function (err, result) {
+                done();
+                if (err) {
+                    return callback(err);
+                }
+
+                return callback(undefined, result);
+            });
+        });
+    },
+
     getPrograms: function (postgres, callback) {
         postgres.connect(function (err, client, done) {
             if (err) {
