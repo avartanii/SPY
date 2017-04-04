@@ -1,5 +1,4 @@
-// comment to test commenting
-
+// require('dotenv').config();
 var chai = require("chai");
 var expect = chai.expect;
 // var apiroutes = require("../routes/api_routes.js");
@@ -15,8 +14,39 @@ describe("Hello", function() {
 
 // can use supertest
 describe("Server", function() {
+    var localStorage = {};
+
     it("tests the server", function (done) {
         request(SPY.listener).get('/').expect(200, done);
+    });
+
+    // for api tests, need to login first to get a token for a session
+    it("logs in successfully", function (done) {
+        request(SPY.listener)
+            .post('/api/sessions')
+            .send({ username: process.env.TEST_USERNAME, password: process.env.TEST_PASSWORD })
+            .expect(200)
+            .end(function (error, response) {
+                if (error) {
+                    done(error);
+                }
+                localStorage.authorization = response.headers.authorization;
+                done();
+            });
+    });
+
+    it("uses session token for authentication", function (done) {
+        request(SPY.listener)
+            .get('/api/hello')
+            .set('Authorization', localStorage.authorization)
+            .expect(200)
+            .end(function (error, response) {
+              if (error) {
+                done(error);
+              }
+              console.log(response.body);
+              done();
+            });
     });
 
     /*
