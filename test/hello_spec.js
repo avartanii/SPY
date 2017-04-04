@@ -41,11 +41,11 @@ describe("Server", function() {
             .set('Authorization', localStorage.authorization)
             .expect(200)
             .end(function (error, response) {
-              if (error) {
-                done(error);
-              }
-              console.log(response.body);
-              done();
+                if (error) {
+                    done(error);
+                }
+                console.log(response.body);
+                done();
             });
     });
 
