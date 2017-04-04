@@ -8,14 +8,14 @@ var url = require('url');
 
 var setup = {
     host: process.env.NODE_ENV === "production" ? "0.0.0.0" : "localhost",
-    port: process.env.PORT || "8080"
+    port: (process.env.NODE_ENV === "test" ? process.env.TEST_PORT : process.env.PORT) || "8080"
 };
 var Api = require(Path.join(__dirname, 'routes/api_routes.js'));
 var viewRoutes = require(Path.join(__dirname, 'routes/view_routes.js'));
 
 var postgresqlPool = {
     register: function (server, options, next) {
-        var params = url.parse(process.env.DATABASE_URL);
+        var params = url.parse(process.env.NODE_ENV === "test" ? process.env.DATABASE_URL_TEST : process.env.DATABASE_URL);
         var auth = params.auth.split(':');
 
         var dbconfig = {
@@ -148,7 +148,7 @@ SPY.register({
 
 SPY.start(function () {
     SPY.log(['info', 'SPY'], "Server started on " + setup.host + ":" + setup.port);
-    SPY.log(['info', 'SPY'], process.env.DATABASE_URL);
+    SPY.log(['info', 'SPY'], (process.env.NODE_ENV === "test" ? process.env.DATABASE_URL_TEST : process.env.DATABASE_URL));
 });
 
 module.exports = SPY;

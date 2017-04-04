@@ -5,6 +5,8 @@ var expect = chai.expect;
 var request = require('supertest');
 var SPY = require('../server.js');
 
+console.log(process.env.NODE_ENV);
+
 describe("Hello", function() {
     it("tests the Testing", function (done) {
         expect("hello").to.eql("hello");
@@ -13,7 +15,7 @@ describe("Hello", function() {
 });
 
 // can use supertest
-describe("Server", function() {
+describe("API Routes", function() {
     var localStorage = {};
 
     it("tests the server", function (done) {

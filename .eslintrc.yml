@@ -9,7 +9,7 @@ env:
   es6: true
 rules:
   no-extra-parens:
-    error
+    off
   curly:
     error
   eqeqeq:
