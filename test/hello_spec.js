@@ -5,6 +5,8 @@ var expect = chai.expect;
 var request = require('supertest');
 var SPY = require('../server.js');
 
+console.log(SPY.listener);
+
 /*
   db configurations are in the postgres pool _factory object
     SPY.postgres.pool._factory => { user, password, host, port, database, . . . }
@@ -42,33 +44,33 @@ describe("API Routes", function() {
         });
     });
 
-    var localStorage = {};
+    // var localStorage = {};
 
     it("tests the server", function (done) {
         request(SPY.listener).get('/').expect(200, done);
     });
 
-    // for api tests, need to login first to get a token for a session
-    it("logs in successfully", function (done) {
-        request(SPY.listener)
-            .post('/api/sessions')
-            .send({ username: process.env.TEST_USERNAME, password: process.env.TEST_PASSWORD })
-            .expect(200)
-            .end(function (error, response) {
-                if (error) {
-                    done(error);
-                }
-                localStorage.authorization = response.headers.authorization;
-                done();
-            });
-    });
+    // authentication disabled for testing
+    // it("logs in successfully", function (done) {
+    //     request(SPY.listener)
+    //         .post('/api/sessions')
+    //         .send({ username: process.env.TEST_USERNAME, password: process.env.TEST_PASSWORD })
+    //         .expect(200)
+    //         .end(function (error, response) {
+    //             if (error) {
+    //                 done(error);
+    //             }
+    //             localStorage.authorization = response.headers.authorization;
+    //             done();
+    //         });
+    // });
 
     // ****** These other tests rely on the /api/sessions test to get the token!!!!
     // need to find different implementation
-    it("uses session token for authentication", function (done) {
+    it("initial api endpoint", function (done) {
         request(SPY.listener)
             .get('/api/hello')
-            .set('Authorization', localStorage.authorization)
+            // .set('Authorization', localStorage.authorization)
             .expect(200)
             .end(function (error, response) {
                 if (error) {

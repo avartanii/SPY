@@ -71,37 +71,39 @@ SPY.connection({
     port: setup.port
 });
 
-SPY.register(require('hapi-auth-jwt2'), function (err) {
+if (process.env.NODE_ENV !== "test") {
+    SPY.register(require('hapi-auth-jwt2'), function (err) {
 
-    if (err) {
-        SPY.log(['error', 'hapi-auth-jwt2'], err);
-    }
+        if (err) {
+            SPY.log(['error', 'hapi-auth-jwt2'], err);
+        }
 
-    SPY.auth.strategy('jwt', 'jwt', {
-        key: process.env.SPY_KEY,          // Never Share your secret key
-        validateFunc: validate,            // validate function defined above
-        verifyOptions: { algorithms: [ 'HS256' ] } // pick a strong algorithm
+        SPY.auth.strategy('jwt', 'jwt', {
+            key: process.env.SPY_KEY,          // Never Share your secret key
+            validateFunc: validate,            // validate function defined above
+            verifyOptions: { algorithms: [ 'HS256' ] } // pick a strong algorithm
+        });
+
+        SPY.auth.default('jwt');
+
+        // EXAMPLE ROUTES
+        // SPY.route([
+        //   {
+        //     method: "GET", path: "/", config: { auth: false },
+        //     handler: function(request, reply) {
+        //       reply({text: 'Token not required'});
+        //     }
+        //   },
+        //   {
+        //     method: 'GET', path: '/restricted', config: { auth: 'jwt' },
+        //     handler: function(request, reply) {
+        //       reply({text: 'You used a Token!'})
+        //       .header("Authorization", request.headers.authorization);
+        //     }
+        //   }
+        // ]);
     });
-
-    SPY.auth.default('jwt');
-
-    // EXAMPLE ROUTES
-    // SPY.route([
-    //   {
-    //     method: "GET", path: "/", config: { auth: false },
-    //     handler: function(request, reply) {
-    //       reply({text: 'Token not required'});
-    //     }
-    //   },
-    //   {
-    //     method: 'GET', path: '/restricted', config: { auth: 'jwt' },
-    //     handler: function(request, reply) {
-    //       reply({text: 'You used a Token!'})
-    //       .header("Authorization", request.headers.authorization);
-    //     }
-    //   }
-    // ]);
-});
+}
 
 SPY.register(postgresqlPool, function () {});
 SPY.register(Api, {
