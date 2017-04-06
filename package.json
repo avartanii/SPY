@@ -10,7 +10,7 @@
     "start": "if [ -f $(npm bin)/../../.env ]; then node server.js; else node server.js; fi;",
     "nodemon": "nodemon -e js,json,html,css server.js",
     "test": "npm run db-stop; $(npm bin)/../../test/test_db.sh; NODE_ENV=test mocha --recursive --require mocha-istanbul 'test' && istanbul report text-summary lcov; npm run db-stop;",
-    "travis-test": "mocha --recursive --require mocha-istanbul 'test' && istanbul report text-summary lcov",
+    "travis-test": "test/test_db.sh; NODE_ENV=test mocha --recursive --require mocha-istanbul 'test' && istanbul report text-summary lcov; npm run db-stop;",
     "lint": "eslint server.js **/*.js",
     "report": "istanbul report",
     "report-summary": "istanbul report text-summary lcov",
