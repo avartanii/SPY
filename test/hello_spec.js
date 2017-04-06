@@ -30,14 +30,14 @@ describe("API Routes", function() {
                 release(error);
                 return done(error);
             }
-            console.log("**** outside ****");  // vvv needs quotes, otherwise, interprets it as column name
+                                              // vvv needs quotes, otherwise, interprets it as column name
             client.query(`SELECT truncate_tables(\'${SPY.postgres.pool._factory.user}\');`, function (error, result) {
                 if (error) {
                     release();
                     return done(error);
                 }
                 release();
-                console.log("======================");
+                // console.log("======================");
                 console.log(result);
                 done();
             });
@@ -74,10 +74,10 @@ describe("API Routes", function() {
             .expect(200)
             .end(function (error, response) {
                 if (error) {
-                    done(error);
+                    return done(error);
                 }
                 console.log(response.body);
-                done();
+                return done();
             });
     });
 
@@ -87,6 +87,59 @@ describe("API Routes", function() {
       When the server contains more than one connection,
       each server.connections array member provides its own connection.listener.
     */
+});
+
+describe("Client profiles", function () {
+    beforeEach(function (done) {
+        SPY.postgres.connect(function (error, client, release) {
+            if (error) {
+                release(error);
+                return done(error);
+            }
+            client.query(`SELECT truncate_tables(\'${SPY.postgres.pool._factory.user}\');`, function (error, result) {
+                if (error) {
+                    release();
+                    return done(error);
+                }
+                release();
+                console.log(result);
+                done();
+            });
+        });
+    });
+
+    it("adds client profiles", function (done) {
+        request(SPY.listener)
+            .post('/api/clients')
+            .send({
+                expression: JSON.stringify({
+                    firstname: "John",
+                    lastname: "Doe",
+                    firsttime: true
+                })
+            })
+            .expect(200)
+            .end(function (error, response) {
+                if (error) {
+                    return done(error);
+                }
+                console.log(response.body);
+                return done();
+            });
+    });
+
+    it("retrieves client profiles", function (done) {
+        request(SPY.listener)
+            .get('/api/clients')
+            .expect(200)
+            .end(function (error, response) {
+                if (error) {
+                    return done(error);
+                }
+                console.log(response.body);
+                return done();
+            });
+    });
 });
 
 // or Hapi's native inject() function
