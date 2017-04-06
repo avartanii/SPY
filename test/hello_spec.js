@@ -5,7 +5,10 @@ var expect = chai.expect;
 var request = require('supertest');
 var SPY = require('../server.js');
 
-console.log(process.env.NODE_ENV);
+/*
+  db configurations are in the postgres pool _factory object
+    SPY.postgres.pool._factory => { user, password, host, port, database, . . . }
+*/
 
 describe("Hello", function() {
     it("tests the Testing", function (done) {
@@ -14,8 +17,31 @@ describe("Hello", function() {
     });
 });
 
-// can use supertest
 describe("API Routes", function() {
+    // in the future, will use model functions or API endpoint
+    // for deleting all rows in all tables so the testing code
+    // doesn't have to rely on postgres specifically
+    // for now though, we will use postgres directly in the tests
+    beforeEach(function (done) {
+        SPY.postgres.connect(function (error, client, release) {
+            if (error) {
+                release(error);
+                return done(error);
+            }
+            console.log("**** outside ****");  // vvv needs quotes, otherwise, interprets it as column name
+            client.query(`SELECT truncate_tables(\'${SPY.postgres.pool._factory.user}\');`, function (error, result) {
+                if (error) {
+                    release();
+                    return done(error);
+                }
+                release();
+                console.log("======================");
+                console.log(result);
+                done();
+            });
+        });
+    });
+
     var localStorage = {};
 
     it("tests the server", function (done) {
@@ -37,6 +63,8 @@ describe("API Routes", function() {
             });
     });
 
+    // ****** These other tests rely on the /api/sessions test to get the token!!!!
+    // need to find different implementation
     it("uses session token for authentication", function (done) {
         request(SPY.listener)
             .get('/api/hello')

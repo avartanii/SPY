@@ -62,7 +62,7 @@ rules:
     error
   max-len:
     - error
-    - 128
+    - 180
   new-parens:
     error
   no-tabs:
