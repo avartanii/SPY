@@ -11,6 +11,8 @@ echo 'Initializing db';
 initdb -U $TEST_DB_USERNAME -D db; # make sure username is same as config user that owns the database
 pg_ctl -D db -l log/postgres.log start;
 sleep 4;
+echo $TEST_DB_USERNAME;
+echo $TEST_DB;
 createdb -O $TEST_DB_USERNAME -U $TEST_DB_USERNAME -e $TEST_DB; # bash does not parse --username=$TEST_DB_USERNAME correctly without the space
 # psql -f config/create_spy_test.sql -d postgres --username=$TEST_DB_USERNAME; # need to create the new database from within the default postgres database that is initialized first
 psql -f db_setup/db.sql -d $TEST_DB -U $TEST_DB_USERNAME;
