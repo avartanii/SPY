@@ -87,7 +87,7 @@
   },
   "homepage": "https://github.com/cf7/SPY#README",
   "dependencies": {
-    "bcryptjs": "^0.8.7",
+    "bcrypt": "^1.0.2",
     "dotenv": "^4.0.0",
     "good": "^7.0.2",
     "good-console": "^6.1.2",
