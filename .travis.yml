@@ -9,6 +9,8 @@ addons:
     - gcc-4.8
     - g++-4.8
   postgresql: "9.6"
+services:
+    - postgresql
 sudo: required
 env:
 - TRAVIS=travis CXX=g++-4.8
