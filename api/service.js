@@ -1,6 +1,6 @@
 var Path = require('path');
 var Query = require(Path.join(__dirname, 'query.js'));
-var bcrypt = require('bcrypt');
+var bcrypt = require('bcryptjs');
 var JWT = require('jsonwebtoken');
 
 var saltRounds = 10;

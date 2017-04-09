@@ -7,3 +7,6 @@ log
 .DS_Store
 .sass-cache
 .env
+set_test_env.sh
+set_env.sh
+set_key.sh
