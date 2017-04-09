@@ -4,7 +4,7 @@ var Path = require('path');
 var Inert = require('inert');
 var Vision = require('vision');
 var PostgreSQL = require('pg');
-var url = require('url');
+var PGConnectionString = require('pg-connection-string'); // uses npm url in its implementation
 
 var setup = {
     host: process.env.NODE_ENV === "production" ? "0.0.0.0" : "localhost",
@@ -15,19 +15,12 @@ var viewRoutes = require(Path.join(__dirname, 'routes/view_routes.js'));
 
 var postgresqlPool = {
     register: function (server, options, next) {
-        var params = url.parse(process.env.NODE_ENV === "test" ? process.env.DATABASE_URL_TEST : process.env.DATABASE_URL);
-        var auth = params.auth.split(':');
-
-        var dbconfig = {
-            user: auth[0],
-            password: auth[1],
-            host: params.hostname,
-            port: params.port,
-            database: params.pathname.split('/')[1],
-            ssl: process.env.NODE_ENV === "production",
-            max: 20,
-            min: 4
-        };
+        console.log(process.env.TEST_DATABASE_URL);
+        var dbconfig = PGConnectionString.parse(process.env.NODE_ENV === "test" ? process.env.TEST_DATABASE_URL : process.env.DATABASE_URL);
+        dbconfig.ssl = process.env.NODE_ENV === "production";
+        dbconfig.max = 20;
+        dbconfig.min = 4;
+        console.log(dbconfig);
 
         var pool = new PostgreSQL.Pool(dbconfig);
 
@@ -150,7 +143,7 @@ SPY.register({
 
 SPY.start(function () {
     SPY.log(['info', 'SPY'], "Server started on " + setup.host + ":" + setup.port);
-    SPY.log(['info', 'SPY'], (process.env.NODE_ENV === "test" ? process.env.DATABASE_URL_TEST : process.env.DATABASE_URL));
+    SPY.log(['info', 'SPY'], (process.env.NODE_ENV === "test" ? process.env.TEST_DATABASE_URL : process.env.DATABASE_URL));
 });
 
 module.exports = SPY;
