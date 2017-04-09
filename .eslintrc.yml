@@ -1,4 +1,3 @@
-
 extends: eslint:recommended
 plugins:
   - import
@@ -10,7 +9,7 @@ env:
   es6: true
 rules:
   no-extra-parens:
-    error
+    off
   curly:
     error
   eqeqeq:
@@ -63,7 +62,7 @@ rules:
     error
   max-len:
     - error
-    - 128
+    - 180
   new-parens:
     error
   no-tabs:
