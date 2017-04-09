@@ -8,8 +8,8 @@ rm -rf log;
 mkdir db;
 mkdir log;
 echo 'Initializing db';
-initdb $(npm bin)/../../db -U $TEST_DB_USERNAME; # make sure username is same as config user that owns the database
-pg_ctl -D $(npm bin)/../../db -l $(npm bin)/../../log/postgres.log start;
+initdb -U $TEST_DB_USERNAME -D $(npm bin)/../../db; # make sure username is same as config user that owns the database
+pg_ctl start -D $(npm bin)/../../db -l $(npm bin)/../../log/postgres.log;
 sleep 4;
 createdb -O $TEST_DB_USERNAME -U $TEST_DB_USERNAME $TEST_DB; # bash does not parse --username=$TEST_DB_USERNAME correctly without the space
 # psql -f $(npm bin)/../../config/create_spy_test.sql -d postgres --username=$TEST_DB_USERNAME; # need to create the new database from within the default postgres database that is initialized first
