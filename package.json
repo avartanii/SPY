@@ -9,7 +9,8 @@
   "scripts": {
     "start": "if [ -f node_modules/.bin/../../.env ]; then node server.js; else node server.js; fi;",
     "nodemon": "nodemon -e js,json,html,css server.js",
-    "test": "npm run db-stop; test/test_db.sh; NODE_ENV=test mocha --recursive --require mocha-istanbul 'test' && istanbul report text-summary lcov; npm run travis-db-stop;",
+    "test": "npm run db-stop; test/test_db.sh; NODE_ENV=test mocha --recursive --require mocha-istanbul 'test' && istanbul report text-summary lcov; npm run db-stop;",
+    "test": "test/test_db.sh; NODE_ENV=test mocha --recursive --require mocha-istanbul 'test' && istanbul report text-summary lcov;",
     "lint": "eslint server.js **/*.js",
     "report": "istanbul report",
     "report-summary": "istanbul report text-summary lcov",
@@ -17,7 +18,6 @@
     "db-init": "cd $(npm bin)/../..; echo 'Deleting db & logs'; rm -rf db; rm -rf log; mkdir db; mkdir log; echo 'Initializing db'; initdb $(npm bin)/../../db; pg_ctl -D $(npm bin)/../../db -l $(npm bin)/../../log/postgres.log start; sleep 4; psql -f config/create_spy.sql -d postgres; psql -f db_setup/db.sql -d spy; pg_ctl -D $(npm bin)/../../db stop -s -m fast; chmod 700 $(npm bin)/../../config/set_env.sh; chmod 700 $(npm bin)/../../config/set_key.sh",
     "db-start": "pg_ctl -D $(npm bin)/../../db -l $(npm bin)/../../log/postgres.log start",
     "db-stop": "pg_ctl -D $(npm bin)/../../db stop -s -m fast",
-    "travis-db-stop": "pg_ctl -D db stop -s -m fast",
     "db-reset": "npm run db-stop; npm run db-init; npm run db-start;",
     "win-db-init-with-user": "rm -rf db && rm -rf log && mkdir db && mkdir log && initdb.exe ./db && pg_ctl -D ./db -l ./log/postgres.log start && sleep 4 && psql --username=spyuser -f ./config/create_spy.sql -d postgres && psql --username=spyuser -f ./db_setup/db.sql -d spy && pg_ctl -D ./db stop -s -m fast && chmod 700 ./config/set_env.sh && chmod 700 ./config/set_key.sh",
     "win-db-init": "rm -rf db && rm -rf log && mkdir db && mkdir log && initdb.exe ./db && pg_ctl -D ./db -l ./log/postgres.log start && sleep 4 && psql -f ./config/create_spy.sql -d postgres && psql -f ./db_setup/db.sql -d spy && pg_ctl -D ./db stop -s -m fast && chmod 700 ./config/set_env.sh && chmod 700 ./config/set_key.sh",
