@@ -14,7 +14,7 @@ sleep 4;
 createdb -O $TEST_DB_USERNAME -U $TEST_DB_USERNAME $TEST_DB; # bash does not parse --username=$TEST_DB_USERNAME correctly without the space
 # psql -f node_modules/.bin/../../config/create_spy_test.sql -d postgres --username=$TEST_DB_USERNAME; # need to create the new database from within the default postgres database that is initialized first
 psql -f node_modules/.bin/../../db_setup/db.sql -d $TEST_DB -U $TEST_DB_USERNAME;
-
+echo 'Test Database initialized and started';
 # connect to db $TEST_DB as user $TEST_DB_USERNAME
 # $ psql -d $TEST_DB -U $TEST_DB_USERNAME
 
