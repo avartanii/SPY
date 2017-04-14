@@ -18,16 +18,16 @@ The SPY Database system architecture is comprised of a client-side, browser-base
 	- 5.5.2	Execution Environment Requirements
 
 
-	
+
 ### 5.2 	CSCI Component Breakdown
 - 5.2.1		SPY Staff Frontend CSC -- GUI components that the user will interact with
 	- 5.2.1.1		Login Page CSU -- modules for accessing the system
 		- 5.2.1.1.1	Login input module -- input fields for user credentials
 		- 5.2.1.1.2	Login button module -- buttons to submit inputs to server
-		- 5.2.1.1.3	Add New User Account module -- 
+		- 5.2.1.1.3	Add New User Account module --
 			- 5.2.1.1.3.1	Input fields for username, password, and occupation
-			- 5.2.1.1.3.2	Submission 
-		- 5.2.1.1.4	Delete User Account module -- 
+			- 5.2.1.1.3.2	Submission
+		- 5.2.1.1.4	Delete User Account module --
 	- 5.2.1.2		Front-Desk Page CSU -- page that hosts tools for SPY front desk tasks
 	- 5.2.1.3		Case Manager Page CSU -- page that hosts case management tools
 	- 5.2.1.4		Case Notes CSU -- modules for creating and searching case notes
@@ -60,11 +60,13 @@ The SPY Database Web App will allow SPY staff to input client information that w
 	- 5.3.1.3		The Frontend shall provide text entry fields into which the user may type values.
 	- 5.3.1.4		The Frontend shall provide error checking on the text entry fields such that the user is provided immediate feedback in case of erroneous entry.
 	- 5.3.1.5		The Frontend shall direct users with different levels of access to different main pages.
+    - 5.3.1.5.1 "Administrator" will be one of the levels of access for the system.
+    - 5.3.1.5.2 "Staff" will be one of the levels of access for the system.
 	- 5.3.1.6		The Frontend shall include a navigation bar at the top of the page.
 	- 5.3.1.7		The Frontend shall have menus for navigating between pages and content.
 	- 5.3.1.8		The Frontend shall have search bars for searching through large tables of information.
 	- 5.3.1.9		The Frontend shall have tables displaying information in rows and columns.
-	- 5.3.1.10	The Frontend shall react to mouse clicks on displayed buttons.
+	- 5.3.1.10	The Frontend shall respond with visual feedback to the user upon mouse click events over any visible button.
 	- 5.3.1.11	The Frontend shall display real-time data.
 	- 5.3.1.12	The Frontend shall display status indicators for youth profiles.
 	- 5.3.1.13	The Frontend shall provide a means to represent the same data in numerous visual ways
@@ -82,7 +84,7 @@ The SPY Database Web App will allow SPY staff to input client information that w
 		- 5.3.1.18.4	The front desk page shall have a button to view a drop-in session.
 		- 5.3.1.18.5	The front desk page shall have a button for drop-in enrollment.
 	- 5.3.1.19	The Frontend shall have a New Drop-In Session page.
-		- 5.3.1.19.1	The drop-in page shall have fields to input details for the drop-in session.
+		- 5.3.1.19.1	The drop-in page shall have user-definable fields for inputting information about the new drop-in session.
 	- 5.3.1.20	The Frontend shall have a Drop-In Enrollment tracking page.
 		- 5.3.1.20.1	The enrollment tracking page shall have panel listing all of the SPY activities for the day.
 		- 5.3.1.20.2	The enrollment tracking page shall have display for tracking total youth attendance.
@@ -94,40 +96,48 @@ The SPY Database Web App will allow SPY staff to input client information that w
 		- 5.3.1.21.4	The outreach page shall have a button to add a new outreach partner.
 		- 5.3.1.21.5	The outreach page shall have a button to add a new outreach volunteer.
 	- 5.3.1.22	The Frontend shall have a New Outreach Session page.
-		- 5.3.1.22.1	The new outreach session page shall have fields to input details for the new outreach session.
+		- 5.3.1.22.1	The new outreach session page shall have user-definable fields for inputting information about the new outreach session.
 		- 5.3.1.22.2	The new outreach session page shall have a button to add a new youth to the session.
-		
+
 
 - 5.3.2	Backend
 	- 5.3.2.1		The Backend shall respond to HTTP requests from the client.
 	- 5.3.2.2		The Backend shall forward the results of queries from the Database to the Frontend.
-	- 5.3.2.3		The Backend shall support concurrent access of the database from multiple users.
-	- 5.3.2.4		The Backend shall timeout the network connection to the database after prolonged idling of 3 minutes at the least.
-	- 5.3.2.5		The Backend shall send error messages with details about connection issues.
+	- 5.3.2.3		The Backend shall support concurrent access of the database from 20 users at the most.
+	- 5.3.2.4		The Backend shall timeout the network connection to the database after prolonged idling of 3 minutes.
+	- 5.3.2.5		The Backend shall send error messages with details about connection issues to the chosen cloud-host service dashboard.
 	- 5.3.2.6		The Backend shall close network channels that are not in use.
 	- 5.3.2.7		The Backend shall determine a network channel to not be in use when that channel has not made a request in the previous 3 minutes or longer.
 	- 5.3.2.8		The Backend shall maintain a network log.
 	- 5.3.2.9 		The Backend network log shall track successful HTTP requests.
 	- 5.3.2.10		The Backend network log shall track failed HTTP requests.
 	- 5.3.2.11		The Backend network log shall track server load.
-	- 5.3.2.12		The Backend network log shall track request speed.
+    - 5.3.2.11.1 The network log will track percentage of virtual RAM used.
+    - 5.3.2.11.2 The network log will track percentage of CPU processing used.
+	- 5.3.2.12		The Backend network log shall track request handling speed.
+    - 5.3.2.12.1 The network log will track response times for each request it receives.
 	- 5.3.2.13		The Backend network log shall track requests per second.
-	- 5.3.2.9		The Backend shall send periodic reports on network performance every second at the least.
+	- 5.3.2.9		The Backend shall send periodic reports on network performance every 12 hours at the least.
 	- 5.3.2.10	The Backend shall respond with a 404 error code when a page or route is not found.
 	- 5.3.2.11	The Backend shall respond with a 500 error code when there is an error in the client-side server.
 	- 5.3.2.12	The Backend shall respond with a 200 error code when an HTTP request is successfully made and returned.
 
 
 - 5.3.3	Database
-	- 5.3.3.1		The Database shall perform queries on stored data.
+	- 5.3.3.1		The Database shall accept queries on stored data.
 	- 5.3.3.2		The Database shall prevent errors from concurrent data modification.
 	- 5.3.3.3		The Database shall perform basic statistical analysis on queried data.
+    - 5.3.3.3.1 The Database will perform aggregate summation operations on queried data.
+    - 5.3.3.3.2 The Database will perform aggregate subtraction operations on queried data.
+    - 5.3.3.3.3 The Database will perform aggregate averaging operations on queried data.
+    - 5.3.3.3.4 The Database will perform aggregate maximum-finding operations on queried data.
+    - 5.3.3.3.5 The Database will perform aggregate minimum-finding operations on queried data.
 	- 5.3.3.4		The Database shall generate aggregate data that can be used for reports.
 	- 5.3.3.5		The Database shall have procedures for backing-up stored data.
-	- 5.3.3.6		The Database shall be accessible only through an API
-	- 5.3.3.7		The Database shall be HIPAA compliant
-	- 5.3.3.8		The Database shall be hosted by a HIPAA compliant cloud service
-	- 5.3.3.9		The Database shall maintain activity tracking logs according to HIPAA compliance
+	- 5.3.3.6		The Database shall be accessible only through the SPY Web Application API.
+	- 5.3.3.7		The Database shall be HIPAA compliant.
+	- 5.3.3.8		The Database shall be hosted by a HIPAA compliant cloud service.
+	- 5.3.3.9		The Database shall maintain activity tracking logs according to HIPAA compliance.
 
 - 5.3.4	System-wide
 	- 5.3.4.1		The system shall provide a means for retrieving lost password information.
@@ -156,23 +166,21 @@ The SPY Database Web App will allow SPY staff to input client information that w
 	- 5.3.4.23	The system shall provide a means for exporting data.
 	- 5.3.4.24	The system shall provide a means for users to customize settings for the entire system (Frontend, Backend, Database).
 	- 5.3.4.25	The system shall allow case manager profiles to access data from other case manager profiles.
-	- 5.3.4.26	The system shall provide a means for storing document files.
-	- 5.3.4.27	The system shall provide a means for storing image files.
-	- 5.3.4.28	The system shall provide a means for tracking valuable items (backpacks, phones, keys, . . . etc.)
+	- 5.3.4.26	The system shall provide a means for storing document files, each with a maximum size of 32 MB.
+	- 5.3.4.27	The system shall provide a means for storing image files, each with a maximum size of 32 MB.
+	- 5.3.4.28	The system shall provide a means for tracking user-definable valuable items.
 
 ### 5.4	Performance Requirements
 
-- 5.4.1	Successful login occurs within 5 seconds:
+- 5.4.1	Successful login occurs within 5 seconds<br>
 Upon entering credentials, the user should not have to wait more than 5 seconds to be redirected to their main profile page upon successful verification of those credentials.
 
-- 5.4.2	Nearly instantaneous navigation:
+- 5.4.2	Nearly instantaneous navigation<br>
 Users should not experience delays in navigating between pages.
 
-- 5.4.3	Usability design principles for the Frontend:
-The graphical user interface shall be human-friendly and intuitive.
+- 5.4.3	Usability design principles for the Frontend: The graphical user interface shall incorporate Shneiderman HCI Design Principles.
 
-	- 5.4.3.1	Feedback:
-At all times, the interface shall communicate the results of any interaction, making those results visible and understandable.
+	- 5.4.3.1	Feedback: At all times, the interface shall communicate the results of any interaction, making those results visible and understandable.
 
 - 5.4.4	Accessibility:
 Minimum standard software requirements for users with disabilities shall be met.
@@ -183,32 +191,29 @@ Formats for screen-reading applications to utilize will be incorporated into the
 	- 5.4.4.2	Voice navigation:
 Formats for verbal mouse-grid navigation will be incorporated into the Frontend design.
 
-- 5.4.5	Search results within 1 second:
+- 5.4.5	Search results within 1 second<br>
 Users should see the first results of a search within 1 second of initiating the search.
 
-- 5.4.6	Optimize storage:
-The Database subsystem should be able to store the maximum amount of data with the minimum amount of storage space.
-
-- 5.4.7 Bandwidth:
+- 5.4.6 Bandwidth<br>
 The Backend should optimize use of available bandwidth for data transmission.
 
-- 5.4.8	Network connection cutoff:
+- 5.4.7	Network connection cutoff<br>
 The system should have default procedures for handling incomplete transactions during a network crash.
 
-- 5.4.9	Modular programming:
+- 5.4.8	Modular programming<br>
 The system design should incorporate separating functionality into independent, interchangeable modules, such that each contains everything necessary to execute only one aspect of the system’s overall functionality.
 
-- 5.4.10 Open-endedness:
+- 5.4.9 Open-Endedness<br>
 The system design should incorporate design principles that allow for easily modifying the system architecture or building more into the system by future developers.
 
-- 5.4.11 Data migration:
+- 5.4.10 Data migration:
 The data stored in the Database will be able to easily migrate to other database software in the future.
 
-- 5.4.12 Emergency backup:
+- 5.4.11 Emergency backup<br>
 The Database should immediately backup data if network or server issues are detected.
 
 
-### 5.5	Project Environment Requirements 
+### 5.5	Project Environment Requirements
 
 Utilizing pre-built frameworks such as Node.js will expedite development and provide more secure and stable server-side hosting.
 
@@ -216,7 +221,7 @@ Utilizing pre-built frameworks such as Node.js will expedite development and pro
 
 | Category | Requirement |
 |---|---|
-| Front End | Bootstrap, ComboDate, jQuery, Notify, Moment, Spectrum  | 
+| Front End | Bootstrap, ComboDate, jQuery, Notify, Moment, Spectrum  |
 | Server | Node.js, npm, Hapi, Joi, npm-pg, Chai, CodeCov, ESLint, Istanbul, Mocha, Mocha-Istanbul, Nodemon |
 | Database | PostgrSQL |
 
