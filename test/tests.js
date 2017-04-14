@@ -29,7 +29,7 @@ describe("API Routes", function() {
             if (error) {
                 release(error);
                 return done(error);
-            }
+            }                                  // getting the user from the client connection
                                               // vvv needs quotes, otherwise, interprets it as column name
             client.query(`SELECT truncate_tables(\'${SPY.postgres.pool._factory.user}\');`, function (error, result) {
                 if (error) {
@@ -142,6 +142,9 @@ describe("Client profiles", function () {
     });
 });
 
+
+
+
 // or Hapi's native inject() function
 describe("View Routes", function () {
     it("retrieve the main page", function (done) {
@@ -177,16 +180,3 @@ describe("View Routes", function () {
         });
     });
 });
-
-// describe("API Routes", function () {
-//     it("gets all casemanagers", function (done) {
-//         var options = {
-//             method: "GET",
-//             url: "api/casemanagers"
-//         };
-//         SPY.inject(options, function (response) {
-//             expect(response.statusCode).to.eql(200);
-//             done();
-//         });
-//     });
-// });
