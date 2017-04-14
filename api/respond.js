@@ -9,10 +9,10 @@ var respond = {
     },
     createdClient: function (reply, result) {
         reply({
-            statusCode: 200,
+            statusCode: 201,
             message: "Success creating client!",
             result: result
-        }).code(200);
+        }).code(201);
     },
     failedToGetAllCaseManagers: function (reply, err) {
         reply({
@@ -81,10 +81,10 @@ var respond = {
     },
     createDropIn: function (reply, result) {
         reply({
-            statusCode: 200,
+            statusCode: 201,
             message: "Success creating dropin!",
             result: result
-        }).code(200);
+        }).code(201);
     },
     failedToGetDropIns: function (reply, err) {
         reply({

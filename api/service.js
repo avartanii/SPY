@@ -34,7 +34,27 @@ var service = {
             if (err) {
                 return callback(err);
             }
-            return callback(undefined, result);
+            if (!result.rows[0]) {
+                return callback();
+            }
+            var arr = [];
+            for (var i = 0; i < result.rows.length; i++) {
+                var local = result.rows[i];
+                arr.push({
+                    id: local.id,
+                    firstname: local.first_name,
+                    nickname: local.nickname,
+                    lastname: local.last_name,
+                    dob: local.date_of_birth,
+                    phone: local.phone_number,
+                    email: local.email,
+                    intakedate: local.intake_date,
+                    age: local.age,
+                    caseplan: local.caseplan
+                });
+            }
+            return callback(undefined, arr);
+            // return callback(undefined, result);
         });
     },
 

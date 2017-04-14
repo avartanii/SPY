@@ -5,7 +5,7 @@ var Inert = require('inert');
 var Vision = require('vision');
 var PostgreSQL = require('pg');
 var PGConnectionString = require('pg-connection-string'); // uses npm url in its implementation
-console.log(process.env);
+
 var setup = {
     host: process.env.NODE_ENV === "production" ? "0.0.0.0" : "localhost",
     port: (process.env.NODE_ENV === "test" ? process.env.TEST_PORT : process.env.PORT) || "8080"
