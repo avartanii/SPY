@@ -90,7 +90,7 @@ describe("API Routes", function() {
 });
 
 describe("Client profiles", function () {
-    beforeEach(function (done) {
+    before(function (done) {
         SPY.postgres.connect(function (error, client, release) {
             if (error) {
                 release(error);
