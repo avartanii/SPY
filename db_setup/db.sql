@@ -611,8 +611,8 @@ the passwords match
 authenticate login
 */
 
--- inserting user 'test' to login with password 'passwordisnone'
-INSERT INTO users (username, hashed_password) VALUES ('test', '$2a$10$DAInVRGKZJ4pmb64YDJxXe2zgt4N3/FbxHkhC23yv8Dwv0uHeov6u');
+-- inserting user 'test' to login with password
+INSERT INTO users (username, hashed_password) VALUES ('test', '$2a$10$6Sb3QDKlIg9.L6LcQacAqOYZ2K5EfB1FTzdLrmtUQbBxy4Igg0XoW');
 
 DROP TABLE IF EXISTS notification_types;
 
