@@ -84,3 +84,5 @@ rules:
     off
   quote-props:
     off
+  no-unused-vars:
+    off

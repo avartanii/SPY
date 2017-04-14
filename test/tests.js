@@ -152,21 +152,20 @@ describe("Client profiles", () => {
       });
   });
 
-  it("edits client profiles", (done) => {
+  it("edits client profiles", () => {
     request(SPY.listener)
       .put('/api/clients/1')
       .send({
+        expression: JSON.stringify({
           firstname: 'John',
           lastname: 'Doe',
           phonenumber: '123-456-7890',
-          email: 'jdoe@email.com',
+          email: 'jdoe@email.com'
+        })
       })
       .expect(200)
-      .end((error, response) => {
-        if (error) {
-          return done(error);
-        }
-        return done();
+      .then((response) => {
+
       });
   });
 });
@@ -184,7 +183,7 @@ describe('Dropins', () => {
           return done(error);
         }
         release();
-        done();
+        return done();
       });
     });
   });
@@ -204,7 +203,7 @@ describe('Dropins', () => {
           })
           .expect(201)
           .then((response) => {
-
+            // console.log(response);
           });
       });
   });
@@ -214,7 +213,7 @@ describe('Dropins', () => {
       .get('/api/dropins')
       .expect(200)
       .then((response) => {
-        expect(response.body.length).to.equal(2);
+        expect(response.body.result.length).to.equal(2);
       });
   });
 
@@ -223,7 +222,8 @@ describe('Dropins', () => {
       .get('/api/dropins/2')
       .expect(200)
       .then((response) => {
-        expect(response.body.length).to.equal(1);
+        expect(response.body.result.id).to.equal(2);
+        expect(response.body.result).to.have.property('date');
       });
   });
 });
