@@ -3,7 +3,7 @@
 ## 5.1	Introduction
 This Software Requirements Specification (SRS) documents the requirements for the Safe Place for Youth (SPY) Database Website Application (called “SPY Database” or “SPY Database Web App” or “SPY Database App” for the purposes of this document).
 The SPY Database is a cloud-based web application that will allow users to store and retrieve data over the Internet from any platform, be it a desktop computer, tablet, or smartphone. This system will be uniquely customized to suit the needs of Safe Place for Youth, a nonprofit organization that serves homeless youth, and will allow SPY staff to securely store and retrieve client information for each youth enrolled in their programs. Thus, at the heart of this system lives the youth profile, which contains a youth’s important health, legal, and participation information. Additionally, the SPY staff will have user profiles, and each of SPY’s programs will have a “program profile.”
-The SPY Database system architecture is comprised of a client-side, browser-based interface (frontend), a cloud-hosted server (backend), and the database itself that will store, send, and query data. The frontend will consist of various web-pages that will allow users to easily input, request, and query information stored in the database. The server backend and database will be configured to optimize concurrent access as well as comply with HIPAA security rules to protect confidential client information.
+The SPY Database system architecture is comprised of a browser-based interface (frontend), a cloud-hosted client-side server (backend), and the database itself that will store, send, and query data. The frontend will consist of various webpages that will allow users to easily input, request, and query information stored in the database. The server backend and database will be configured to optimize concurrent access as well as comply with HIPAA security rules to protect confidential client information.
 
 <p align="center">
 	<img src="../resources/spec_01.png" alt="High-Level Diagram of System">
@@ -17,10 +17,8 @@ The SPY Database system architecture is comprised of a client-side, browser-base
 	- 5.5.1	Development Environment Requirements
 	- 5.5.2	Execution Environment Requirements
 
-
-
 ### 5.2 	CSCI Component Breakdown
-- 5.2.1		SPY Staff Frontend CSC -- GUI components that the user will interact with
+- 5.2.1		Frontend CSC -- GUI components that the user will interact with
 	- 5.2.1.1		Login Page CSU -- modules for accessing the system
 		- 5.2.1.1.1	Login input module -- input fields for user credentials
 		- 5.2.1.1.2	Login button module -- buttons to submit inputs to server
@@ -29,21 +27,24 @@ The SPY Database system architecture is comprised of a client-side, browser-base
 			- 5.2.1.1.3.2	Submission
 		- 5.2.1.1.4	Delete User Account module --
 	- 5.2.1.2		Front-Desk Page CSU -- page that hosts tools for SPY front desk tasks
-	- 5.2.1.3		Case Manager Page CSU -- page that hosts case management tools
+	- 5.2.1.3		Youth Profiles Page CSU -- page that hosts tools to access youth profiles
 	- 5.2.1.4		Case Notes CSU -- modules for creating and searching case notes
 		- 5.2.1.4.1	Case note text module -- text area input for writing and formatting case notes
 		- 5.2.1.4.2	Add case note button module -- button for submitting new note
-	- 5.2.1.5		Search CSU -- modules for searching stored data
-		- 5.2.1.5.1	Search bar module -- input fields for user searches
-	- 5.2.1.6		Settings CSU -- modules for configuring user settings for the web app
-		- 5.2.1.6.1	Notifications CSU -- modules for handling notifications from the web app
-	- 5.2.1.7		Troubleshoot CSU -- modules for troubleshooting the system
-
+	- 5.2.1.5 		Databrowser CSU -- page that hosts tools for viewing database tables
+		- 5.2.1.5.1 QueryBuilder CSU -- modules that allow users to build their own queries on stored data
+		- 5.2.1.5.1 Data Export CSU -- modules that allow users to export queried data from the Databrowser
+	- 5.2.1.6		Search CSU -- modules for searching stored data
+		- 5.2.1.6.1	Search bar module -- input fields for user searches
+	- 5.2.1.7		Settings CSU -- modules for configuring user settings for the web app
+		- 5.2.1.7.1 Account CSU -- modules for handling user account settings
+		- 5.2.1.7.2	Notifications CSU -- modules for handling notifications from the web app
+		- 5.2.1.7.3 Youth Profiles CSU -- modules for accessing youth profile settings
+		- 5.2.1.7.4 Data Import CSU -- modules for importing external data into the system
+	- 5.2.1.8		Troubleshoot CSU -- modules for troubleshooting the system
 - 5.2.2		Server CSC -- server components that will host the Frontend
-	- 5.2.2.1		NodeJS CSU -- modules for serving up Frontend files
-	- 5.2.2.2		HTTPS CSU -- modules for network requests
-	- 5.2.2.3		API Routes CSU
-
+	- 5.2.2.1		NodeJS CSU -- modules for handling connections and serving up Frontend files
+	- 5.2.2.2		API Routes CSU -- modules for handling requests to through connections to the server
 - 5.2.3		Database CSC -- database components that will store the data
 	- 5.2.3.1		Queries CSU -- modules that will run queries on stored data
 	- 5.2.3.2		Indexing CSU -- modules that will index the data
@@ -68,15 +69,17 @@ The SPY Database Web App will allow SPY staff to input client information that w
 	- 5.3.1.9		The Frontend shall have tables displaying information in rows and columns.
 	- 5.3.1.10	The Frontend shall respond with visual feedback to the user upon mouse click events over any visible button.
 	- 5.3.1.11	The Frontend shall display real-time data.
-	- 5.3.1.12	The Frontend shall display status indicators for youth profiles.
+	- 5.3.1.12	The Frontend shall display flag indicators for youth profiles.
 	- 5.3.1.13	The Frontend shall provide a means to represent the same data in numerous visual ways
 	- 5.3.1.14	The Frontend shall provide a means for displaying appointments.
 	- 5.3.1.15	The Frontend shall require users to manually input personal information via text fields.
-	- 5.3.1.16	The Frontend shall have a case manager page.
-		- 5.3.1.16.1	The case manager page will have a panel listing youth profiles.
-		- 5.3.1.16.2	The case manager page shall have a to-do list panel.
-		- 5.3.1.16.3	The case manager page shall have a button for adding a new client.
-	- 5.3.1.17	Each youth profile listed on the panel shall be color coded based on youth status.
+	- 5.3.1.16	The Frontend shall have a youth profile page.
+		- 5.3.1.16.1	The youth profile page will have a panel listing youth profiles.
+		- 5.3.1.16.2	The youth profile page shall have a to-do list panel.
+		- 5.3.1.16.3	The youth profile page shall have a button for adding a new youth profile.
+	- 5.3.1.17	The Frontend shall have a youth profile table listing the names of each youth registered at SPY.
+		- 5.3.1.17.1 	The youth profile table shall feature a search bar for filtering youth profiles displayed.
+		- 5.3.1.17.2 	Each youth profile listed on the panel shall be color coded based on youth flag indicators.
 	- 5.3.1.18 	The Frontend shall have a front desk page.
 		- 5.3.1.18.1	The front desk page shall have a panel with a list of youth who need to finish intake.
 		- 5.3.1.18.2	The front desk page shall have a button to create a new drop-in session.
@@ -88,20 +91,29 @@ The SPY Database Web App will allow SPY staff to input client information that w
 	- 5.3.1.20	The Frontend shall have a Drop-In Enrollment tracking page.
 		- 5.3.1.20.1	The enrollment tracking page shall have panel listing all of the SPY activities for the day.
 		- 5.3.1.20.2	The enrollment tracking page shall have display for tracking total youth attendance.
-		- 5.3.1.20.3	The enrollment tracking page shall provide a means to check-in youth to drop-in
+		- 5.3.1.20.3	The enrollment tracking page shall provide a means to check-in youth to the current drop-in session.
 	- 5.3.1.21	The Frontend shall have an Outreach page.
 		- 5.3.1.21.1	The outreach page shall have a button to create a new outreach session.
-		- 5.3.1.21.2	The outreach page shall have a button to add a new client.
+		- 5.3.1.21.2	The outreach page shall have a button to add a new youth profile.
 		- 5.3.1.21.3	The outreach page shall have a button to add a new outreach location.
 		- 5.3.1.21.4	The outreach page shall have a button to add a new outreach partner.
 		- 5.3.1.21.5	The outreach page shall have a button to add a new outreach volunteer.
 	- 5.3.1.22	The Frontend shall have a New Outreach Session page.
 		- 5.3.1.22.1	The new outreach session page shall have user-definable fields for inputting information about the new outreach session.
 		- 5.3.1.22.2	The new outreach session page shall have a button to add a new youth to the session.
-
+	- 5.3.1.23  The Frontend shall have a databrowser page.
+		- 5.3.1.23.1 	The databrowser page shall have a panel that allows users to build queries.
+		- 5.3.1.23.2 	The databrowser page shall have a display area for viewing the results of queries on data stored in the database.
+		- 5.3.1.23.3    The databrowser page shall have a button for saving query views.
+		- 5.3.1.23.4    The databrowser page shall have a button for applying saved query views.
+		- 5.3.1.23.5    The databrowser page shall have a button for exporting the results of queries in CSV format.
+		- 5.3.1.23.6 	The databrowser page shall have a button for exporting the results of queries in XLSX format.
+		- 5.3.1.23.7 	The databrowser page shall have a button for exporting the results of queries in JSON format.
+	- 5.3.1.24  The Frontend shall have a staff profile page.
+		- 5.3.1.24.1 	The staff profile page shall have a table for managing follow-up appointments.
 
 - 5.3.2	Backend
-	- 5.3.2.1		The Backend shall respond to HTTP requests from the client.
+	- 5.3.2.1		The Backend shall respond to HTTP requests from the Frontend.
 	- 5.3.2.2		The Backend shall forward the results of queries from the Database to the Frontend.
 	- 5.3.2.3		The Backend shall support concurrent access of the database from 20 users at the most.
 	- 5.3.2.4		The Backend shall timeout the network connection to the database after prolonged idling of 3 minutes.
@@ -121,7 +133,7 @@ The SPY Database Web App will allow SPY staff to input client information that w
 	- 5.3.2.10	The Backend shall respond with a 404 error code when a page or route is not found.
 	- 5.3.2.11	The Backend shall respond with a 500 error code when there is an error in the client-side server.
 	- 5.3.2.12	The Backend shall respond with a 200 error code when an HTTP request is successfully made and returned.
-
+	- 5.3.2.13  The Backend shall feature a REST API that the frontend can utilize via HTTP requests.
 
 - 5.3.3	Database
 	- 5.3.3.1		The Database shall accept queries on stored data.
@@ -140,35 +152,34 @@ The SPY Database Web App will allow SPY staff to input client information that w
 	- 5.3.3.9		The Database shall maintain activity tracking logs according to HIPAA compliance.
 
 - 5.3.4	System-wide
-	- 5.3.4.1		The system shall provide a means for retrieving lost password information.
-	- 5.3.4.2		The system shall provide a means for resetting user passwords.
-	- 5.3.4.3		The system shall provide a means for troubleshooting connection errors.
-	- 5.3.4.4		The system shall provide a means for monitoring vulnerabilities.
-	- 5.3.4.4		The system shall provide a means for creating a new client profile.
-	- 5.3.4.5		The system shall provide a means for creating a new user profile.
-	- 5.3.4.6		The system shall provide a means for creating a new program profile.
-	- 5.3.4.5		The system shall provide a means for editing existing client profile information.
-	- 5.3.4.8		The system shall provide a means for editing existing user profile information.
-	- 5.3.4.9		The system shall provide a means for editing existing program profile information.
-	- 5.3.4.6		The system shall provide a means for deleting existing client profile information.
+	- 5.3.4.1	The system shall provide a means for retrieving lost password information.
+	- 5.3.4.2	The system shall provide a means for resetting user passwords.
+	- 5.3.4.3	The system shall provide a means for troubleshooting connection errors.
+	- 5.3.4.4	The system shall provide a means for monitoring vulnerabilities.
+	- 5.3.4.4	The system shall provide a means for creating a new client profile.
+	- 5.3.4.5	The system shall provide a means for creating a new user profile.
+	- 5.3.4.6	The system shall provide a means for creating a new program profile.
+	- 5.3.4.5	The system shall provide a means for editing existing client profile information.
+	- 5.3.4.8	The system shall provide a means for editing existing user profile information.
+	- 5.3.4.9	The system shall provide a means for editing existing program profile information.
+	- 5.3.4.6	The system shall provide a means for deleting existing client profile information.
 	- 5.3.4.11	The system shall provide a means for deleting existing user profile information.
 	- 5.3.4.12	The system shall provide a means for deleting existing program profile information.
 	- 5.3.4.13	The system shall incorporate different levels of user access for the database.
 	- 5.3.4.14	The system shall have a means for communicating its current functional status to users.
 	- 5.3.4.15	The system shall provide a means for scheduling appointments.
 	- 5.3.4.16	The system shall provide a means for managing appointments.
-	- 5.3.4.17	The system shall integrate with calendar software.
-	- 5.3.4.18	The system shall integrate with email software.
-	- 5.3.4.19	The system shall forward scheduled appointments to automatically populate the calendar software.
-	- 5.3.4.20	The system shall use flags to indicate the status of user, client, and program profile information.
-	- 5.3.4.21	The system shall provide a means for sending and receiving notifications to various software applications.
-	- 5.3.4.22	The system shall provide a means for importing data.
-	- 5.3.4.23	The system shall provide a means for exporting data.
-	- 5.3.4.24	The system shall provide a means for users to customize settings for the entire system (Frontend, Backend, Database).
-	- 5.3.4.25	The system shall allow case manager profiles to access data from other case manager profiles.
-	- 5.3.4.26	The system shall provide a means for storing document files, each with a maximum size of 32 MB.
-	- 5.3.4.27	The system shall provide a means for storing image files, each with a maximum size of 32 MB.
-	- 5.3.4.28	The system shall provide a means for tracking user-definable valuable items.
+	- 5.3.4.17	The system shall use flags to indicate the status of user, client, and program profile information.
+	- 5.3.4.18	The system shall provide a means for sending and receiving notifications to various software applications.
+	- 5.3.4.19	The system shall provide a means for importing data.
+	- 5.3.4.20	The system shall provide a means for exporting data.
+	- 5.3.4.21	The system shall provide a means for users to customize settings for the entire system (Frontend, Backend, Database).
+	- 5.3.4.22	The system shall allow SPY staff profiles to access data from other SPY staff profiles.
+	- 5.3.4.23	The system shall provide a means for storing document files.
+	- 5.3.4.24	The system shall provide a means for storing image files.
+  - 5.3.4.25	The system shall provide a means for storing document files, each with a maximum size of 32 MB.
+  - 5.3.4.26	The system shall provide a means for storing image files, each with a maximum size of 32 MB.
+  - 5.3.4.27	The system shall provide a means for tracking user-definable valuable items.
 
 ### 5.4	Performance Requirements
 
@@ -215,14 +226,14 @@ The Database should immediately backup data if network or server issues are dete
 
 ### 5.5	Project Environment Requirements
 
-Utilizing pre-built frameworks such as Node.js will expedite development and provide more secure and stable server-side hosting.
+Utilizing pre-built frameworks such as Node.js will expedite development and provide more secure and stable client-side server hosting.
 
 #### 5.5.1	Development Environment Requirements
 
 | Category | Requirement |
 |---|---|
-| Front End | Bootstrap, ComboDate, jQuery, Notify, Moment, Spectrum  |
-| Server | Node.js, npm, Hapi, Joi, npm-pg, Chai, CodeCov, ESLint, Istanbul, Mocha, Mocha-Istanbul, Nodemon |
+| Front End| Bootstrap, ComboDate, jQuery, ReactJS, Notify, Moment, Spectrum  |
+| Server   | Node.js, npm, Hapi, Joi, npm-pg, Chai, CodeCov, ESLint, Istanbul, Mocha, Mocha-Istanbul, Nodemon |
 | Database | PostgrSQL |
 
 #### 5.5.2	Execution Environment Requirements
@@ -230,7 +241,7 @@ Utilizing pre-built frameworks such as Node.js will expedite development and pro
 | Category | Requirement |
 |---|---|
 | Frontend | I/O server-side environment and API |
-| Server | HIPAA compliant third-party cloud server hosting |
+| Server   | HIPAA compliant third-party cloud server hosting |
 | Database | HIPAA compliant third-party cloud database hosting |
 
-Due to the services that Safe Place for Youth provides and the population that they serve, all software for this system must follow HIPAA security protocols. Furthermore, the need to reduce the risk for data loss as well as the need for ubiquitous access to the SPY Database Web App from any platform requires a third-party cloud hosting service that specializes in secure data storage and maintenance.
+Due to the services that Safe Place for Youth provides and the population they serve, all software for this system must follow HIPAA security protocols. Furthermore, the need to reduce the risk for data loss as well as the need for ubiquitous access to the SPY Database Web App from any platform requires a third-party cloud hosting service that specializes in secure data storage and maintenance.
