@@ -785,6 +785,8 @@ var queries = {
     },
 
     createUser: function (payload) {
+        console.log("HASH=========!!!!");
+        console.log(payload);
         var queryString = 'INSERT INTO users ("username", "hashed_password") VALUES (\'' +
                             payload.username + '\', \'' +
                             payload.password + '\');';

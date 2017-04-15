@@ -1,6 +1,7 @@
 var Path = require('path');
 var Api = require(Path.join(__dirname, '../api/api.js'));
 var Schema = require(Path.join(__dirname, '../api/schema.js'));
+// Schema has Joi, which is used to check for valid or invalid inputs
 
 /* ajax calls from frontend js files use the path properties
     Example:

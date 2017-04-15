@@ -506,10 +506,10 @@ var respond = {
     },
     createdUser: function (reply, result) {
         reply({
-            statusCode: 200,
+            statusCode: 201,
             message: "Successfully created User!",
             result: result
-        }).code(200);
+        }).code(201);
     },
     userDoesNotExist: function (reply) {
         reply({

@@ -22,7 +22,7 @@ describe("API Routes", () => {
     // for deleting all rows in all tables so the testing code
     // doesn't have to rely on postgres specifically
     // for now though, we will use postgres directly in the tests
-    beforeEach((done) => {
+    before((done) => {
         SPY.postgres.connect((error, client, release) => {
             if (error) {
                 release(error);
@@ -289,7 +289,6 @@ describe("Client Checkin", () => {
   });
 });
 
-
 describe('Activities', () => {
   before((done) => {
     SPY.postgres.connect((error, client, release) => {
@@ -302,24 +301,15 @@ describe('Activities', () => {
           release();
           return done(error);
         }
-        release();
-        return done();
-      });
-    });
-
-    // a sample program for activities to reference
-    SPY.postgres.connect((error, client, release) => {
-      if (error) {
-        release(error);
-        return done(error);
-      }
-      client.query('INSERT INTO program (program_name) VALUES (\'Legal\');', function (error, result) {
-        if (error) {
+        // a sample program for activities to reference
+        client.query('INSERT INTO program (program_name) VALUES (\'Legal\');', function (error, result) {
+          if (error) {
+            release();
+            return done(error);
+          }
           release();
-          return done(error);
-        }
-        release();
-        return done();
+          return done();
+        });
       });
     });
   });
@@ -352,6 +342,59 @@ describe('Activities', () => {
   // });
 });
 
+describe('Users', () => {
+  before((done) => {
+    SPY.postgres.connect((error, client, release) => {
+      if (error) {
+        release(error);
+        return done(error);
+      }
+      client.query(`SELECT truncate_tables(\'${SPY.postgres.pool._factory.user}\');`, function (error, result) {
+        if (error) {
+          release();
+          return done(error);
+        }
+        release();
+        return done();
+      });
+    });
+  });
+
+
+  it('creates new users', () => {
+    return request(SPY.listener)
+      .post('/api/users')
+      .send({
+        username: 'testusername',
+        password: 'hereisapassword'
+      })
+      .expect(201)
+      .then((response) => {
+        return request(SPY.listener)
+          .post('/api/users')
+          .send({
+            username: 'anothertestusername',
+            password: 'hereisanotherpassword'
+          })
+          .expect(201)
+          .then((response) => {
+
+          });
+      });
+  });
+
+  it('retrieves users', () => {
+    return request(SPY.listener)
+      .get('/api/users')
+      .expect(200)
+      .then((response) => {
+        expect(response.body.result.length).to.equal(2);
+      });
+  });
+
+
+});
+
 describe('Case Notes', () => {
   before((done) => {
     SPY.postgres.connect((error, client, release) => {
@@ -369,6 +412,7 @@ describe('Case Notes', () => {
       });
     });
   });
+
 
 });
 
