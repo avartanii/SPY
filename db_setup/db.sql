@@ -83,21 +83,6 @@
     Bitnami - has Marketplace
 
 */
-DROP TABLE IF EXISTS casemanager;
-
-CREATE TABLE casemanager (
-  id integer PRIMARY KEY,
-  username varchar(45) NOT NULL,
-  password varchar(45) NOT NULL,
-  first_name varchar(45) NOT NULL,
-  last_name varchar(45) NOT NULL,
-  position varchar(45) NOT NULL
-);
-
-INSERT INTO casemanager VALUES (1, 'jew@spy.org','tables','Jeanine','Espejo-Watkins','Case Manager');
-INSERT INTO casemanager VALUES (2, 'bp@spy.org','tables','Ben','Perkins','Case Manager');
-INSERT INTO casemanager VALUES (3, 'rh@spy.org','tables','Rob','Hanna','Case Manager');
-
 
 
 -- DROP TABLE IF EXISTS status;
@@ -545,25 +530,6 @@ INSERT INTO check_in (drop_in_id, client_id) VALUES (2, 7);
 INSERT INTO check_in (drop_in_id, client_id) VALUES (2, 1);
 INSERT INTO check_in (drop_in_id, client_id) VALUES (2, 10);
 
-DROP TABLE IF EXISTS case_note;
-
-CREATE TABLE case_note (
-  id SERIAL PRIMARY KEY,
-  client_id integer REFERENCES client (id),
-  case_manager_id integer REFERENCES casemanager (id),
-  date date DEFAULT CURRENT_DATE,
-  category VARCHAR (5) DEFAULT NULL,
-  note VARCHAR(2000) DEFAULT NULL,
-  follow_up_needed boolean DEFAULT NULL,
-  due_date date DEFAULT NULL,
-  reminder_date date DEFAULT NULL
-);
-
-INSERT INTO case_note (client_id, case_manager_id, date, category, note, follow_up_needed, due_date, reminder_date) VALUES (1, 1, '2016-10-31', 'CM', 'This is an initial note', false, null, null);
-INSERT INTO case_note (client_id, case_manager_id, date, category, note, follow_up_needed, due_date, reminder_date) VALUES (1, 1, '2016-11-15', 'CM', 'This is another initial note', false, null, null);
-INSERT INTO case_note (client_id, case_manager_id, date, category, note, follow_up_needed, due_date, reminder_date) VALUES (2, 3, '2016-10-31', 'CM', 'This is an initial note', false, null, null);
-INSERT INTO case_note (client_id, case_manager_id, date, category, note, follow_up_needed, due_date, reminder_date) VALUES (2, 2, '2016-10-31', 'CM', 'This is another initial note', false, null, null);
-INSERT INTO case_note (client_id, case_manager_id, date, category, note, follow_up_needed, due_date, reminder_date) VALUES (3, 1, '2016-10-31', 'CM', 'This is an initial note', false, null, null);
 
 -- DROP TABLE IF EXISTS caseplan;
 --
@@ -588,6 +554,9 @@ CREATE TABLE roles (
 );
 
 INSERT INTO roles (name) VALUES ('superadmin');
+INSERT INTO roles (name) VALUES ('admin');
+INSERT INTO roles (name) VALUES ('staff');
+INSERT INTO roles (name) VALUES ('casemanager');
 
 DROP TABLE IF EXISTS paths;
 
@@ -648,13 +617,22 @@ CREATE TABLE match_roles_paths_verbs (
   verbs_id integer REFERENCES verbs (id)
 );
 
+/*
+  There will be many, many combinations of these
+*/
+INSERT INTO match_roles_paths_verbs (roles_id, paths_id, verbs_id) VALUES (1, 1, 1);
+INSERT INTO match_roles_paths_verbs (roles_id, paths_id, verbs_id) VALUES (1, 1, 2);
+INSERT INTO match_roles_paths_verbs (roles_id, paths_id, verbs_id) VALUES (1, 1, 3);
+INSERT INTO match_roles_paths_verbs (roles_id, paths_id, verbs_id) VALUES (1, 1, 4);
+
 DROP TABLE IF EXISTS users;
 
 CREATE TABLE users (
   id SERIAL PRIMARY KEY,
   username varchar(45) NOT NULL,
   hashed_password varchar(70) NOT NULL,
-  role_id integer REFERENCES roles (id)
+  first_name varchar(45) DEFAULT NULL,
+  last_name varchar(45) DEFAULT NULL
 );
 
 /*
@@ -680,7 +658,26 @@ authenticate login
 */
 
 -- inserting user 'test' to login with password
-INSERT INTO users (username, hashed_password, role_id) VALUES ('test', '$2a$10$6Sb3QDKlIg9.L6LcQacAqOYZ2K5EfB1FTzdLrmtUQbBxy4Igg0XoW', 1);
+INSERT INTO users (username, hashed_password) VALUES ('test', '$2a$10$6Sb3QDKlIg9.L6LcQacAqOYZ2K5EfB1FTzdLrmtUQbBxy4Igg0XoW');
+INSERT INTO users (first_name, last_name, username, hashed_password) VALUES ('Jeanine', 'E-W', 'jew@spy.org','$2a$10$6Sb3QDKlIg9.L6LcQacAqOYZ2K5EfB1FTzdLrmtUQbBxy4Igg0XoW');
+INSERT INTO users (first_name, last_name, username, hashed_password) VALUES ('Ben', 'P', 'bp@spy.org','$2a$10$6Sb3QDKlIg9.L6LcQacAqOYZ2K5EfB1FTzdLrmtUQbBxy4Igg0XoW');
+INSERT INTO users (first_name, last_name, username, hashed_password) VALUES ('Rob', 'H', 'rh@spy.org','$2a$10$6Sb3QDKlIg9.L6LcQacAqOYZ2K5EfB1FTzdLrmtUQbBxy4Igg0XoW');
+
+DROP TABLE IF EXISTS role_assignments;
+
+CREATE TABLE role_assignments (
+  id SERIAL PRIMARY KEY,
+  user_id integer REFERENCES users (id),
+  role_id integer REFERENCES roles (id)
+);
+
+INSERT INTO role_assignments (user_id, role_id) VALUES (1, 1);
+INSERT INTO role_assignments (user_id, role_id) VALUES (2, 2);
+INSERT INTO role_assignments (user_id, role_id) VALUES (3, 3);
+INSERT INTO role_assignments (user_id, role_id) VALUES (4, 3);
+INSERT INTO role_assignments (user_id, role_id) VALUES (2, 4);
+INSERT INTO role_assignments (user_id, role_id) VALUES (3, 4);
+INSERT INTO role_assignments (user_id, role_id) VALUES (4, 4);
 
 DROP TABLE IF EXISTS notification_types;
 
@@ -836,6 +833,27 @@ CREATE TABLE follow_up (
 );
 
 INSERT INTO follow_up (timestamp, note, casemanager_id, client_id, location) VALUES('1999-01-08 04:05:06', 'test', 1, 1, 'patio');
+
+
+DROP TABLE IF EXISTS case_note;
+
+CREATE TABLE case_note (
+  id SERIAL PRIMARY KEY,
+  client_id integer REFERENCES client (id),
+  case_manager_id integer REFERENCES users (id),
+  date date DEFAULT CURRENT_DATE,
+  category VARCHAR (5) DEFAULT NULL,
+  note VARCHAR(2000) DEFAULT NULL,
+  follow_up_needed boolean DEFAULT NULL,
+  due_date date DEFAULT NULL,
+  reminder_date date DEFAULT NULL
+);
+
+INSERT INTO case_note (client_id, case_manager_id, date, category, note, follow_up_needed, due_date, reminder_date) VALUES (1, 1, '2016-10-31', 'CM', 'This is an initial note', false, null, null);
+INSERT INTO case_note (client_id, case_manager_id, date, category, note, follow_up_needed, due_date, reminder_date) VALUES (1, 1, '2016-11-15', 'CM', 'This is another initial note', false, null, null);
+INSERT INTO case_note (client_id, case_manager_id, date, category, note, follow_up_needed, due_date, reminder_date) VALUES (2, 3, '2016-10-31', 'CM', 'This is an initial note', false, null, null);
+INSERT INTO case_note (client_id, case_manager_id, date, category, note, follow_up_needed, due_date, reminder_date) VALUES (2, 2, '2016-10-31', 'CM', 'This is another initial note', false, null, null);
+INSERT INTO case_note (client_id, case_manager_id, date, category, note, follow_up_needed, due_date, reminder_date) VALUES (3, 1, '2016-10-31', 'CM', 'This is an initial note', false, null, null);
 
 
 -- used only for testing

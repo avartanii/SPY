@@ -122,7 +122,7 @@ var profileProperties = [
 var activityProperties = [
     'program_id',
     'activity_name',
-    'location', 
+    'location',
     'ongoing',
     'start_time',
     'end_time'
@@ -288,7 +288,13 @@ var queries = {
 
     // This gets called in query.js by Queries module
     getAllCaseManagers: function () {
-        var queryString = 'SELECT id, first_name, last_name FROM casemanager;';
+        var queryString = `SELECT users.id, users.first_name, users.last_name
+                            FROM users
+                            JOIN (SELECT user_id, role_id
+                                  FROM roles
+                                  JOIN role_assignments
+                                  ON roles.id = role_assignments.role_id AND roles.name = \'casemanager\') joinResult
+                            ON users.id = joinResult.user_id;`;
         return queryString;
     },
 
@@ -666,8 +672,8 @@ var queries = {
         } else { // DATE: 1082
             if (data.status < 4) {
                 searchText = operators[data.status] + ' \'' + data.data + '\'';
-            } else { 
-                searchText = (data.status === 5 ? ' NOT' : '') + ' BETWEEN ' + '\'' + 
+            } else {
+                searchText = (data.status === 5 ? ' NOT' : '') + ' BETWEEN ' + '\'' +
                     data.data + '\' AND \'' + data.secondData + '\'';
             }
         }
@@ -908,7 +914,7 @@ var queries = {
     //     return queryString;
     // },
 
-    // ** 
+    // **
 
     getFlagTypes: function () {
         var queryString = 'SELECT id, name, color, settings FROM flag_type;';
@@ -933,10 +939,10 @@ var queries = {
 
     editFlagType: function (flagtypeID, payload) {
         // just updating all of them for now?
-        var settings = { 
-            defaults: { 
-                message: payload.message, 
-                note: payload.note 
+        var settings = {
+            defaults: {
+                message: payload.message,
+                note: payload.note
             }
         };
 
@@ -961,10 +967,10 @@ var queries = {
     setClientFlag: function (payload) {
         console.log(payload);
         var queryString = 'INSERT INTO flag (client_id, type, message, note, settings) VALUES (' +
-                            payload.clientID + ', ' + 
+                            payload.clientID + ', ' +
                             payload.typeID + ', ' +
-                            '\'' + payload.message + '\', \'' + 
-                            payload.note + '\', \'' + 
+                            '\'' + payload.message + '\', \'' +
+                            payload.note + '\', \'' +
                             payload.settings + '\') RETURNING id, client_id, type, message, note, settings;';
         console.log(queryString);
         return queryString;
@@ -982,11 +988,11 @@ var queries = {
 
     removeClientFlag: function (payload) {
         var queryString = 'DELETE FROM flag WHERE id = ' + payload.flagID + ';';
-        
+
         return queryString;
     },
 
-    // ** 
+    // **
 
     uploadFile: function (payload) {
         var queryString = 'INSERT INTO file (client_id, name, type, date, base_64_string) VALUES (\'' +
@@ -1116,7 +1122,7 @@ var queries = {
     uploadSpreadsheet: function (formdata) {
 
         var removeEmptyArrays = function (data) {
-            data = 
+            data =
                 data.filter(function (e) {
                     return e.length !== 0;
                 });
@@ -1150,12 +1156,12 @@ var queries = {
         // https://github.com/SheetJS/js-xlsx
         var parseDateAndTime = function (v, opts, b2) {
             var date = v | 0;
-            var time = Math.floor(86400 * (v - date)); 
+            var time = Math.floor(86400 * (v - date));
             var dow = 0;
             var dout = [];
             var out = {
-                D: date, 
-                T: time, 
+                D: date,
+                T: time,
                 u: 86400 * (v - date) - time,
                 y: 0,
                 m: 0,
@@ -1171,22 +1177,22 @@ var queries = {
             }
             if (out.u > 0.999) {
                 out.u = 0;
-                if (++time === 86400) { 
-                    time = 0; 
-                    ++date; 
+                if (++time === 86400) {
+                    time = 0;
+                    ++date;
                 }
             }
             if (date === 60) {
-                dout = b2 ? [1317, 10, 29] : [1900, 2, 29]; 
+                dout = b2 ? [1317, 10, 29] : [1900, 2, 29];
                 dow = 3;
             } else if (date === 0) {
-                dout = b2 ? [1317, 8, 29] : [1900, 1, 0]; 
+                dout = b2 ? [1317, 8, 29] : [1900, 1, 0];
                 dow = 6;
             } else {
-                if (date > 60) { 
+                if (date > 60) {
                     --date;
                 }
-                // 1 = Jan 1 1900 
+                // 1 = Jan 1 1900
                 var d = new Date(1900, 0, 1);
                 d.setDate(d.getDate() + date - 1);
                 dout = [d.getFullYear(), d.getMonth() + 1, d.getDate()];
@@ -1195,13 +1201,13 @@ var queries = {
                     dow = (dow + 6) % 7;
                 }
             }
-            out.y = dout[0]; 
-            out.m = dout[1]; 
+            out.y = dout[0];
+            out.m = dout[1];
             out.d = dout[2];
             out.date = new Date(out.y, out.m - 1, out.d).toISOString();
-            out.S = time % 60; 
+            out.S = time % 60;
             time = Math.floor(time / 60);
-            out.M = time % 60; 
+            out.M = time % 60;
             time = Math.floor(time / 60);
             out.H = time;
             out.q = dow;
@@ -1225,7 +1231,7 @@ var queries = {
             for (var i = 0; i < data.length; i++) {
                 for (var j = 0; j < data[i].length; j++) {
                     // Not quite sure what is going on here
-                    // console.log(data[i][j]); 
+                    // console.log(data[i][j]);
                 }
             }
         } else if (formdata.type === "8") { // Importing Youth Master List
@@ -1238,24 +1244,24 @@ var queries = {
             for (var k = 1; k < dropin.length; k++) {
                 for (var m = 0; m < dropin[k].length; m++) {
                     if (m <= 8) {
-                        if (dropin[k][0] !== "TOTALS" && 
+                        if (dropin[k][0] !== "TOTALS" &&
                             (dropin[k][0] === undefined || dropin[k][1] === undefined)) { // no first/last name
                             // If they don't have a name, skip row.
-                            m = dropin[k].length; 
+                            m = dropin[k].length;
                         } else {
                             if (dropin[k][0] !== "TOTALS") {
                                 // eventually: Update if is detected
                                 queryString += "INSERT INTO client (first_name, last_name, gender, race, date_of_birth, " +
-                                "intake_age, reference, first_intake_date) SELECT \'" + dropin[k][0] + "\', \'" + 
-                                dropin[k][1] + "\', " + 
+                                "intake_age, reference, first_intake_date) SELECT \'" + dropin[k][0] + "\', \'" +
+                                dropin[k][1] + "\', " +
                                 (dropin[k][2] === undefined ? "NULL, " : "\'" + dropin[k][2] + "\', ") + // gender
                                 (dropin[k][3] === undefined ? "NULL, " : "\'" + dropin[k][3] + "\', ") + // race
                                 (dropin[k][4] === undefined ? "NULL, " : "\'" + parseDateAndTime(dropin[k][4]).date + "\', ") +
                                 (dropin[k][5] === undefined ? "NULL, " : "\'" + dropin[k][5] + "\', ") + // age
                                 (dropin[k][6] === undefined ? "NULL, " : "\'" + dropin[k][6] + "\', ") +  // ref
-                                (dropin[k][8] === undefined ? "NULL " : "\'" + parseDateAndTime(dropin[k][8]).date + "\' ") +  
-                                "WHERE NOT EXISTS (SELECT first_name FROM client WHERE first_name = \'" + dropin[k][0] + 
-                                "\' AND last_name = \'" + dropin[k][1] + "\');"; 
+                                (dropin[k][8] === undefined ? "NULL " : "\'" + parseDateAndTime(dropin[k][8]).date + "\' ") +
+                                "WHERE NOT EXISTS (SELECT first_name FROM client WHERE first_name = \'" + dropin[k][0] +
+                                "\' AND last_name = \'" + dropin[k][1] + "\');";
                             }
                             m = 8;
                         }
@@ -1263,15 +1269,15 @@ var queries = {
                         if (dropin[k][0] !== "TOTALS" && dropin[k][m] !== undefined) {
                             if (typeof dropin[0][m] !== "string") {
                                 date = parseDateAndTime(dropin[0][m]);
-                                queryString += "INSERT INTO drop_in (date) SELECT \'" + date.date + "\' " + 
+                                queryString += "INSERT INTO drop_in (date) SELECT \'" + date.date + "\' " +
                                     "WHERE NOT EXISTS (SELECT date FROM drop_in WHERE date = \'" + date.date + "\');";
-                                queryString += "INSERT INTO match_drop_in_client (drop_in_id, client_id) SELECT (" + 
-                                    "SELECT id FROM drop_in WHERE date = \'" + date.date + "\'), (SELECT id FROM client " + 
+                                queryString += "INSERT INTO match_drop_in_client (drop_in_id, client_id) SELECT (" +
+                                    "SELECT id FROM drop_in WHERE date = \'" + date.date + "\'), (SELECT id FROM client " +
                                     "WHERE first_name = \'" + dropin[k][0] + "\' AND last_name = \'" + dropin[k][1] +
-                                    "\') WHERE NOT EXISTS (SELECT id FROM match_drop_in_client WHERE drop_in_id = " + 
+                                    "\') WHERE NOT EXISTS (SELECT id FROM match_drop_in_client WHERE drop_in_id = " +
                                     "(SELECT id FROM drop_in WHERE date = \'" + date.date + "\') AND client_id = " +
-                                    "(SELECT id FROM client WHERE first_name = \'" + dropin[k][0] + "\' AND last_name " + 
-                                    " = \'" + dropin[k][1] + "\'));"; 
+                                    "(SELECT id FROM client WHERE first_name = \'" + dropin[k][0] + "\' AND last_name " +
+                                    " = \'" + dropin[k][1] + "\'));";
                             }
                         } else if (dropin[k][0] === "TOTALS") {
                             if (typeof dropin[0][m] === "string") {
@@ -1280,21 +1286,21 @@ var queries = {
                                 // NOT SAFE FOR CONCURRENT ACCESS...
                                 if (dropin[0][m].toLowerCase().includes("visits")) {
                                     year = parseDateAndTime(dropin[0][m - 1]).date.substring(0, 4);
-                                    queryString += 'UPDATE monthly_statistics SET total_youth = ' + 
-                                        dropin[k][m] + " WHERE month = \'" + month + "\' AND year = " + 
+                                    queryString += 'UPDATE monthly_statistics SET total_youth = ' +
+                                        dropin[k][m] + " WHERE month = \'" + month + "\' AND year = " +
                                         year + ";";
-                                    queryString += 'INSERT INTO monthly_statistics (month, year, total_youth) ' + 
-                                        'SELECT \'' + month + "\', " + year + ", " + dropin[k][m] + " WHERE NOT " + 
-                                        "EXISTS (SELECT month, year FROM monthly_statistics WHERE month = \'" + 
+                                    queryString += 'INSERT INTO monthly_statistics (month, year, total_youth) ' +
+                                        'SELECT \'' + month + "\', " + year + ", " + dropin[k][m] + " WHERE NOT " +
+                                        "EXISTS (SELECT month, year FROM monthly_statistics WHERE month = \'" +
                                         month + "\' AND year = " + year + ");";
                                 } else {
                                     year = parseDateAndTime(dropin[0][m - 2]).date.substring(0, 4);
-                                    queryString += 'UPDATE monthly_statistics SET unduplicated_youth = ' + 
-                                        dropin[k][m] + " WHERE month = \'" + month + "\' AND year = " + 
+                                    queryString += 'UPDATE monthly_statistics SET unduplicated_youth = ' +
+                                        dropin[k][m] + " WHERE month = \'" + month + "\' AND year = " +
                                         year + ";";
-                                    queryString += 'INSERT INTO monthly_statistics (month, year, unduplicated_youth) ' + 
-                                        'SELECT \'' + month + "\', " + year + ", " + dropin[k][m] + " WHERE NOT " + 
-                                        "EXISTS (SELECT month, year FROM monthly_statistics WHERE month = \'" + 
+                                    queryString += 'INSERT INTO monthly_statistics (month, year, unduplicated_youth) ' +
+                                        'SELECT \'' + month + "\', " + year + ", " + dropin[k][m] + " WHERE NOT " +
+                                        "EXISTS (SELECT month, year FROM monthly_statistics WHERE month = \'" +
                                         month + "\' AND year = " + year + ");";
                                 }
                             }
