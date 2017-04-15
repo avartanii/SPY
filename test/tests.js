@@ -10,6 +10,10 @@ const SPY = require('../server.js');
     SPY.postgres.pool._factory => { user, password, host, port, database, . . . }
 */
 
+let postRequest = function (url, payload) {
+  return request(SPY.listener).post(url).send(payload);
+};
+
 describe("Hello", () => {
     it("tests the Testing", (done) => {
         expect("hello").to.eql("hello");
@@ -433,6 +437,13 @@ describe('Roles', () => {
   });
 
   it('assigns roles to users', () => {
+    // postRequest('/api/users', { username: 'testusername', password: 'hereisapassword' }).expect(201)
+    //   .then(() => postRequest('/api/users', { username: 'anothertestusername', password: 'hereisanotherpassword' }).expect(201))
+    //   .then(() => postRequest('/api/users/1/roles', { roleid: 5 }).expect(201))
+    //   .then(() => postRequest('/api/users/2/roles', { roleid: 6 }).expect(201))
+    //   .then((response) => {
+    //
+    //   });
     return request(SPY.listener)
       .post('/api/users')
       .send({
