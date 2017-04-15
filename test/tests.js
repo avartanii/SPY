@@ -35,7 +35,7 @@ describe("API Routes", () => {
                     return done(error);
                 }
                 release();
-                done();
+                return done();
             });
         });
     });
@@ -389,6 +389,84 @@ describe('Users', () => {
       .expect(200)
       .then((response) => {
         expect(response.body.result.length).to.equal(2);
+      });
+  });
+
+});
+
+describe('Roles', () => {
+  before((done) => {
+    SPY.postgres.connect((error, client, release) => {
+      if (error) {
+        release(error);
+        return done(error);
+      }
+      client.query(`SELECT truncate_tables(\'${SPY.postgres.pool._factory.user}\');`, function (error, result) {
+        if (error) {
+          release();
+          return done(error);
+        }
+        release();
+        return done();
+      });
+    });
+  });
+
+  it('creates roles', () => {
+    return request(SPY.listener)
+      .post('/api/roles')
+      .send({
+        name: 'intern'
+      })
+      .expect(201)
+      .then((response) => {
+        return request(SPY.listener)
+          .post('/api/roles')
+          .send({
+            name: 'volunteer'
+          })
+          .expect(201)
+          .then((response) => {
+
+          });
+      });
+  });
+
+  it('assigns roles to users', () => {
+    return request(SPY.listener)
+      .post('/api/users')
+      .send({
+        username: 'testusername',
+        password: 'hereisapassword'
+      })
+      .expect(201)
+      .then((response) => {
+        return request(SPY.listener)
+          .post('/api/users')
+          .send({
+            username: 'anothertestusername',
+            password: 'hereisanotherpassword'
+          })
+          .expect(201)
+          .then((response) => {
+            return request(SPY.listener)
+              .post('/api/users/1/roles')
+              .send({
+                roleid: 5
+              })
+              .expect(201)
+              .then((response) => {
+                return request(SPY.listener)
+                  .post('/api/users/2/roles')
+                  .send({
+                    roleid: 6
+                  })
+                  .expect(201)
+                  .then((response) => {
+
+                  });
+              });
+          });
       });
   });
 
