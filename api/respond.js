@@ -284,10 +284,10 @@ var respond = {
     },
     createActivity: function (reply, result) {
         reply({
-            statusCode: 200,
+            statusCode: 201,
             message: "Success creating activity!",
             result: result
-        }).code(200);
+        }).code(201);
     },
     editActivity: function (reply, result) {
         reply({
@@ -354,10 +354,10 @@ var respond = {
     },
     addCheckinForDropin: function (reply, result) {
         reply({
-            statusCode: 200,
+            statusCode: 201,
             message: "Success checking in!",
             result: result
-        }).code(200);
+        }).code(201);
     },
     failedToGetCheckInForDropin: function (reply, err) {
         reply({

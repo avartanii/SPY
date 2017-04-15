@@ -228,6 +228,150 @@ describe('Dropins', () => {
   });
 });
 
+describe("Client Checkin", () => {
+  before((done) => {
+    SPY.postgres.connect((error, client, release) => {
+      if (error) {
+        release(error);
+        return done(error);
+      }
+      client.query(`SELECT truncate_tables(\'${SPY.postgres.pool._factory.user}\');`, function (error, result) {
+        if (error) {
+          release();
+          return done(error);
+        }
+        release();
+        return done();
+      });
+    });
+  });
+
+  it("checks clients into dropin", () => {
+    return request(SPY.listener)
+      .post('/api/clients')
+      .send({
+          expression: JSON.stringify({
+              firstname: "John",
+              lastname: "Doe"
+          })
+      })
+      .expect(201)
+      .then((response) => {
+        request(SPY.listener)
+          .post('/api/clients')
+          .send({
+              expression: JSON.stringify({
+                  firstname: "Alice",
+                  lastname: "Smith"
+              })
+          })
+          .expect(201)
+          .then((response) => {
+            return request(SPY.listener)
+              .post('/api/dropins')
+              .send({
+                date: new Date()
+              })
+              .expect(201)
+              .then((response) => {
+                return request(SPY.listener)
+                  .post('/dropins/1/checkin')
+                  .set('contentType', 'application/json')
+                  .set('dataType', 'json')
+                  .send(JSON.stringify({ clients: [1, 2] }))
+                  .expect(201)
+                  .then((response) => {
+                    console.log(response.body);
+                  });
+              });
+          });
+      });
+  });
+});
+
+
+describe('Activities', () => {
+  before((done) => {
+    SPY.postgres.connect((error, client, release) => {
+      if (error) {
+        release(error);
+        return done(error);
+      }
+      client.query(`SELECT truncate_tables(\'${SPY.postgres.pool._factory.user}\');`, function (error, result) {
+        if (error) {
+          release();
+          return done(error);
+        }
+        release();
+        return done();
+      });
+    });
+
+    // a sample program for activities to reference
+    SPY.postgres.connect((error, client, release) => {
+      if (error) {
+        release(error);
+        return done(error);
+      }
+      client.query('INSERT INTO program (program_name) VALUES (\'Legal\');', function (error, result) {
+        if (error) {
+          release();
+          return done(error);
+        }
+        release();
+        return done();
+      });
+    });
+  });
+
+  it('creates new activities', () => {
+    return request(SPY.listener)
+      .post('/api/activity')
+      .send({
+        activityname: 'Orientation',
+        programID: 1
+      })
+      .expect(201)
+      .then((response) => {
+
+      });
+  });
+
+  // it('edits an activity', () => {
+  //   return request(SPY.listener)
+  //     .put('/editactivity')
+  //     .send({
+  //       id: 1,
+  //       activityname: 'Orientation',
+  //       ongoing: false
+  //     })
+  //     .expect(200)
+  //     .then((response) => {
+  //
+  //     });
+  // });
+});
+
+describe('Case Notes', () => {
+  before((done) => {
+    SPY.postgres.connect((error, client, release) => {
+      if (error) {
+        release(error);
+        return done(error);
+      }
+      client.query(`SELECT truncate_tables(\'${SPY.postgres.pool._factory.user}\');`, function (error, result) {
+        if (error) {
+          release();
+          return done(error);
+        }
+        release();
+        return done();
+      });
+    });
+  });
+
+});
+
 // or Hapi's native inject() function
 describe("View Routes", () => {
     it("retrieve the main page", (done) => {
