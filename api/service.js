@@ -662,6 +662,43 @@ var service = {
         JWT.sign(session, process.env.SPY_KEY, jwtOptions, callback);
     },
 
+    createRole: function (postgres, payload, callback) {
+      Query.createRole(postgres, payload, function (error, result) {
+        if (error) {
+          return callback(error);
+        }
+
+        return callback(undefined, result);
+      });
+    },
+    getAllRoles: function (postgres, payload, callback) {
+      Query.getAllRoles(postgres, payload, function (error, result) {
+        if (error) {
+          return callback(error);
+        }
+        if (!result.rows.length) {
+            return callback();
+        }
+        var arr = [];
+        for (var i = 0; i < result.rows.length; i++) {
+            var local = result.rows[i];
+            arr.push({
+                id: local.id,
+                name: local.name
+            });
+        }
+        return callback(undefined, arr);
+      });
+    },
+    assignRoleToUser: function (postgres, userId, payload, callback) {
+      Query.assignRoleToUser(postgres, userId, payload, function (error, result) {
+        if (error) {
+          return callback(error);
+        }
+
+        return callback(undefined, result);
+      });
+    },
     getUsersNotifications: function (postgres, userId, callback) {
         Query.getUsersNotifications(postgres, userId, function (err, result) {
             if (err) {

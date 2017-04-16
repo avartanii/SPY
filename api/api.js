@@ -573,6 +573,34 @@ var api = {
         });
     },
 
+    createRole: function (request, reply) {
+      Service.createRole(request.postgres, request.payload, function (error, result) {
+        if (error) {
+          Respond.failedToCreateRole(reply, error);
+        } else {
+          Respond.createdRole(reply, result);
+        }
+      });
+    },
+    getAllRoles: function (request, reply) {
+      Service.getAllRoles(request.postgres, request.payload, function (error, result) {
+        if (error) {
+          Respond.failedToGetAllRoles(reply, error);
+        } else {
+          Respond.gotAllRoles(reply, result);
+        }
+      });
+    },
+    assignRoleToUser: function (request, reply) {
+      Service.assignRoleToUser(request.postgres, request.params.userId, request.payload, function (error, result) {
+        if (error) {
+          console.log(error);
+          Respond.failedToAssignRoleToUser(reply, error);
+        } else {
+          Respond.assignedRoleToUser(reply, result);
+        }
+      });
+    },
     getUsersNotifications: function (request, reply) {
         var userId;
         if (request.params.userId === 'self') {

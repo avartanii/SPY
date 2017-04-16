@@ -371,6 +371,21 @@ var apiRoutes = [
         handler: Api.changeCurrentUserPassword
     },
     {
+      method: 'POST',
+      path: '/users/{userId}/roles',
+      handler: Api.assignRoleToUser
+    },
+    {
+      method: 'POST',
+      path: '/roles',
+      handler: Api.createRole
+    },
+    {
+      method: 'GET',
+      path: '/roles',
+      handler: Api.getAllRoles
+    },
+    {
         method: 'POST',
         path: '/clients/{clientID}/case_plan',
         handler: Api.createCasePlan

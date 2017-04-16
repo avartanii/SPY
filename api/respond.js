@@ -565,6 +565,48 @@ var respond = {
             result: userID
         }).code(200).header("Authorization", token);
     },
+    failedToCreateRole: function (reply, error) {
+      reply({
+        statusCode: 500,
+        message: "Unable to create role!",
+        error: error
+      }).code(500);
+    },
+    createdRole: function (reply, result) {
+      reply({
+        statusCode: 201,
+        message: "Successfully created role!",
+        result: result
+      }).code(201);
+    },
+    failedToGetAllRoles: function (reply, error) {
+      reply({
+        statusCode: 500,
+        message: "Unable to get all roles!",
+        error: error
+      }).code(500);
+    },
+    gotAllRoles: function (reply, result) {
+      reply({
+        statusCode: 200,
+        message: "Successfully got all roles!",
+        result: result
+      }).code(200);
+    },
+    failedToAssignRoleToUser: function (reply, error) {
+      reply({
+        statusCode: 500,
+        message: "Unable to assign role to user!",
+        error: error
+      }).code(500);
+    },
+    assignedRoleToUser: function (reply, result) {
+      reply({
+        statusCode: 201,
+        message: "Successfully assigned role to user!",
+        result: result
+      }).code(201);
+    },
     failedToGetUsersNotifications: function (reply, err) {
         reply({
             statusCode: 500,

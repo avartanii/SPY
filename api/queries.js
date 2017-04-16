@@ -801,6 +801,22 @@ var queries = {
         return queryString;
     },
 
+    createRole: function (payload) {
+      var queryString = 'INSERT INTO roles (name) VALUES (\'' + payload.name + '\') RETURNING id, name;';
+
+      return queryString;
+    },
+    getAllRoles: function () {
+      var queryString = 'SELECT * FROM roles;';
+
+      return queryString;
+    },
+    assignRoleToUser: function (userId, payload) {
+      var queryString = 'INSERT INTO role_assignments (user_id, role_id) VALUES (' +
+                        userId + ', ' + payload.roleId + ') RETURNING id, user_id, role_id;';
+
+      return queryString;
+    },
     getUsersNotifications: function (userId) {
         var queryString = 'SELECT id, type, comment, link, checked FROM notifications WHERE user_id = ' + userId +
                             ' AND checked = false ORDER BY id;';

@@ -436,6 +436,15 @@ describe('Roles', () => {
       });
   });
 
+  it('retrieves all roles', () => {
+    return request(SPY.listener)
+      .get('/api/roles')
+      .expect(200)
+      .then((response) => {
+        expect(response.body.result.length).to.equal(2);
+      });
+  });
+
   it('assigns roles to users', () => {
     // postRequest('/api/users', { username: 'testusername', password: 'hereisapassword' }).expect(201)
     //   .then(() => postRequest('/api/users', { username: 'anothertestusername', password: 'hereisanotherpassword' }).expect(201))
@@ -463,14 +472,14 @@ describe('Roles', () => {
             return request(SPY.listener)
               .post('/api/users/1/roles')
               .send({
-                roleid: 5
+                roleId: 1
               })
               .expect(201)
               .then((response) => {
                 return request(SPY.listener)
                   .post('/api/users/2/roles')
                   .send({
-                    roleid: 6
+                    roleId: 2
                   })
                   .expect(201)
                   .then((response) => {
