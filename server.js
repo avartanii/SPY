@@ -62,14 +62,21 @@ if (process.env.NODE_ENV !== "test") {
         if (err) {
             SPY.log(['error', 'hapi-auth-jwt2'], err);
         }
-
+                    //    key    method     key refers to the method, basically renaming
         SPY.auth.strategy('jwt', 'jwt', {
-            key: process.env.SPY_KEY,          // Never Share your secret key
+            key: process.env.SPY_KEY,          // Never Share your secret key, passed in here for Hapi to use to decode jwt token when request comes in
             validateFunc: validate,            // validate function defined above
             verifyOptions: { algorithms: [ 'HS256' ] } // pick a strong algorithm
         });
 
         SPY.auth.default('jwt');
+        
+        /*
+          Note that any routes added before server.auth.default() is called will not have the default applied to them.
+          If you need to make sure that all routes have the default strategy applied,
+          you must either call server.auth.default() before adding any of your routes,
+          or set the default mode when registering the strategy.
+        */
 
         // EXAMPLE ROUTES
         // SPY.route([
@@ -90,9 +97,11 @@ if (process.env.NODE_ENV !== "test") {
     });
 }
 
+// async - need to move these, postgres and the api routes below
+// are registered before the auth strategies above go through
 SPY.register(postgresqlPool, function () {});
-SPY.register(Api, {
-    routes: {
+SPY.register(Api, { // calls the api_routes.js register method that is exported by the module
+    routes: { // configuration option
         prefix: '/api'
     }
 });

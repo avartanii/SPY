@@ -1,10 +1,29 @@
 var Joi = require('joi');
 
 var schema = {
+
     newUser: Joi.object().keys({
         username: Joi.string().required().trim(),
         password: Joi.string().required().min(8).trim()
     }).unknown(false),
+
+    /*
+      This is saying that for the request that uses this validation function 'newUser',
+      the payload provided by the ajax call must be an object that contains
+      the properties 'username' and 'password' with the restrictions specified
+      by Joi.
+      
+      {
+          method: 'POST',
+          path: '/users',
+          config: {
+              validate: {
+                  payload: Schema.newUser
+              }
+          },
+          handler: Api.createUser
+      }
+    */
 
     login: Joi.object().keys({
         username: Joi.string().required().trim(),

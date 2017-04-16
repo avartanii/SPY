@@ -483,9 +483,14 @@ var api = {
                     } else if (!match) {
                         Respond.userPassNoMatch(reply);
                     } else {
+                      // found the scope (permissions) of this user
+                      // and pass them in here to encoded into the token
+                      // when the route checks the auth configuration
+                      // it will look for scope as well
                         Service.genToken({
                             id: user.id,
-                            username: user.username
+                            username: user.username,
+                            // scope: [ 'admin', 'casemanager' ]
                         }, function (err, token) {
                             if (err) {
                                 Respond.failedToGenToken(reply, err);

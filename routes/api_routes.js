@@ -302,6 +302,11 @@ var apiRoutes = [
     {
         method: 'GET',
         path: '/users/{userId}',
+        // config: {
+        //   auth: {
+        //     scope: 'superadmin'
+        //   }
+        // },
         handler: Api.getUser
     },
     {
@@ -482,7 +487,7 @@ var apiRoutes = [
 // api in this case is a plugin run by the Hapi node package
 // each plugin has a register method
 module.exports.register = function (server, options, next) {
-    server.route(apiRoutes);
+    server.route(apiRoutes); // apply api routes to the server, the configuration options passed in are applied automatically
     next(); // method called when plugin has completed steps
 };
 
