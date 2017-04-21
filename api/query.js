@@ -686,6 +686,54 @@ var query = {
         });
     },
 
+    createRole: function (postgres, payload, callback) {
+      postgres.connect(function (error, client, done) {
+        client.query(Queries.createRole(payload), function (error, result) {
+          done();
+          if (error) {
+            return callback(error);
+          }
+
+          return callback(undefined, result);
+        });
+      });
+    },
+    getAllRoles: function (postgres, payload, callback) {
+      postgres.connect(function (error, client, done) {
+        client.query(Queries.getAllRoles(payload), function (error, result) {
+          done();
+          if (error) {
+            return callback(error);
+          }
+
+          return callback(undefined, result);
+        });
+      });
+    },
+    assignRoleToUser: function (postgres, userId, payload, callback) {
+      postgres.connect(function (error, client, done) {
+        client.query(Queries.assignRoleToUser(userId, payload), function (error, result) {
+          done();
+          if (error) {
+            return callback(error);
+          }
+
+          return callback(undefined, result);
+        });
+      });
+    },
+    getUserRoles: function (postgres, userId, callback) {
+      postgres.connect(function (error, client, done) {
+        client.query(Queries.getUserRoles(userId), function (error, result) {
+          done();
+          if (error) {
+            return callback(error);
+          }
+
+          return callback(undefined, result);
+        });
+      });
+    },
     getUsersNotifications: function (postgres, userId, callback) {
         postgres.connect(function (err, client, done) {
             if (err) {

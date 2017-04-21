@@ -1,7 +1,7 @@
 #!/bin/bash
 
 echo 'Setting Environment Variables'
-if [ -f set_test_env.sh ]; then chmod 700 set_test_env.sh; source set_test_env.sh; else echo "No set_test_env.sh file"; fi;
+if [ -e set_test_env.sh ]; then chmod 700 set_test_env.sh; source set_test_env.sh; else echo "No set_test_env.sh file"; fi;
 echo 'Deleting db & logs';
 rm -rf db;
 rm -rf log;

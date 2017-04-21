@@ -34,7 +34,27 @@ var service = {
             if (err) {
                 return callback(err);
             }
-            return callback(undefined, result);
+            if (!result.rows[0]) {
+                return callback();
+            }
+            var arr = [];
+            for (var i = 0; i < result.rows.length; i++) {
+                var local = result.rows[i];
+                arr.push({
+                    id: local.id,
+                    firstname: local.first_name,
+                    nickname: local.nickname,
+                    lastname: local.last_name,
+                    dob: local.date_of_birth,
+                    phone: local.phone_number,
+                    email: local.email,
+                    intakedate: local.intake_date,
+                    age: local.age,
+                    caseplan: local.caseplan
+                });
+            }
+            return callback(undefined, arr);
+            // return callback(undefined, result);
         });
     },
 
@@ -642,6 +662,59 @@ var service = {
         JWT.sign(session, process.env.SPY_KEY, jwtOptions, callback);
     },
 
+    createRole: function (postgres, payload, callback) {
+      Query.createRole(postgres, payload, function (error, result) {
+        if (error) {
+          return callback(error);
+        }
+
+        return callback(undefined, result);
+      });
+    },
+    getAllRoles: function (postgres, payload, callback) {
+      Query.getAllRoles(postgres, payload, function (error, result) {
+        if (error) {
+          return callback(error);
+        }
+        if (!result.rows.length) {
+            return callback();
+        }
+        var arr = [];
+        for (var i = 0; i < result.rows.length; i++) {
+            var local = result.rows[i];
+            arr.push({
+                id: local.id,
+                name: local.name
+            });
+        }
+        return callback(undefined, arr);
+      });
+    },
+    assignRoleToUser: function (postgres, userId, payload, callback) {
+      Query.assignRoleToUser(postgres, userId, payload, function (error, result) {
+        if (error) {
+          return callback(error);
+        }
+
+        return callback(undefined, result);
+      });
+    },
+    getUserRoles: function (postgres, userId, callback) {
+        Query.getUserRoles(postgres, userId, function (err, result) {
+            if (err) {
+                return callback(err);
+            }
+            if (!result.rows.length) {
+                return callback();
+            }
+            var arr = [];
+            for (var i = 0; i < result.rows.length; i++) {
+                var local = result.rows[i];
+                arr.push(local.name);
+            }
+            return callback(undefined, arr);
+        });
+    },
     getUsersNotifications: function (postgres, userId, callback) {
         Query.getUsersNotifications(postgres, userId, function (err, result) {
             if (err) {
