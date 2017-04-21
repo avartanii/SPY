@@ -78,6 +78,10 @@ if (process.env.NODE_ENV !== "test") {
             routes: { // configuration option
                 prefix: '/api'
             }
+        }, function (error) {
+          if (error) {
+            console.error("Failed to load plugin:", error);
+          }
         });
 
         /*
@@ -105,9 +109,7 @@ if (process.env.NODE_ENV !== "test") {
         // ]);
     });
 } else {
-  // async - need to move these, postgres and the api routes below
-  // are registered before the auth strategies above go through
-  SPY.register(postgresqlPool, function () {});
+  SPY.register(postgresqlPool, function () {}); // calls postgresqlPool's register function (defined above)
   SPY.register(Api, { // calls the api_routes.js register method that is exported by the module
       routes: { // configuration option
           prefix: '/api'

@@ -2,6 +2,7 @@ var Path = require('path');
 var Api = require(Path.join(__dirname, '../api/api.js'));
 var Schema = require(Path.join(__dirname, '../api/schema.js'));
 // Schema has Joi, which is used to check for valid or invalid inputs
+var _ = require('lodash'); // lots of useful utility functions
 
 /* ajax calls from frontend js files use the path properties
     Example:
@@ -41,7 +42,7 @@ var apiRoutes = [
     },
     {
         method: 'GET',
-        path: '/clients/{client}',
+        path: '/clients/{clientID}',
         handler: Api.getClient
     },
     {
@@ -302,11 +303,11 @@ var apiRoutes = [
     {
         method: 'GET',
         path: '/users/{userId}',
-        config: {
-          auth: {
-            scope: 'superadmin'
-          }
-        },
+        // config: {
+        //   auth: {
+        //     scope: 'superadmin'
+        //   }
+        // },
         handler: Api.getUser
     },
     {
@@ -491,9 +492,91 @@ var apiRoutes = [
 
 // api in this case is a plugin run by the Hapi node package
 // each plugin has a register method
+
+/*
+  the Hapi server will call this register function when it registers this module (which acts as middleware)
+  SPY.register(Api, {
+      routes: {
+          prefix: '/api'
+      }
+  });
+*/
+
 module.exports.register = function (server, options, next) {
+  if (process.env.NODE_ENV !== 'test') {
+    // retrieve the roles_paths_verbs matches
+    server.postgres.connect(function (error, client, release) {
+        if (error) {
+          release();
+          return console.error(error);
+        }
+        var queryString = `SELECT roles.name AS role, paths.name AS path, verbs.name AS verb
+                           FROM match_roles_paths_verbs m
+                           JOIN roles
+                           ON m.role_id = roles.id
+                           JOIN paths
+                           ON m.path_id = paths.id
+                           JOIN verbs
+                           ON m.verb_id = verbs.id;`;
+        client.query(queryString, function (error, result) {
+            if (error || !result.rows[0]) {
+                release();
+                return console.error(error);
+            }
+            release();
+            var permissions = [];
+            for (var i = 0; i < result.rows.length; i++) {
+                var local = result.rows[i];
+                permissions.push({
+                    role: local.role,
+                    path: local.path,
+                    verb: local.verb
+                });
+            }
+
+            // decorate the routes before sending them into server.route()
+
+            // this is why we need to start splitting up the routes into different modules
+            // this nested for loop could become time-consuming as the routes
+            // and permissions grow
+            permissions.forEach((p) => {
+              let index = _.findIndex(apiRoutes, (r) => { return (r.path === p.path && r.method === p.verb); });
+              if (index !== -1) {
+                switch (apiRoutes[index]) {
+                  case (((apiRoutes[index] || {}).config || {}).auth || {}).scope:
+                    apiRoutes[index].config.auth.scope.push(p.role);
+                    break;
+                  case ((apiRoutes[index] || {}).config || {}).auth:
+                    apiRoutes[index].config.auth.scope = [ p.role ];
+                    break;
+                  case (apiRoutes[index] || {}).config:
+                    apiRoutes[index].config.auth = {
+                      scope: [ p.role ]
+                    };
+                    break;
+                  default:
+                    apiRoutes[index].config = {
+                      auth: {
+                        scope: [ p.role ]
+                      }
+                    };
+                }
+
+                /*
+                  roles -> scope
+                  paths -> paths
+                  verbs -> method
+                */
+              }
+            });
+            server.route(apiRoutes); // apply api routes to the server, the configuration options passed in are applied automatically
+            next(); // method called when plugin has completed steps
+        });
+    });
+  } else {
     server.route(apiRoutes); // apply api routes to the server, the configuration options passed in are applied automatically
     next(); // method called when plugin has completed steps
+  }
 };
 
 

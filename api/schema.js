@@ -12,7 +12,11 @@ var schema = {
       the payload provided by the ajax call must be an object that contains
       the properties 'username' and 'password' with the restrictions specified
       by Joi.
-      
+
+      Ex: username: Joi.string().required().trim()
+      says property 'username' must be a string, and the property is required
+      then it trims the leading and trailing whitespaces
+
       {
           method: 'POST',
           path: '/users',

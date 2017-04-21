@@ -33,7 +33,7 @@ var api = {
     },
 
     getClient: function (request, reply) {
-        Service.getClient(request.postgres, request.params.client, function (err, result) {
+        Service.getClient(request.postgres, request.params.clientID, function (err, result) {
             if (err) {
                 Respond.failedToGetClient(reply, err);
             } else {

@@ -565,36 +565,36 @@ CREATE TABLE paths (
   name varchar(70) NOT NULL
 );
 
-INSERT INTO paths (name) VALUES ('/api/hello');
-INSERT INTO paths (name) VALUES ('/api/clients');
-INSERT INTO paths (name) VALUES ('/api/casemanagers');
-INSERT INTO paths (name) VALUES ('/api/clients/?');
-INSERT INTO paths (name) VALUES ('/api/dropins');
-INSERT INTO paths (name) VALUES ('/api/dropins/?');
-INSERT INTO paths (name) VALUES ('/api/dropins/?/activities');
-INSERT INTO paths (name) VALUES ('/api/dropins/?/enrollment');
-INSERT INTO paths (name) VALUES ('/api/enroll/?');
-INSERT INTO paths (name) VALUES ('/api/enroll');
-INSERT INTO paths (name) VALUES ('/api/checkin');
-INSERT INTO paths (name) VALUES ('/api/activities');
-INSERT INTO paths (name) VALUES ('/api/search/clients');
-INSERT INTO paths (name) VALUES ('/api/search/clients/?');
-INSERT INTO paths (name) VALUES ('/api/case_notes');
-INSERT INTO paths (name) VALUES ('/api/case_notes/?');
-INSERT INTO paths (name) VALUES ('/api/status');
-INSERT INTO paths (name) VALUES ('/api/status/?');
-INSERT INTO paths (name) VALUES ('/api/users');
-INSERT INTO paths (name) VALUES ('/api/users/?');
-INSERT INTO paths (name) VALUES ('/api/users/?/password');
-INSERT INTO paths (name) VALUES ('/api/users/?/notifications');
-INSERT INTO paths (name) VALUES ('/api/users/?/notifications/?');
-INSERT INTO paths (name) VALUES ('/api/sessions');
-INSERT INTO paths (name) VALUES ('/api/notifications/types');
-INSERT INTO paths (name) VALUES ('/api/clients/?/case_plan');
-INSERT INTO paths (name) VALUES ('/api/flags');
-INSERT INTO paths (name) VALUES ('/api/flags/?');
-INSERT INTO paths (name) VALUES ('/api/files');
-INSERT INTO paths (name) VALUES ('/api/files/?');
+INSERT INTO paths (name) VALUES ('/hello');
+INSERT INTO paths (name) VALUES ('/clients');
+INSERT INTO paths (name) VALUES ('/casemanagers');
+INSERT INTO paths (name) VALUES ('/clients/{clientID}');
+INSERT INTO paths (name) VALUES ('/dropins');
+INSERT INTO paths (name) VALUES ('/dropins/{dropin}');
+INSERT INTO paths (name) VALUES ('/dropins/{dropin}/activities'); -- make this consistent with API
+INSERT INTO paths (name) VALUES ('/dropins/{dropinID}/enrollment');
+INSERT INTO paths (name) VALUES ('/enroll/{activityID}');
+INSERT INTO paths (name) VALUES ('/enroll');
+INSERT INTO paths (name) VALUES ('/checkin');
+INSERT INTO paths (name) VALUES ('/activities');
+INSERT INTO paths (name) VALUES ('/search/clients');
+INSERT INTO paths (name) VALUES ('/search/clients/{data}');
+INSERT INTO paths (name) VALUES ('/case_notes');
+INSERT INTO paths (name) VALUES ('/case_notes/{clientID}');
+INSERT INTO paths (name) VALUES ('/status');
+INSERT INTO paths (name) VALUES ('/status/?');
+INSERT INTO paths (name) VALUES ('/users');
+INSERT INTO paths (name) VALUES ('/users/{userId}');
+INSERT INTO paths (name) VALUES ('/users/{userId}/password');
+INSERT INTO paths (name) VALUES ('/users/{userId}/notifications');
+INSERT INTO paths (name) VALUES ('/users/{userId}/notifications/{noteId}');
+INSERT INTO paths (name) VALUES ('/sessions');
+INSERT INTO paths (name) VALUES ('/notifications/types');
+INSERT INTO paths (name) VALUES ('/clients/{clientID}/case_plan');
+INSERT INTO paths (name) VALUES ('/flags');
+INSERT INTO paths (name) VALUES ('/flags/?');
+INSERT INTO paths (name) VALUES ('/files');
+INSERT INTO paths (name) VALUES ('/files/{clientID}');
 
 DROP TABLE IF EXISTS verbs;
 
@@ -612,18 +612,18 @@ DROP TABLE IF EXISTS match_roles_paths_verbs;
 
 CREATE TABLE match_roles_paths_verbs (
   id SERIAL PRIMARY KEY,
-  roles_id integer REFERENCES roles (id),
-  paths_id integer REFERENCES paths (id),
-  verbs_id integer REFERENCES verbs (id)
+  role_id integer REFERENCES roles (id),
+  path_id integer REFERENCES paths (id),
+  verb_id integer REFERENCES verbs (id)
 );
 
 /*
   There will be many, many combinations of these
 */
-INSERT INTO match_roles_paths_verbs (roles_id, paths_id, verbs_id) VALUES (1, 1, 1);
-INSERT INTO match_roles_paths_verbs (roles_id, paths_id, verbs_id) VALUES (1, 1, 2);
-INSERT INTO match_roles_paths_verbs (roles_id, paths_id, verbs_id) VALUES (1, 1, 3);
-INSERT INTO match_roles_paths_verbs (roles_id, paths_id, verbs_id) VALUES (1, 1, 4);
+INSERT INTO match_roles_paths_verbs (role_id, path_id, verb_id) VALUES (1, 1, 1);
+INSERT INTO match_roles_paths_verbs (role_id, path_id, verb_id) VALUES (1, 1, 2);
+INSERT INTO match_roles_paths_verbs (role_id, path_id, verb_id) VALUES (1, 1, 3);
+INSERT INTO match_roles_paths_verbs (role_id, path_id, verb_id) VALUES (1, 1, 4);
 
 DROP TABLE IF EXISTS users;
 
