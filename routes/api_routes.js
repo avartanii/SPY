@@ -381,6 +381,11 @@ var apiRoutes = [
       handler: Api.assignRoleToUser
     },
     {
+      method: 'GET',
+      path: '/users/{userId}/roles',
+      handler: Api.getUserRoles
+    },
+    {
       method: 'POST',
       path: '/roles',
       handler: Api.createRole

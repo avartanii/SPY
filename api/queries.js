@@ -817,6 +817,17 @@ var queries = {
 
       return queryString;
     },
+    getUserRoles: function (userId) {
+      var queryString = `SELECT roles.name
+                         FROM roles
+                         WHERE roles.id
+                         IN (
+                            SELECT role_assignments.role_id
+                            FROM role_assignments
+                            WHERE role_assignments.user_id = ${userId}
+                         );`;
+      return queryString;
+    },
     getUsersNotifications: function (userId) {
         var queryString = 'SELECT id, type, comment, link, checked FROM notifications WHERE user_id = ' + userId +
                             ' AND checked = false ORDER BY id;';

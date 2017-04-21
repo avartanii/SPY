@@ -468,6 +468,16 @@ var api = {
         });
     },
 
+    getUserRoles: function (request, reply) {
+      Service.getUserRoles(request.postgres, request.params.userId, function (error, result) {
+        if (error) {
+          Respond.failedToGetUserRoles(reply, error);
+        } else {
+          Respond.gotUserRoles(reply, result);
+        }
+      });
+    },
+
     login: function (request, reply) {
         Service.getUserByQuery(request.postgres, {
             username: request.payload.username
@@ -483,21 +493,27 @@ var api = {
                     } else if (!match) {
                         Respond.userPassNoMatch(reply);
                     } else {
-                      // found the scope (permissions) of this user
-                      // and pass them in here to encoded into the token
-                      // when the route checks the auth configuration
-                      // it will look for scope as well
-                        Service.genToken({
-                            id: user.id,
-                            username: user.username,
-                            // scope: [ 'admin', 'casemanager' ]
-                        }, function (err, token) {
-                            if (err) {
-                                Respond.failedToGenToken(reply, err);
-                            } else {
-                                Respond.loggedIn(reply, token, user.id);
-                            }
-                        });
+                      Service.getUserRoles(request.postgres, user.id, function (err, roles) {
+                        // find the scope (permissions) of this user
+                        // and pass them in here to encoded into the token
+                        // when the route checks the auth configuration
+                        // it will look for scope as well
+                        if (err) {
+                          Respond.failedToGetUserRoles(reply, err);
+                        } else {
+                          Service.genToken({
+                              id: user.id,
+                              username: user.username,
+                              scope: roles
+                          }, function (err, token) {
+                              if (err) {
+                                  Respond.failedToGenToken(reply, err);
+                              } else {
+                                  Respond.loggedIn(reply, token, user.id);
+                              }
+                          });
+                        }
+                      });
                     }
                 });
             }

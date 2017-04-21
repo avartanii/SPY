@@ -424,6 +424,7 @@ describe('Roles', () => {
       })
       .expect(201)
       .then((response) => {
+        console.log(response.body);
         return request(SPY.listener)
           .post('/api/roles')
           .send({
@@ -490,6 +491,22 @@ describe('Roles', () => {
       });
   });
 
+  it('retrieves roles by user ID', () => {
+    return request(SPY.listener)
+      .get('/api/users/1/roles')
+      .expect(200)
+      .then((response) => {
+        expect(response.body.result.length).to.equal(1);
+        expect(response.body.result[0]).to.equal('intern');
+        return request(SPY.listener)
+          .get('/api/users/2/roles')
+          .expect(200)
+          .then((response) => {
+            expect(response.body.result.length).to.equal(1);
+            expect(response.body.result[0]).to.equal('volunteer');
+          });
+      });
+  });
 
 });
 

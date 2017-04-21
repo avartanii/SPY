@@ -699,6 +699,22 @@ var service = {
         return callback(undefined, result);
       });
     },
+    getUserRoles: function (postgres, userId, callback) {
+        Query.getUserRoles(postgres, userId, function (err, result) {
+            if (err) {
+                return callback(err);
+            }
+            if (!result.rows.length) {
+                return callback();
+            }
+            var arr = [];
+            for (var i = 0; i < result.rows.length; i++) {
+                var local = result.rows[i];
+                arr.push(local.name);
+            }
+            return callback(undefined, arr);
+        });
+    },
     getUsersNotifications: function (postgres, userId, callback) {
         Query.getUsersNotifications(postgres, userId, function (err, result) {
             if (err) {

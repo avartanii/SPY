@@ -15,8 +15,9 @@ module.exports = function (decoded, request, callback) {
     // because the server should remain stateless)
     // if there is a match, return true
     // else return 401 Unauthorized
-    return callback(null, true);
-    // return callback(null, true, { scope: ['superadmin', 'admin' ]}); // scope for current user
+    // return callback(null, true);
+    return callback(null, true, { scope: ['superadmin', 'admin' ]}); // scope for current user
+    // get the user's scope from the decoded token
 
     /*
       Routes will then get scopes attached to its auth configuration to match the user's scopes

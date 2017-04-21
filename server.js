@@ -70,7 +70,16 @@ if (process.env.NODE_ENV !== "test") {
         });
 
         SPY.auth.default('jwt');
-        
+
+        // async - need to move these, postgres and the api routes below
+        // are registered before the auth strategies above go through
+        SPY.register(postgresqlPool, function () {});
+        SPY.register(Api, { // calls the api_routes.js register method that is exported by the module
+            routes: { // configuration option
+                prefix: '/api'
+            }
+        });
+
         /*
           Note that any routes added before server.auth.default() is called will not have the default applied to them.
           If you need to make sure that all routes have the default strategy applied,
@@ -95,16 +104,16 @@ if (process.env.NODE_ENV !== "test") {
         //   }
         // ]);
     });
+} else {
+  // async - need to move these, postgres and the api routes below
+  // are registered before the auth strategies above go through
+  SPY.register(postgresqlPool, function () {});
+  SPY.register(Api, { // calls the api_routes.js register method that is exported by the module
+      routes: { // configuration option
+          prefix: '/api'
+      }
+  });
 }
-
-// async - need to move these, postgres and the api routes below
-// are registered before the auth strategies above go through
-SPY.register(postgresqlPool, function () {});
-SPY.register(Api, { // calls the api_routes.js register method that is exported by the module
-    routes: { // configuration option
-        prefix: '/api'
-    }
-});
 
 SPY.register(Inert, function () {});
 SPY.register(Vision, function () {

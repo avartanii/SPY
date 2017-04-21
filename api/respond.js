@@ -607,6 +607,20 @@ var respond = {
         result: result
       }).code(201);
     },
+    failedToGetUserRoles: function (reply, error) {
+      reply({
+        statusCode: 500,
+        message: "Unable to get user roles!",
+        error: error
+      }).code(500);
+    },
+    gotUserRoles: function (reply, result) {
+      reply({
+        statusCode: 200,
+        message: "Successfully got user roles!",
+        result: result
+      }).code(200);
+    },
     failedToGetUsersNotifications: function (reply, err) {
         reply({
             statusCode: 500,
