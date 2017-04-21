@@ -16,7 +16,7 @@ module.exports = function (decoded, request, callback) {
     // if there is a match, return true
     // else return 401 Unauthorized
     // return callback(null, true);
-    return callback(null, true, { scope: ['superadmin', 'admin' ]}); // scope for current user
+    return callback(null, true, { scope: decoded.scope }); // scope for current user
     // get the user's scope from the decoded token
 
     /*

@@ -302,11 +302,11 @@ var apiRoutes = [
     {
         method: 'GET',
         path: '/users/{userId}',
-        // config: {
-        //   auth: {
-        //     scope: 'superadmin'
-        //   }
-        // },
+        config: {
+          auth: {
+            scope: 'superadmin'
+          }
+        },
         handler: Api.getUser
     },
     {
