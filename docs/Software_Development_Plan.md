@@ -1,11 +1,13 @@
 #4.0 Software Development Plan
 
 ##4.1 Plan Introduction
+
+This section will layout the approach by which the development team will design and build the SPY Database system. Deliverables, Resources, Organization method, and Schedules will be described and/or illustrated.
+
 ###4.1.1 Project Deliverables
 
-- _Alpha - Nov 3rd_ - Preliminary version of the app. Our vision of what the app should start to look like based on all the meetings we have had with SPY about their needs and expectations
-- _Beta - Dec 13th_ - After meeting with SPY with our alphas, we are ready to release the software to them for testing purposes, both with software stability and trying out the workflow
-- _1.0 - Early January_ - We transfer ownership of the app over to SPY and take up a maintenance and additional features development role
+- _Beta - January 1st - May 6th - After meeting with SPY staff throughout the Fall to demonstrate alpha prototypes, we will continue to gradually release features to them throughout the Spring for testing purposes.
+- _2.0 - Late May_ - We transfer ownership of the app over to SPY and take up a maintenance and additional features development role.
 
 ##4.2 Project Resources
 
@@ -17,16 +19,11 @@
   2008 or newer machine | ✓ | ✓
   2 GB RAM | ✓ | ✓
   16 GB Storage | ✓ | ✓
-  screen | ✓ | 
-  Wifi connection | ✓ | 
+  screen | ✓ |
+  Wifi connection | ✓ |
   Ethernet connection | ✓ | ✓
   Linux Computer       |               | ✓
   Intel or ARM processor | ✓ | ✓
-  2 GB RAM | ✓ | ✓
-  16 GB Storage | ✓ | ✓
-  screen | ✓ | 
-  Wifi connection | ✓ | 
-  Ethernet connection | ✓ | ✓
 
 
 ###4.2.2 Software Resources
@@ -34,13 +31,18 @@
   Resource              | Development   | Execution
   --------------------- | ------------- | -----------
   Google Chrome         | ✓             | ✓
+  Safari                | ✓             | ✓
+  Firefox               | ✓             | ✓
   Sublime Text Editor   | ✓             |  
+  Atom Text Editor      | ✓             |
   PostgreSQL            | ✓             | ✓
+  Sequelize             | ✓             | ✓
   Node.js               | ✓             | ✓
   macOS                 | ✓             | ✓
   Windows OS            | ✓             | ✓
+  Linux OS              | ✓             | ✓
   Heroku                | ✓             | ✓
-  GitHub                | ✓             | 
+  GitHub                | ✓             |
   Postico               | ✓             |
   Postman               | ✓             |
 
@@ -48,27 +50,19 @@
 
 ###4.3.1 Organization Structure
 
-The project demands integration between database, front end, and back end. Because of this, the organization of our teams follows each concept. There are three teams, one for each division, and Chris Franco manages overall compatibility and success.
+The project demands integration between database, front end, and back end. However, rather than divide the team by section of the app, the app's features have been sectioned horizontally (that is, each team member assigned to implement a feature is responsible for the front end, backend, and database design of that feature end-to-end). In this manner, each team member gains full-stack development experience, the team can scale effectively while being sensitive to required work and member availability, and base implementations can be delivered for features much more quickly.
 
-###4.3.2 External Interfaces
+###4.3.2 Internal Interfaces
 
-Chris, the project instigator, is the main connection to SPY. He has set up communicative applications to allow SPY staff to access our team discussions and decisions. Additionally, our team records and outlines our in-person meetings.
+In order to make development for the application more ubiquitous and accessible, it is imperative that some of the custom tools the team uses for development, such as node js scripts, are cross-compatible with mainstream operating systems such as Windows, Linux, and Mac OSX. Therefore, the team will work to ensure that any code, frameworks, and/or packages are compatible in these different environments.
 
-###4.3.3 Roles and Responsibilities
+###4.3.3 External Interfaces
 
-Each week the development team meets 6-7:30 on Friday evenings. On Mondays, the development team meets with SPY staff at 3:30 to demonstrate current functionality and discuss dream-design.
+The team will communicate directly with SPY staff through any means necessary, whether it be email, text, or in-person. Meetings between the team and SPY staff will be documented on notes saved in cloud storage as well as audio recorded so the team has direct resources for investigating user needs.
 
-  Name                        | Team        | Role
-  --------------------------- | ----------- | ------------------
-  Chris Franco                | Database    | Project Manager
-  Chris Dellomes              | Database    | Database Dev
-  Nicole Anguiano             | Front-end   | Front-end Lead
-  Josh Kuroda                 | Front-end   | Front-end Design
-  Lauren Konchan              | Front-end   | Front-end Beautify
-  Mary Kate Reid              | Front-end   | Front-end Design
-  Edward Seim                 | Back-end    | Back-end Lead
-  Irakli Khizanishvili (Eko)  | Back-end    | Back-end Support
-  Mondo Yamaguchi             | Back-end    | Back-end Support
+###4.3.4 Roles and Responsibilities
+
+Each week the development team meets 5:45 PM - 7:00 PM on Thursday evenings. Roles are defined by requirements, features, and components that are being implemented (see Section 5.0 Requirements Specification document). Team members' responsibilities will dynamically change based on which aspects of these features need to be worked on. Ideally, each team member will be working on at least one feature to have its minimum requirements implemented for testing. Currently, the project also has a database administrator who is responsible for developing the schema/model for the database as well as the SQL code to build the database. Two other developers are responsible for continuing to the build the API on the web server and the front end interface web pages.
 
 ##4.4 Project Schedule
 
@@ -84,18 +78,18 @@ Each week the development team meets 6-7:30 on Friday evenings. On Mondays, the 
 
   Task                                               | People         | Hardware           | Software
   -------------------------------------------------- | -------------- | ------------------ | ----------------------------------------------
-  New Drop In                                        | Lauren         | Macbook            | Node.js, Chrome, PostgreSQL, macOS, GitHub
-  Edit Drop In                                       | Chris F        | Macbook            | Node.js, Chrome, PostgreSQL, macOS, GitHub
-  List Drop Ins                                      | Ed             | Macbook            | Nodejs, PostgreSQL, macOS, Chrome, GitHub
-  Add Client                                         | Chris F        | Macbook            | Node.js, Chrome, PostgreSQL, macOS,GitHub
-  View Client Profile                                | Chris D        | Windows computer   | Node.js, GitHub, PostgreSQL, windowsOS,Chrome
-  Search Client                                      | Eko            | Macbook            | Node.js, Chrome, PostgreSQL, macOS, GitHub
-  Look & Feel                                        | Josh, Lauren   | Macbook            | Node.js, Chrome, PostgreSQL, macOS, GitHub
-  Client/Appointments/Drop-In Session Filter Table   | Nicole         | Macbook            | Node.js, Chrome, PostgreSQL, macOS, GitHub
+  New Drop In                                        | Volunteer Developer         | Macbook            | Node.js, Chrome, PostgreSQL, macOS, GitHub
+  Edit Drop In                                       | Volunteer Developer        | Macbook            | Node.js, Chrome, PostgreSQL, macOS, GitHub
+  List Drop Ins                                      | Volunteer Developer           | Macbook            | Nodejs, PostgreSQL, macOS, Chrome, GitHub
+  Add Client                                         | Volunteer Developer        | Macbook            | Node.js, Chrome, PostgreSQL, macOS,GitHub
+  View Client Profile                                | Volunteer Developer        | Macbook   | Node.js, GitHub, PostgreSQL, macOS,Chrome
+  Search Client                                      | Volunteer Developer          | Macbook            | Node.js, Chrome, PostgreSQL, macOS, GitHub
+  Look & Feel                                        | Volunteer Developer   | Macbook            | Node.js, Chrome, PostgreSQL, macOS, GitHub
+  Client/Appointments/Drop-In Session Filter Table   | Volunteer Developer         | Macbook            | Node.js, Chrome, PostgreSQL, macOS, GitHub
 
 ###4.4.3 Class Schedule
 
--   [Week 01] (http://myweb.lmu.edu/bjohnson/cmsi401web1awk/week01-1.html)
+-   [Week 01](http://myweb.lmu.edu/bjohnson/cmsi402web2/week01.html)
 
     -   Meet & greet
 
@@ -105,115 +99,91 @@ Each week the development team meets 6-7:30 on Friday evenings. On Mondays, the 
 
     -   Parts of the Software Engineering Process
 
--   [Week 02](http://myweb.lmu.edu/bjohnson/cmsi401web1awk/week02-1.html)
+-   [Week 02](http://myweb.lmu.edu/bjohnson/cmsi402web2/week02.html)
 
-    -   RFP Details
+    -   No class - MLK day
 
-    -   Life Cycle Models
+-   [Week 03](http://myweb.lmu.edu/bjohnson/cmsi402web2/week03.html)
 
-    -   Horror stories and Ethics
+    -   Project proposal Presentations
 
--   [Week 03](http://myweb.lmu.edu/bjohnson/cmsi401web1awk/week03-1.html)
+-   [Week 04](http://myweb.lmu.edu/bjohnson/cmsi402web2/week04.html)
 
-    -   Project proposal presentations
+    -   Project proposal Presentations (continued . . .)
 
-    -   SOW Documents
+    -   Requirements
 
-    -   Needs Analysis
+    -   Project Management
 
-    -   Requirements Documents
+-   [Week 05](http://myweb.lmu.edu/bjohnson/cmsi402web2/week05.html)
 
-    -   Peer Review Process
-
--   [Week 04](http://myweb.lmu.edu/bjohnson/cmsi401web1awk/week04-1.html)
-
-    -   Software Development Plan
-
--   [Week 05](http://myweb.lmu.edu/bjohnson/cmsi401web1awk/week05-1.html)
+    -   Project proposal Presentations (continued . . .)
 
     -   Brief Intro to UML
 
-    -   Project Team Meetings and Coding for remainder of class
+    -   Software Architecture: insights, basics, evolution, and design
 
--   [Week 06](http://myweb.lmu.edu/bjohnson/cmsi401web1awk/week06-1.html)
+-   [Week 06](http://myweb.lmu.edu/bjohnson/cmsi402web2/week06.html)
 
-    -   ValuJet Paper Discussion
+    -   Detailed Design and Modeling
 
-    -   Architectural Design
+    -   Design Reviews: Preliminary and Critical
 
-    -   Design Reviews
+    -   Coding for remainder of class
 
-    -   Project Team Meetings and Coding for remainder of class
+-   [Week 07](http://myweb.lmu.edu/bjohnson/cmsi402web2/week07.html)
 
--   [Week 07](http://myweb.lmu.edu/bjohnson/cmsi401web1awk/week07-1.html)
+    -   Development Process
 
-    -   Unit and Integration Test
+    -   Testing, Test Plan, Test Procedure, CM Plan
 
-    -   Review and Discussion of Deliverables
+    -   Software Horror Stories
 
-    -   Project Team Meetings and Coding for remainder of class
+    -   Coding for remainder of class
 
--   [Week 08](http://myweb.lmu.edu/bjohnson/cmsi401web1awk/week08-1.html)
+-   [Week 08](http://myweb.lmu.edu/bjohnson/cmsi402web2/week08.html)
 
-    -   Special Guest Speaker: Daniel Manchala (more to come)
+    -   Coding for remainder of class
 
--   [Week 09](http://myweb.lmu.edu/bjohnson/cmsi401web1awk/week09-1.html)
+-   [Week 09](http://myweb.lmu.edu/bjohnson/cmsi402web2/week09.html)
 
-    -   Student project status updates
+    -   Spring Break
 
-    -   Preliminary Design Review (PDR) Presentations
+-   [Week 10](http://myweb.lmu.edu/bjohnson/cmsi402web2/week10.html)
 
-    -   Project Team Meetings and Coding for remainder of class
+    -   Deployment, metrics, maintenance
 
--   [Week 10](http://myweb.lmu.edu/bjohnson/cmsi401web1awk/week10-1.html)
+    -   Coding for remainder of class
 
-    -   Student project status updates
+-   [Week 11](http://myweb.lmu.edu/bjohnson/cmsi402web2/week11.html)
 
-    -   Special Guest Speaker
+    -   Guest Speaker: LMU Alum John Zimmerman
 
--   [Week 11](http://myweb.lmu.edu/bjohnson/cmsi401web1awk/week11-1.html)
+    -   Coding for remainder of class
 
-    -   Critical Design Review (CDR) Presentations
+-   [Week 12](http://myweb.lmu.edu/bjohnson/cmsi402web2/week12.html)
 
-    -   Project Team Meetings and Coding for remainder of class
+    -   Coding for remainder of class
 
--   [Week 12](http://myweb.lmu.edu/bjohnson/cmsi401web1awk/week12-1.html)
+-   [Week 13](http://myweb.lmu.edu/bjohnson/cmsi402web2/week13.html)
 
-    -   Student project status updates
+    -   Design review presentations #1
 
-    -   Special Guest Speaker
+-   [Week 14](http://myweb.lmu.edu/bjohnson/cmsi402web2/week14.html)
 
--   [Week 13](http://myweb.lmu.edu/bjohnson/cmsi401web1awk/week13-1.html)
+    -   Design review presentations #2
 
-    -   Alpha Project Presentations
+-   [Week 15](http://myweb.lmu.edu/bjohnson/cmsi402web2/week15.html)
 
-    -   Project Team Meetings and Coding for remainder of class
+    -   Design review presentations #3
 
--   [Week 14](http://myweb.lmu.edu/bjohnson/cmsi401web1awk/week14-1.html)
+-   [Week 16](http://myweb.lmu.edu/bjohnson/cmsi402web2/week16.html)
 
-    -   Beta Project Presentations
+    -   Guest Speakers: Software Engineering Panel
 
-    -   Project Team Meetings and Coding for remainder of class
-
--   [Week 15](http://myweb.lmu.edu/bjohnson/cmsi401web1awk/week15-1.html)
-
-    -   Code Peer Review
-
-    -   Student project status updates
-
-    -   Project Management Review and Spin Doctoring
-
-    -   Project Team Meetings and Coding for remainder of class
-
--   [Week 16](http://myweb.lmu.edu/bjohnson/cmsi401web1awk/week16-2.html)
+-   [Week 17](http://myweb.lmu.edu/bjohnson/cmsi402web2/week17.html)
 
     -   Final Presentations / Demonstrations
-
-    -   Set up — 15:30 to 17:00
-
-    -   Presentation and Q&A — 17:00 to 18:00
-
-    -   Clean-up — 18:00 to 19:00
 
 ## 4.5 User Manual
 

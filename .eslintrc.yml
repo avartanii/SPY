@@ -42,8 +42,7 @@ rules:
   func-call-spacing:
     error
   indent:
-    - error
-    - 4
+    off
   key-spacing:
     error
   keyword-spacing:
@@ -84,4 +83,6 @@ rules:
   quotes:
     off
   quote-props:
+    off
+  no-unused-vars:
     off

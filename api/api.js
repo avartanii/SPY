@@ -33,7 +33,7 @@ var api = {
     },
 
     getClient: function (request, reply) {
-        Service.getClient(request.postgres, request.params.client, function (err, result) {
+        Service.getClient(request.postgres, request.params.clientID, function (err, result) {
             if (err) {
                 Respond.failedToGetClient(reply, err);
             } else {
@@ -468,6 +468,16 @@ var api = {
         });
     },
 
+    getUserRoles: function (request, reply) {
+      Service.getUserRoles(request.postgres, request.params.userId, function (error, result) {
+        if (error) {
+          Respond.failedToGetUserRoles(reply, error);
+        } else {
+          Respond.gotUserRoles(reply, result);
+        }
+      });
+    },
+
     login: function (request, reply) {
         Service.getUserByQuery(request.postgres, {
             username: request.payload.username
@@ -483,16 +493,27 @@ var api = {
                     } else if (!match) {
                         Respond.userPassNoMatch(reply);
                     } else {
-                        Service.genToken({
-                            id: user.id,
-                            username: user.username
-                        }, function (err, token) {
-                            if (err) {
-                                Respond.failedToGenToken(reply, err);
-                            } else {
-                                Respond.loggedIn(reply, token, user.id);
-                            }
-                        });
+                      Service.getUserRoles(request.postgres, user.id, function (err, roles) {
+                        // find the scope (permissions) of this user
+                        // and pass them in here to encoded into the token
+                        // when the route checks the auth configuration
+                        // it will look for scope as well
+                        if (err) {
+                          Respond.failedToGetUserRoles(reply, err);
+                        } else {
+                          Service.genToken({
+                              id: user.id,
+                              username: user.username,
+                              scope: roles
+                          }, function (err, token) {
+                              if (err) {
+                                  Respond.failedToGenToken(reply, err);
+                              } else {
+                                  Respond.loggedIn(reply, token, user.id);
+                              }
+                          });
+                        }
+                      });
                     }
                 });
             }
@@ -573,6 +594,34 @@ var api = {
         });
     },
 
+    createRole: function (request, reply) {
+      Service.createRole(request.postgres, request.payload, function (error, result) {
+        if (error) {
+          Respond.failedToCreateRole(reply, error);
+        } else {
+          Respond.createdRole(reply, result);
+        }
+      });
+    },
+    getAllRoles: function (request, reply) {
+      Service.getAllRoles(request.postgres, request.payload, function (error, result) {
+        if (error) {
+          Respond.failedToGetAllRoles(reply, error);
+        } else {
+          Respond.gotAllRoles(reply, result);
+        }
+      });
+    },
+    assignRoleToUser: function (request, reply) {
+      Service.assignRoleToUser(request.postgres, request.params.userId, request.payload, function (error, result) {
+        if (error) {
+          console.log(error);
+          Respond.failedToAssignRoleToUser(reply, error);
+        } else {
+          Respond.assignedRoleToUser(reply, result);
+        }
+      });
+    },
     getUsersNotifications: function (request, reply) {
         var userId;
         if (request.params.userId === 'self') {

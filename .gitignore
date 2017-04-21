@@ -5,6 +5,7 @@ coverage
 db
 log
 .DS_Store
+**/.DS_Store
 .sass-cache
 .env
 set_test_env.sh

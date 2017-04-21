@@ -9,7 +9,7 @@
   "scripts": {
     "start": "if [ -f node_modules/.bin/../../.env ]; then node server.js; else node server.js; fi;",
     "nodemon": "nodemon -e js,json,html,css server.js",
-    "test": "npm run db-stop; test/test_db.sh; NODE_ENV=test mocha --recursive --require mocha-istanbul 'test' && istanbul report text-summary lcov; npm run db-stop;",
+    "test": "npm run db-stop; source test/test_db.sh; export NODE_ENV=test; mocha --recursive --require mocha-istanbul 'test' && istanbul report text-summary lcov; npm run db-stop;",
     "travis-test": "test/test_db.sh; NODE_ENV=test mocha --recursive --require mocha-istanbul 'test' && istanbul report text-summary lcov;",
     "lint": "eslint server.js **/*.js",
     "report": "istanbul report",
@@ -97,6 +97,7 @@
     "inert": "^4.0.2",
     "joi": "^9.0.4",
     "jsonwebtoken": "^7.1.9",
+    "lodash": "^4.17.4",
     "node-xlsx": "0.7.2",
     "nunjucks-hapi": "^2.1.0",
     "pg": "^6.1.0",

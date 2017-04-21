@@ -9,10 +9,10 @@ var respond = {
     },
     createdClient: function (reply, result) {
         reply({
-            statusCode: 200,
+            statusCode: 201,
             message: "Success creating client!",
             result: result
-        }).code(200);
+        }).code(201);
     },
     failedToGetAllCaseManagers: function (reply, err) {
         reply({
@@ -81,10 +81,10 @@ var respond = {
     },
     createDropIn: function (reply, result) {
         reply({
-            statusCode: 200,
+            statusCode: 201,
             message: "Success creating dropin!",
             result: result
-        }).code(200);
+        }).code(201);
     },
     failedToGetDropIns: function (reply, err) {
         reply({
@@ -284,10 +284,10 @@ var respond = {
     },
     createActivity: function (reply, result) {
         reply({
-            statusCode: 200,
+            statusCode: 201,
             message: "Success creating activity!",
             result: result
-        }).code(200);
+        }).code(201);
     },
     editActivity: function (reply, result) {
         reply({
@@ -354,10 +354,10 @@ var respond = {
     },
     addCheckinForDropin: function (reply, result) {
         reply({
-            statusCode: 200,
+            statusCode: 201,
             message: "Success checking in!",
             result: result
-        }).code(200);
+        }).code(201);
     },
     failedToGetCheckInForDropin: function (reply, err) {
         reply({
@@ -506,10 +506,10 @@ var respond = {
     },
     createdUser: function (reply, result) {
         reply({
-            statusCode: 200,
+            statusCode: 201,
             message: "Successfully created User!",
             result: result
-        }).code(200);
+        }).code(201);
     },
     userDoesNotExist: function (reply) {
         reply({
@@ -564,6 +564,62 @@ var respond = {
             message: "Successfully logged in!",
             result: userID
         }).code(200).header("Authorization", token);
+    },
+    failedToCreateRole: function (reply, error) {
+      reply({
+        statusCode: 500,
+        message: "Unable to create role!",
+        error: error
+      }).code(500);
+    },
+    createdRole: function (reply, result) {
+      reply({
+        statusCode: 201,
+        message: "Successfully created role!",
+        result: result
+      }).code(201);
+    },
+    failedToGetAllRoles: function (reply, error) {
+      reply({
+        statusCode: 500,
+        message: "Unable to get all roles!",
+        error: error
+      }).code(500);
+    },
+    gotAllRoles: function (reply, result) {
+      reply({
+        statusCode: 200,
+        message: "Successfully got all roles!",
+        result: result
+      }).code(200);
+    },
+    failedToAssignRoleToUser: function (reply, error) {
+      reply({
+        statusCode: 500,
+        message: "Unable to assign role to user!",
+        error: error
+      }).code(500);
+    },
+    assignedRoleToUser: function (reply, result) {
+      reply({
+        statusCode: 201,
+        message: "Successfully assigned role to user!",
+        result: result
+      }).code(201);
+    },
+    failedToGetUserRoles: function (reply, error) {
+      reply({
+        statusCode: 500,
+        message: "Unable to get user roles!",
+        error: error
+      }).code(500);
+    },
+    gotUserRoles: function (reply, result) {
+      reply({
+        statusCode: 200,
+        message: "Successfully got user roles!",
+        result: result
+      }).code(200);
     },
     failedToGetUsersNotifications: function (reply, err) {
         reply({
