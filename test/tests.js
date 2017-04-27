@@ -197,23 +197,6 @@ describe('Dropins', () => {
     ]).then(() => {
 
     });
-    // return request(SPY.listener)
-    //   .post('/api/dropins')
-    //   .send({
-    //     date: new Date()
-    //   })
-    //   .expect(201)
-    //   .then((response) => {
-    //     return request(SPY.listener)
-    //       .post('/api/dropins')
-    //       .send({
-    //         date: new Date()
-    //       })
-    //       .expect(201)
-    //       .then((response) => {
-    //         // console.log(response);
-    //       });
-    //   });
   });
 
   it('retrieves all dropin sessions', () => {
@@ -268,45 +251,6 @@ describe("Client Checkin", () => {
           console.log(response.body);
         });
     });
-    // return request(SPY.listener)
-    //   .post('/api/clients')
-    //   .send({
-    //       expression: JSON.stringify({
-    //           firstname: "John",
-    //           lastname: "Doe"
-    //       })
-    //   })
-    //   .expect(201)
-    //   .then((response) => {
-    //     request(SPY.listener)
-    //       .post('/api/clients')
-    //       .send({
-    //           expression: JSON.stringify({
-    //               firstname: "Alice",
-    //               lastname: "Smith"
-    //           })
-    //       })
-    //       .expect(201)
-    //       .then((response) => {
-    //         return request(SPY.listener)
-    //           .post('/api/dropins')
-    //           .send({
-    //             date: new Date()
-    //           })
-    //           .expect(201)
-    //           .then((response) => {
-    //             return request(SPY.listener)
-    //               .post('/dropins/1/checkin')
-    //               .set('contentType', 'application/json')
-    //               .set('dataType', 'json')
-    //               .send(JSON.stringify({ clients: [1, 2] }))
-    //               .expect(201)
-    //               .then((response) => {
-    //                 console.log(response.body);
-    //               });
-    //           });
-      //     });
-      // });
   });
 });
 
@@ -389,25 +333,6 @@ describe('Users', () => {
     ]).then(() => {
 
     });
-    // return request(SPY.listener)
-    //   .post('/api/users')
-    //   .send({
-    //     username: 'testusername',
-    //     password: 'hereisapassword'
-    //   })
-    //   .expect(201)
-    //   .then((response) => {
-    //     return request(SPY.listener)
-    //       .post('/api/users')
-    //       .send({
-    //         username: 'anothertestusername',
-    //         password: 'hereisanotherpassword'
-    //       })
-    //       .expect(201)
-    //       .then((response) => {
-    //
-    //       });
-    //   });
   });
 
   it('retrieves users', () => {
@@ -446,24 +371,6 @@ describe('Roles', () => {
     ]).then(() => {
 
     });
-    // return request(SPY.listener)
-    //   .post('/api/roles')
-    //   .send({
-    //     name: 'intern'
-    //   })
-    //   .expect(201)
-    //   .then((response) => {
-    //     console.log(response.body);
-    //     return request(SPY.listener)
-    //       .post('/api/roles')
-    //       .send({
-    //         name: 'volunteer'
-    //       })
-    //       .expect(201)
-    //       .then((response) => {
-    //
-    //       });
-    //   });
   });
 
   it('retrieves all roles', () => {
@@ -488,41 +395,6 @@ describe('Roles', () => {
 
       });
     });
-    // return request(SPY.listener)
-    //   .post('/api/users')
-    //   .send({
-    //     username: 'testusername',
-    //     password: 'hereisapassword'
-    //   })
-    //   .expect(201)
-    //   .then((response) => {
-    //     return request(SPY.listener)
-    //       .post('/api/users')
-    //       .send({
-    //         username: 'anothertestusername',
-    //         password: 'hereisanotherpassword'
-    //       })
-    //       .expect(201)
-    //       .then((response) => {
-    //         return request(SPY.listener)
-    //           .post('/api/users/1/roles')
-    //           .send({
-    //             roleId: 1
-    //           })
-    //           .expect(201)
-    //           .then((response) => {
-    //             return request(SPY.listener)
-    //               .post('/api/users/2/roles')
-    //               .send({
-    //                 roleId: 2
-    //               })
-    //               .expect(201)
-    //               .then((response) => {
-    //
-    //               });
-    //           });
-    //       });
-      // });
   });
 
   it('retrieves roles by user ID', () => {
