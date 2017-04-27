@@ -14,6 +14,21 @@ let postRequest = function (url, payload) {
   return request(SPY.listener).post(url).send(payload);
 };
 
+const client1 = {
+  firstName: 'John',
+  lastName: 'Doe',
+  phoneNumber: '123-456-7890',
+  email: 'jdoe@email.com'
+};
+const client2 = {
+  firstName: "Alice",
+  lastName: "Smith",
+  phoneNumber: '123-456-7890',
+  email: 'asmith@email.com'
+};
+const user1 = { username: 'testusername', password: 'hereisapassword' };
+const user2 = { username: 'anothertestusername', password: 'hereisanotherpassword' };
+
 describe("Hello", () => {
     it("tests the Testing", (done) => {
         expect("hello").to.eql("hello");
@@ -110,12 +125,7 @@ describe("Client profiles", () => {
   it("adds client profiles", () => {
     return request(SPY.listener)
       .post('/api/clients')
-      .send({
-          expression: JSON.stringify({
-              firstname: "John",
-              lastname: "Doe"
-          })
-      })
+      .send(client1)
       .expect(201)
       .then((response) => {
         console.log(response.body);
@@ -137,12 +147,7 @@ describe("Client profiles", () => {
   it("retrieves client profiles by ID", () => {
     return request(SPY.listener)
       .post('/api/clients')
-      .send({
-        expression: JSON.stringify({
-          firstname: "Alice",
-          lastname: "Smith"
-        })
-      })
+      .send(client2)
       .expect(201)
       .then((response) => {
         return request(SPY.listener)
@@ -159,14 +164,7 @@ describe("Client profiles", () => {
   it("edits client profiles", () => {
     request(SPY.listener)
       .put('/api/clients/1')
-      .send({
-        expression: JSON.stringify({
-          firstname: 'John',
-          lastname: 'Doe',
-          phonenumber: '123-456-7890',
-          email: 'jdoe@email.com'
-        })
-      })
+      .send(client1)
       .expect(200)
       .then((response) => {
 
@@ -258,27 +256,13 @@ describe("Client Checkin", () => {
 
   it("checks clients into dropin", () => {
     return Promise.all([
-      postRequest('/api/clients', {
-          expression: JSON.stringify({
-              firstname: "John",
-              lastname: "Doe"
-          })
-      }).expect(201),
-      postRequest('/api/clients', {
-          expression: JSON.stringify({
-              firstname: "Alice",
-              lastname: "Smith"
-          })
-      }).expect(201),
-      postRequest('/api/dropins', {
-        date: new Date()
-      }).expect(201),
+      postRequest('/api/clients', client1).expect(201),
+      postRequest('/api/clients', client2).expect(201),
+      postRequest('/api/dropins', { date: new Date() }).expect(201)
     ]).then(() => {
       return request(SPY.listener)
         .post('/api/dropins/1/checkin')
-        .set('contentType', 'application/json')
-        .set('dataType', 'json')
-        .send({ expression: JSON.stringify({ clients: [1, 2] }) })
+        .send({ clients: [1, 2] })
         .expect(201)
         .then((response) => {
           console.log(response.body);
@@ -400,14 +384,8 @@ describe('Users', () => {
 
   it('creates new users', () => {
     return Promise.all([
-      postRequest('/api/users', {
-        username: 'testusername',
-        password: 'hereisapassword'
-      }).expect(201),
-      postRequest('/api/users', {
-        username: 'anothertestusername',
-        password: 'hereisanotherpassword'
-      }).expect(201)
+      postRequest('/api/users', user1).expect(201),
+      postRequest('/api/users', user2).expect(201)
     ]).then(() => {
 
     });
@@ -464,7 +442,7 @@ describe('Roles', () => {
   it('creates roles', () => {
     return Promise.all([
       postRequest('/api/roles', { name: 'intern' }).expect(201),
-      postRequest('/api/roles', { name: 'volunteer' }).expect(201),
+      postRequest('/api/roles', { name: 'volunteer' }).expect(201)
     ]).then(() => {
 
     });
@@ -493,18 +471,22 @@ describe('Roles', () => {
       .get('/api/roles')
       .expect(200)
       .then((response) => {
+        console.log(response.body);
         expect(response.body.result.length).to.equal(2);
       });
   });
 
   it('assigns roles to users', () => {
     return Promise.all([
-      postRequest('/api/users', { username: 'testusername', password: 'hereisapassword' }).expect(201),
-      postRequest('/api/users', { username: 'anothertestusername', password: 'hereisanotherpassword' }).expect(201),
-      postRequest('/api/users/1/roles', { roleid: 5 }).expect(201),
-      postRequest('/api/users/2/roles', { roleid: 6 }).expect(201)
+      postRequest('/api/users', user1).expect(201),
+      postRequest('/api/users', user2).expect(201)
     ]).then(() => {
+      return Promise.all([
+        postRequest('/api/users/1/roles', { roleId: 1 }).expect(201),
+        postRequest('/api/users/2/roles', { roleId: 2 }).expect(201)
+      ]).then(() => {
 
+      });
     });
     // return request(SPY.listener)
     //   .post('/api/users')
@@ -580,7 +562,69 @@ describe('Case Notes', () => {
     });
   });
 
+  it("creates new Case Notes", () => {
+    let casenote1 = {
+      clientID: 1,
+      caseManagerID: 1,
+      date: new Date(),
+      category: "CM",
+      note: "This is a case note.",
+      followUpNeeded: true
+    };
+    let casenote2 = {
+      clientID: 1,
+      caseManagerID: 1,
+      date: new Date(),
+      category: "CM",
+      note: "This is a case note.",
+      followUpNeeded: true
+    };
+    let casenote3 = {
+      clientID: 2,
+      caseManagerID: 2,
+      date: new Date(),
+      category: "CM",
+      note: "This is a case note.",
+      followUpNeeded: true
+    };
+    let casenote4 = {
+      clientID: 2,
+      caseManagerID: 2,
+      date: new Date(),
+      category: "CM",
+      note: "This is a case note.",
+      followUpNeeded: true
+    };
+    return Promise.all([
+      postRequest('/api/clients', client1).expect(201),
+      postRequest('/api/clients', client2).expect(201),
+      postRequest('/api/users', user1).expect(201),
+      postRequest('/api/users', user2).expect(201)
+    ]).then((response) => {
+      return Promise.all([
+        postRequest('/api/case_notes', casenote1).expect(201),
+        postRequest('/api/case_notes', casenote2).expect(201),
+        postRequest('/api/case_notes', casenote3).expect(201),
+        postRequest('/api/case_notes', casenote4).expect(201)
+      ]).then(() => {
 
+      });
+    });
+  });
+
+  it("retrieves all Case Notes for a client by clientID", () => {
+    return request(SPY.listener)
+      .get('/api/case_notes/1')
+      .expect(200)
+      .then((response) => {
+        expect(response.body.result.length).to.equal(2);
+        expect(response.body.result[0].clientID).to.equal(1);
+        expect(response.body.result[0].caseManagerID).to.equal(1);
+        expect(response.body.result[0].category).to.equal("CM");
+        expect(response.body.result[0].note).to.equal("This is a case note.");
+        expect(response.body.result[0].followUpNeeded).to.equal(true);
+      });
+  });
 });
 
 // or Hapi's native inject() function

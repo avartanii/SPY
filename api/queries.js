@@ -713,7 +713,7 @@ var queries = {
     getClientCaseNotes: function (clientID) {
         var queryString = 'SELECT n.id, client_id, case_manager_id, date, category, first_name, ' +
             'last_name, note, follow_up_needed, due_date, reminder_date FROM case_note n LEFT JOIN ' +
-            'casemanager m ON n.case_manager_id = m.id WHERE client_id = ' + clientID + ';';
+            'users m ON n.case_manager_id = m.id WHERE client_id = ' + clientID + ';';
 
         return queryString;
     },
@@ -812,8 +812,7 @@ var queries = {
       return queryString;
     },
     assignRoleToUser: function (userId, payload) {
-      var queryString = 'INSERT INTO role_assignments (user_id, role_id) VALUES (' +
-                        userId + ', ' + payload.roleId + ') RETURNING id, user_id, role_id;';
+      var queryString = `INSERT INTO role_assignments (user_id, role_id) VALUES (${userId}, ${payload.roleId}) RETURNING id, user_id, role_id;`;
 
       return queryString;
     },

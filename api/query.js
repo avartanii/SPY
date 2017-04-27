@@ -10,7 +10,7 @@ var query = {
                 return callback(err);
             }
 
-            payload = JSON.parse(payload.expression);
+            // payload = JSON.parse(payload.expression);
             var data = Queries.createClient(payload);
             // unstringify the data passed in
             client.query(data.string, data.params, function (err, result) {
@@ -172,7 +172,6 @@ var query = {
             if (err) {
                 return callback(err);
             }
-            console.log(payload);
             client.query(Queries.createDropIn(payload), function (err, result) {
                 done();
                 if (err) {
@@ -505,8 +504,9 @@ var query = {
             if (err) {
                 return callback(err);
             }
-            var parsedPayload = JSON.parse(payload.expression);
-            client.query(Queries.addCheckinForDropin(dropinID, parsedPayload), function (err, result) {
+            console.log(payload);
+            // var parsedPayload = JSON.parse(payload.expression);
+            client.query(Queries.addCheckinForDropin(dropinID, payload), function (err, result) {
                 done();
                 if (err) {
                     return callback(err);
@@ -534,13 +534,13 @@ var query = {
         });
     },
 
-    createCaseNote: function (postgres, payload, callback) {
+    getCheckInForDropin: function (postgres, dropinID, callback) {
         postgres.connect(function (err, client, done) {
             if (err) {
                 return callback(err);
             }
+            client.query(Queries.getCheckInForDropin(dropinID), function (err, result) {
 
-            client.query(Queries.createCaseNote(payload), function (err, result) {
                 done();
                 if (err) {
                     return callback(err);
@@ -551,13 +551,13 @@ var query = {
         });
     },
 
-    getCheckInForDropin: function (postgres, dropinID, callback) {
+    createCaseNote: function (postgres, payload, callback) {
         postgres.connect(function (err, client, done) {
             if (err) {
                 return callback(err);
             }
-            client.query(Queries.getCheckInForDropin(dropinID), function (err, result) {
 
+            client.query(Queries.createCaseNote(payload), function (err, result) {
                 done();
                 if (err) {
                     return callback(err);
