@@ -172,6 +172,7 @@ var query = {
             if (err) {
                 return callback(err);
             }
+            console.log(payload);
             client.query(Queries.createDropIn(payload), function (err, result) {
                 done();
                 if (err) {
@@ -504,8 +505,8 @@ var query = {
             if (err) {
                 return callback(err);
             }
-
-            client.query(Queries.addCheckinForDropin(dropinID, payload), function (err, result) {
+            var parsedPayload = JSON.parse(payload.expression);
+            client.query(Queries.addCheckinForDropin(dropinID, parsedPayload), function (err, result) {
                 done();
                 if (err) {
                     return callback(err);

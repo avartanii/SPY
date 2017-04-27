@@ -193,23 +193,29 @@ describe('Dropins', () => {
   });
 
   it('creates a new dropin session', () => {
-    return request(SPY.listener)
-      .post('/api/dropins')
-      .send({
-        date: new Date()
-      })
-      .expect(201)
-      .then((response) => {
-        return request(SPY.listener)
-          .post('/api/dropins')
-          .send({
-            date: new Date()
-          })
-          .expect(201)
-          .then((response) => {
-            // console.log(response);
-          });
-      });
+    return Promise.all([
+      postRequest('/api/dropins', { date: new Date() }).expect(201),
+      postRequest('/api/dropins', { date: new Date() }).expect(201)
+    ]).then(() => {
+
+    });
+    // return request(SPY.listener)
+    //   .post('/api/dropins')
+    //   .send({
+    //     date: new Date()
+    //   })
+    //   .expect(201)
+    //   .then((response) => {
+    //     return request(SPY.listener)
+    //       .post('/api/dropins')
+    //       .send({
+    //         date: new Date()
+    //       })
+    //       .expect(201)
+    //       .then((response) => {
+    //         // console.log(response);
+    //       });
+    //   });
   });
 
   it('retrieves all dropin sessions', () => {
@@ -251,45 +257,72 @@ describe("Client Checkin", () => {
   });
 
   it("checks clients into dropin", () => {
-    return request(SPY.listener)
-      .post('/api/clients')
-      .send({
+    return Promise.all([
+      postRequest('/api/clients', {
           expression: JSON.stringify({
               firstname: "John",
               lastname: "Doe"
           })
-      })
-      .expect(201)
-      .then((response) => {
-        request(SPY.listener)
-          .post('/api/clients')
-          .send({
-              expression: JSON.stringify({
-                  firstname: "Alice",
-                  lastname: "Smith"
-              })
+      }).expect(201),
+      postRequest('/api/clients', {
+          expression: JSON.stringify({
+              firstname: "Alice",
+              lastname: "Smith"
           })
-          .expect(201)
-          .then((response) => {
-            return request(SPY.listener)
-              .post('/api/dropins')
-              .send({
-                date: new Date()
-              })
-              .expect(201)
-              .then((response) => {
-                return request(SPY.listener)
-                  .post('/dropins/1/checkin')
-                  .set('contentType', 'application/json')
-                  .set('dataType', 'json')
-                  .send(JSON.stringify({ clients: [1, 2] }))
-                  .expect(201)
-                  .then((response) => {
-                    console.log(response.body);
-                  });
-              });
-          });
-      });
+      }).expect(201),
+      postRequest('/api/dropins', {
+        date: new Date()
+      }).expect(201),
+    ]).then(() => {
+      return request(SPY.listener)
+        .post('/api/dropins/1/checkin')
+        .set('contentType', 'application/json')
+        .set('dataType', 'json')
+        .send({ expression: JSON.stringify({ clients: [1, 2] }) })
+        .expect(201)
+        .then((response) => {
+          console.log(response.body);
+        });
+    });
+    // return request(SPY.listener)
+    //   .post('/api/clients')
+    //   .send({
+    //       expression: JSON.stringify({
+    //           firstname: "John",
+    //           lastname: "Doe"
+    //       })
+    //   })
+    //   .expect(201)
+    //   .then((response) => {
+    //     request(SPY.listener)
+    //       .post('/api/clients')
+    //       .send({
+    //           expression: JSON.stringify({
+    //               firstname: "Alice",
+    //               lastname: "Smith"
+    //           })
+    //       })
+    //       .expect(201)
+    //       .then((response) => {
+    //         return request(SPY.listener)
+    //           .post('/api/dropins')
+    //           .send({
+    //             date: new Date()
+    //           })
+    //           .expect(201)
+    //           .then((response) => {
+    //             return request(SPY.listener)
+    //               .post('/dropins/1/checkin')
+    //               .set('contentType', 'application/json')
+    //               .set('dataType', 'json')
+    //               .send(JSON.stringify({ clients: [1, 2] }))
+    //               .expect(201)
+    //               .then((response) => {
+    //                 console.log(response.body);
+    //               });
+    //           });
+      //     });
+      // });
   });
 });
 
@@ -366,25 +399,37 @@ describe('Users', () => {
 
 
   it('creates new users', () => {
-    return request(SPY.listener)
-      .post('/api/users')
-      .send({
+    return Promise.all([
+      postRequest('/api/users', {
         username: 'testusername',
         password: 'hereisapassword'
-      })
-      .expect(201)
-      .then((response) => {
-        return request(SPY.listener)
-          .post('/api/users')
-          .send({
-            username: 'anothertestusername',
-            password: 'hereisanotherpassword'
-          })
-          .expect(201)
-          .then((response) => {
+      }).expect(201),
+      postRequest('/api/users', {
+        username: 'anothertestusername',
+        password: 'hereisanotherpassword'
+      }).expect(201)
+    ]).then(() => {
 
-          });
-      });
+    });
+    // return request(SPY.listener)
+    //   .post('/api/users')
+    //   .send({
+    //     username: 'testusername',
+    //     password: 'hereisapassword'
+    //   })
+    //   .expect(201)
+    //   .then((response) => {
+    //     return request(SPY.listener)
+    //       .post('/api/users')
+    //       .send({
+    //         username: 'anothertestusername',
+    //         password: 'hereisanotherpassword'
+    //       })
+    //       .expect(201)
+    //       .then((response) => {
+    //
+    //       });
+    //   });
   });
 
   it('retrieves users', () => {
@@ -417,24 +462,30 @@ describe('Roles', () => {
   });
 
   it('creates roles', () => {
-    return request(SPY.listener)
-      .post('/api/roles')
-      .send({
-        name: 'intern'
-      })
-      .expect(201)
-      .then((response) => {
-        console.log(response.body);
-        return request(SPY.listener)
-          .post('/api/roles')
-          .send({
-            name: 'volunteer'
-          })
-          .expect(201)
-          .then((response) => {
+    return Promise.all([
+      postRequest('/api/roles', { name: 'intern' }).expect(201),
+      postRequest('/api/roles', { name: 'volunteer' }).expect(201),
+    ]).then(() => {
 
-          });
-      });
+    });
+    // return request(SPY.listener)
+    //   .post('/api/roles')
+    //   .send({
+    //     name: 'intern'
+    //   })
+    //   .expect(201)
+    //   .then((response) => {
+    //     console.log(response.body);
+    //     return request(SPY.listener)
+    //       .post('/api/roles')
+    //       .send({
+    //         name: 'volunteer'
+    //       })
+    //       .expect(201)
+    //       .then((response) => {
+    //
+    //       });
+    //   });
   });
 
   it('retrieves all roles', () => {
@@ -447,48 +498,49 @@ describe('Roles', () => {
   });
 
   it('assigns roles to users', () => {
-    // postRequest('/api/users', { username: 'testusername', password: 'hereisapassword' }).expect(201)
-    //   .then(() => postRequest('/api/users', { username: 'anothertestusername', password: 'hereisanotherpassword' }).expect(201))
-    //   .then(() => postRequest('/api/users/1/roles', { roleid: 5 }).expect(201))
-    //   .then(() => postRequest('/api/users/2/roles', { roleid: 6 }).expect(201))
-    //   .then((response) => {
-    //
-    //   });
-    return request(SPY.listener)
-      .post('/api/users')
-      .send({
-        username: 'testusername',
-        password: 'hereisapassword'
-      })
-      .expect(201)
-      .then((response) => {
-        return request(SPY.listener)
-          .post('/api/users')
-          .send({
-            username: 'anothertestusername',
-            password: 'hereisanotherpassword'
-          })
-          .expect(201)
-          .then((response) => {
-            return request(SPY.listener)
-              .post('/api/users/1/roles')
-              .send({
-                roleId: 1
-              })
-              .expect(201)
-              .then((response) => {
-                return request(SPY.listener)
-                  .post('/api/users/2/roles')
-                  .send({
-                    roleId: 2
-                  })
-                  .expect(201)
-                  .then((response) => {
+    return Promise.all([
+      postRequest('/api/users', { username: 'testusername', password: 'hereisapassword' }).expect(201),
+      postRequest('/api/users', { username: 'anothertestusername', password: 'hereisanotherpassword' }).expect(201),
+      postRequest('/api/users/1/roles', { roleid: 5 }).expect(201),
+      postRequest('/api/users/2/roles', { roleid: 6 }).expect(201)
+    ]).then(() => {
 
-                  });
-              });
-          });
-      });
+    });
+    // return request(SPY.listener)
+    //   .post('/api/users')
+    //   .send({
+    //     username: 'testusername',
+    //     password: 'hereisapassword'
+    //   })
+    //   .expect(201)
+    //   .then((response) => {
+    //     return request(SPY.listener)
+    //       .post('/api/users')
+    //       .send({
+    //         username: 'anothertestusername',
+    //         password: 'hereisanotherpassword'
+    //       })
+    //       .expect(201)
+    //       .then((response) => {
+    //         return request(SPY.listener)
+    //           .post('/api/users/1/roles')
+    //           .send({
+    //             roleId: 1
+    //           })
+    //           .expect(201)
+    //           .then((response) => {
+    //             return request(SPY.listener)
+    //               .post('/api/users/2/roles')
+    //               .send({
+    //                 roleId: 2
+    //               })
+    //               .expect(201)
+    //               .then((response) => {
+    //
+    //               });
+    //           });
+    //       });
+      // });
   });
 
   it('retrieves roles by user ID', () => {
@@ -532,37 +584,37 @@ describe('Case Notes', () => {
 });
 
 // or Hapi's native inject() function
-describe("View Routes", () => {
-    it("retrieve the main page", (done) => {
-        let options = {
-            method: "GET",
-            url: '/'
-        };
-        SPY.inject(options, (response) => {
-            expect(response.statusCode).to.eql(200);
-            done();
-        });
-    });
-
-    it("retrieve the front desk page", (done) => {
-        let options = {
-            method: "GET",
-            url: '/login'
-        };
-        SPY.inject(options, (response) => {
-            expect(response.statusCode).to.eql(200);
-            done();
-        });
-    });
-
-    it("retrieve the front desk page", (done) => {
-        let options = {
-            method: "GET",
-            url: '/frontdesk'
-        };
-        SPY.inject(options, (response) => {
-            expect(response.statusCode).to.eql(200);
-            done();
-        });
-    });
-});
+// describe("View Routes", () => {
+//     it("retrieve the main page", (done) => {
+//         let options = {
+//             method: "GET",
+//             url: '/'
+//         };
+//         SPY.inject(options, (response) => {
+//             expect(response.statusCode).to.eql(200);
+//             done();
+//         });
+//     });
+//
+//     it("retrieve the front desk page", (done) => {
+//         let options = {
+//             method: "GET",
+//             url: '/login'
+//         };
+//         SPY.inject(options, (response) => {
+//             expect(response.statusCode).to.eql(200);
+//             done();
+//         });
+//     });
+//
+//     it("retrieve the front desk page", (done) => {
+//         let options = {
+//             method: "GET",
+//             url: '/frontdesk'
+//         };
+//         SPY.inject(options, (response) => {
+//             expect(response.statusCode).to.eql(200);
+//             done();
+//         });
+//     });
+// });
