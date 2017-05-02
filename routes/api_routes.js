@@ -221,7 +221,7 @@ var apiRoutes = [
         handler: Api.getCaseNote
     },
     {
-        method: 'POST',
+        method: 'PUT',
         path: '/case_notes/{caseNoteID}',
         handler: Api.editCaseNote
     },

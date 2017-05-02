@@ -582,8 +582,8 @@ var service = {
         });
     },
 
-    editCaseNote: function (postgres, data, callback) {
-        Query.editCaseNote(postgres, data, function (err, result) {
+    editCaseNote: function (postgres, noteID, payload, callback) {
+        Query.editCaseNote(postgres, noteID, payload, function (err, result) {
             if (err) {
                 return callback(err);
             }

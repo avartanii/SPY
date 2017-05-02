@@ -349,7 +349,7 @@ var api = {
     },
 
     editCaseNote: function (request, reply) {
-        Service.editCaseNote(request.postgres, request.payload, function (err, result) {
+        Service.editCaseNote(request.postgres, request.params.caseNoteID, request.payload, function (err, result) {
             if (err) {
                 Respond.failedToEditCaseNote(reply, err);
             } else {

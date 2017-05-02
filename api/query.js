@@ -602,13 +602,13 @@ var query = {
         });
     },
 
-    editCaseNote: function (postgres, payload, callback) {
+    editCaseNote: function (postgres, noteID, payload, callback) {
         postgres.connect(function (err, client, done) {
             if (err) {
                 return callback(err);
             }
 
-            client.query(Queries.editCaseNote(payload), function (err, result) {
+            client.query(Queries.editCaseNote(noteID, payload), function (err, result) {
                 done();
                 if (err) {
                     return callback(err);

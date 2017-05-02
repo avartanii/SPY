@@ -727,15 +727,15 @@ var queries = {
 
     },
 
-    editCaseNote: function (payload) {
+    editCaseNote: function (noteID, payload) {
 
         var queryString = 'UPDATE case_note SET ';
 
-        queryString += 'client_id = ' + '\'' + parseProperty(payload.clientID) + '\'' + ',';
-        queryString += 'case_manager_id = ' + '\'' + parseProperty(payload.caseManagerID) + '\'' + ',';
-        queryString += 'date = ' + '\'' + parseProperty(payload.date) + '\'' + ',';
-        queryString += 'note = ' + '\'' + parseProperty(payload.note) + '\'' + ',';
-        queryString += 'category = ' + '\'' + parseProperty(payload.category) + '\'' + ',';
+        queryString += 'client_id = ' + '\'' + parseProperty(payload.clientID) + '\'' + ', ';
+        queryString += 'case_manager_id = ' + '\'' + parseProperty(payload.caseManagerID) + '\'' + ', ';
+        queryString += 'date = ' + '\'' + parseProperty(payload.date) + '\'' + ', ';
+        queryString += 'note = ' + '\'' + parseProperty(payload.note) + '\'' + ', ';
+        queryString += 'category = ' + '\'' + parseProperty(payload.category) + '\'' + ', ';
         queryString += 'follow_up_needed = ' + '\'' + parseProperty(payload.followUpNeeded) + '\'' + ',';
 
         if (parseProperty(payload.dueDate) === null) {
@@ -750,7 +750,7 @@ var queries = {
             queryString += 'reminder_date = ' + '\'' + parseProperty(payload.reminderDate) + '\'' + ' ';
         }
 
-        queryString += 'WHERE id = ' + '\'' + payload.id + '\'' + ' ';
+        queryString += 'WHERE id = ' + '\'' + noteID + '\'' + ' ';
 
         queryString += 'RETURNING client_id, case_manager_id, date, note, follow_up_needed, due_date, reminder_date;';
 

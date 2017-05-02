@@ -497,6 +497,42 @@ describe('Case Notes', () => {
         expect(response.body.result[0].followUpNeeded).to.equal(true);
       });
   });
+
+  it("retrieves a single Case Note by caseNoteID", () => {
+    return request(SPY.listener)
+      .get('/api/case_notes/notes/4')
+      .expect(200)
+      .then((response) => {
+        expect(response.body.result.length).to.equal(2);
+        expect(response.body.result[0].clientID).to.equal(2);
+        expect(response.body.result[0].caseManagerID).to.equal(1);
+        expect(response.body.result[0].category).to.equal("CM");
+        expect(response.body.result[0].note).to.equal("This is a case note.");
+        expect(response.body.result[0].followUpNeeded).to.equal(true);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  });
+
+  it("edits Case Notes by caseNoteID", () => {
+    return request(SPY.listener)
+      .put('/api/case_notes/2')
+      .send({
+        clientID: 1,
+        caseManagerID: 2,
+        date: new Date(),
+        note: "This is a case note.",
+        category: "CM",
+        followUpNeeded: true
+      })
+      .expect(200)
+      .then(() => {
+
+      });
+  });
+
+
 });
 
 // or Hapi's native inject() function
