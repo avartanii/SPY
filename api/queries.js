@@ -1104,9 +1104,9 @@ var queries = {
         return queryString;
     },
 
-    getFollowUp: function (id) {
+    getFollowUp: function (followupID) {
         var queryString = 'SELECT id, timestamp, note, casemanager_id, ' +
-                          'client_id, location FROM follow_up WHERE id = ' + id + ';';
+                          'client_id, location FROM follow_up WHERE id = ' + followupID + ';';
 
         return queryString;
     },
@@ -1118,14 +1118,14 @@ var queries = {
         return queryString;
     },
 
-    editFollowUp: function (payload) {
+    editFollowUp: function (followupID, payload) {
         var queryString = 'UPDATE follow_up SET ';
         queryString += 'timestamp = \'' + parseProperty(payload.timestamp) + '\', ';
         queryString += 'note = \'' + parseProperty(payload.note) + '\', ';
         queryString += 'casemanager_id = \'' + parseProperty(payload.casemanagerID) + '\', ';
         queryString += 'client_id = \'' + parseProperty(payload.clientID) + '\', ';
         queryString += 'location = \'' + parseProperty(payload.location) + '\' ';
-        queryString += 'WHERE id = ' + payload.id + ';';
+        queryString += 'WHERE id = ' + followupID + ';';
 
         return queryString;
     },

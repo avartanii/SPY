@@ -834,6 +834,96 @@ describe('Settings', () => {
 
 });
 
+describe('Follow Ups', () => {
+  before((done) => {
+    SPY.postgres.connect((error, client, release) => {
+      if (error) {
+        release(error);
+        return done(error);
+      }
+      client.query(`SELECT truncate_tables(\'${SPY.postgres.pool._factory.user}\');`, function (error, result) {
+        if (error) {
+          release();
+          return done(error);
+        }
+        release();
+        return done();
+      });
+    });
+  });
+
+  it('creates follow up appointments', () => {
+    let followup1 = {
+      clientID: 1,
+      casemanagerID: 1,
+      location: 'office',
+      note: 'Here is a note.',
+      timestamp: new Date()
+    };
+    let followup2 = {
+      clientID: 2,
+      casemanagerID: 1,
+      location: 'office',
+      note: 'Here is a note.',
+      timestamp: new Date()
+    };
+    return Promise.all([
+      postRequest('/api/clients', client1).expect(201),
+      postRequest('/api/clients', client2).expect(201),
+      postRequest('/api/users', user1).expect(201)
+    ]).then(() => {
+      return Promise.all([
+        postRequest('/api/followups', followup1).expect(201),
+        postRequest('/api/followups', followup2).expect(201)
+      ]).then(() => {
+
+      });
+    });
+  });
+
+  it('retrives all follow up appointments', () => {
+    return request(SPY.listener)
+      .get('/api/followups')
+      .expect(200)
+      .then((response) => {
+        expect(response.body.result.length).to.equal(2);
+        expect(response.body.result[0].clientID).to.equal(1);
+        expect(response.body.result[0].casemanagerID).to.equal(1);
+        expect(response.body.result[0].location).to.equal('office');
+        expect(response.body.result[0].note).to.equal('Here is a note.');
+      });
+  });
+
+  it('retrieves a specific follow up by followupID', () => {
+    return request(SPY.listener)
+      .get('/api/followups/followup/2')
+      .expect(200)
+      .then((response) => {
+        expect(response.body.result.length).to.equal(2);
+        expect(response.body.result[0].clientID).to.equal(2);
+        expect(response.body.result[0].casemanagerID).to.equal(1);
+        expect(response.body.result[0].location).to.equal('office');
+        expect(response.body.result[0].note).to.equal('Here is a note.');
+      });
+  });
+
+  it('edits a follow up appointment', () => {
+    let followup1 = {
+      clientID: 2,
+      casemanagerID: 1,
+      location: 'office',
+      note: 'Here is a new note.',
+      timestamp: new Date()
+    };
+    return request(SPY.listener)
+      .put('/api/folluwups/2')
+      .send(followup1)
+      .expect(200)
+      .then(() => {
+
+      });
+  });
+});
 // or Hapi's native inject() function
 // describe("View Routes", () => {
 //     it("retrieve the main page", (done) => {

@@ -1223,13 +1223,13 @@ var query = {
             });
         });
     },
-    getFollowUp: function (postgres, id, callback) {
+    getFollowUp: function (postgres, followupID, callback) {
         postgres.connect(function (err, client, done) {
             if (err) {
                 return callback(err);
             }
 
-            client.query(Queries.getFollowUp(id), function (err, result) {
+            client.query(Queries.getFollowUp(followupID), function (err, result) {
                 done();
                 if (err) {
                     return callback(err);
@@ -1253,13 +1253,13 @@ var query = {
             });
         });
     },
-    editFollowUp: function (postgres, payload, callback) {
+    editFollowUp: function (postgres, followupID, payload, callback) {
         postgres.connect(function (err, client, done) {
             if (err) {
                 return callback(err);
             }
 
-            client.query(Queries.editFollowUp(payload), function (err, result) {
+            client.query(Queries.editFollowUp(followupID, payload), function (err, result) {
                 done();
                 if (err) {
                     return callback(err);

@@ -460,7 +460,7 @@ var apiRoutes = [
     },
     {
         method: 'GET',
-        path: '/followups/followup/{id}',
+        path: '/followups/followup/{followupID}',
         handler: Api.getFollowUp
     },
     {
@@ -469,8 +469,8 @@ var apiRoutes = [
         handler: Api.getCaseManagerFollowUps
     },
     {
-        method: 'POST',
-        path: '/followups/{id}',
+        method: 'PUT',
+        path: '/followups/{followupID}',
         handler: Api.editFollowUp
     },
     {

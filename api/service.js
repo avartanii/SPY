@@ -1172,8 +1172,8 @@ var service = {
         });
     },
 
-    getFollowUp: function (postgres, id, callback) {
-        Query.geFollowUp(postgres, id, function (err, result) {
+    getFollowUp: function (postgres, followupID, callback) {
+        Query.geFollowUp(postgres, followupID, function (err, result) {
             if (err) {
                 return callback(err);
             }
@@ -1190,8 +1190,8 @@ var service = {
         });
     },
 
-    editFollowUp: function (postgres, payload, callback) {
-        Query.editFollowUp(postgres, payload, function (err, result) {
+    editFollowUp: function (postgres, followupID, payload, callback) {
+        Query.editFollowUp(postgres, followupID, payload, function (err, result) {
             if (err) {
                 return callback(err);
             }
