@@ -193,23 +193,15 @@ describe('Dropins', () => {
   });
 
   it('creates a new dropin session', () => {
-    return request(SPY.listener)
-      .post('/api/dropins')
-      .send({
-        date: new Date()
-      })
-      .expect(201)
-      .then((response) => {
-        return request(SPY.listener)
-          .post('/api/dropins')
-          .send({
-            date: new Date()
-          })
-          .expect(201)
-          .then((response) => {
-            // console.log(response);
-          });
-      });
+    let dropin = {
+      date: new Date()
+    };
+    return Promise.all([
+      postRequest('/api/dropins', dropin).expect(201),
+      postRequest('/api/dropins', dropin).expect(201)
+    ]).then(() => {
+
+    });
   });
 
   it('retrieves all dropin sessions', () => {
@@ -331,19 +323,19 @@ describe('Activities', () => {
       });
   });
 
-  // it('edits an activity', () => {
-  //   return request(SPY.listener)
-  //     .put('/editactivity')
-  //     .send({
-  //       id: 1,
-  //       activityname: 'Orientation',
-  //       ongoing: false
-  //     })
-  //     .expect(200)
-  //     .then((response) => {
-  //
-  //     });
-  // });
+  it('edits an activity', () => {
+    return request(SPY.listener)
+      .put('/api/editactivity')
+      .send({
+        id: 1,
+        activityname: 'Orientation',
+        ongoing: false
+      })
+      .expect(200)
+      .then((response) => {
+
+      });
+  });
 });
 
 describe('Users', () => {
@@ -532,37 +524,37 @@ describe('Case Notes', () => {
 });
 
 // or Hapi's native inject() function
-describe("View Routes", () => {
-    it("retrieve the main page", (done) => {
-        let options = {
-            method: "GET",
-            url: '/'
-        };
-        SPY.inject(options, (response) => {
-            expect(response.statusCode).to.eql(200);
-            done();
-        });
-    });
-
-    it("retrieve the front desk page", (done) => {
-        let options = {
-            method: "GET",
-            url: '/login'
-        };
-        SPY.inject(options, (response) => {
-            expect(response.statusCode).to.eql(200);
-            done();
-        });
-    });
-
-    it("retrieve the front desk page", (done) => {
-        let options = {
-            method: "GET",
-            url: '/frontdesk'
-        };
-        SPY.inject(options, (response) => {
-            expect(response.statusCode).to.eql(200);
-            done();
-        });
-    });
-});
+// describe("View Routes", () => {
+//     it("retrieve the main page", (done) => {
+//         let options = {
+//             method: "GET",
+//             url: '/'
+//         };
+//         SPY.inject(options, (response) => {
+//             expect(response.statusCode).to.eql(200);
+//             done();
+//         });
+//     });
+//
+//     it("retrieve the front desk page", (done) => {
+//         let options = {
+//             method: "GET",
+//             url: '/login'
+//         };
+//         SPY.inject(options, (response) => {
+//             expect(response.statusCode).to.eql(200);
+//             done();
+//         });
+//     });
+//
+//     it("retrieve the front desk page", (done) => {
+//         let options = {
+//             method: "GET",
+//             url: '/frontdesk'
+//         };
+//         SPY.inject(options, (response) => {
+//             expect(response.statusCode).to.eql(200);
+//             done();
+//         });
+//     });
+// });
