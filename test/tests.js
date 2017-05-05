@@ -369,7 +369,6 @@ describe('Activities', () => {
       });
   });
 
-  it()
 });
 
 describe('Users', () => {
