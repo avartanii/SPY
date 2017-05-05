@@ -532,7 +532,6 @@ describe('Case Notes', () => {
       });
   });
 
-
 });
 
 
@@ -707,14 +706,15 @@ describe('Flags', () => {
   });
 
   it('edits a client\'s flag', () => {
+    let flag1 = {
+      flagID: 1,
+      message: 'Here is a flag message',
+      note: 'Here is a flag note',
+      settings: { checkinalert: true }
+    };
     return request(SPY.listener)
       .put('/api/flags')
-      .send({
-        flagID: 1,
-        message: 'Here is a flag message',
-        note: 'Here is a flag note',
-        settings: { checkinalert: true }
-      })
+      .send(flag1)
       .expect(200)
       .then(() => {
 
@@ -735,6 +735,37 @@ describe('Flags', () => {
 });
 
 describe('Settings', () => {
+  before((done) => {
+    SPY.postgres.connect((error, client, release) => {
+      if (error) {
+        release(error);
+        return done(error);
+      }
+      client.query(`SELECT truncate_tables(\'${SPY.postgres.pool._factory.user}\');`, function (error, result) {
+        if (error) {
+          release();
+          return done(error);
+        }
+        release();
+        return done();
+      });
+    });
+  });
+
+  it('retrieves user settings by userId', () => {
+    return Promise.all([
+      postRequest('/api/users', user1).expect(201)
+    ]).then(() => {
+      return request(SPY.listener)
+        .get('/api/users/1/settings')
+        .expect(200)
+        .then((response) => {
+          expect(response.body.result.length).to.equal(1);
+          expect(response.body.result[0].userID).to.equal(1);
+          expect(response.body.result[0].settingsData).to.be.a('null');
+        });
+    });
+  });
 
 });
 
