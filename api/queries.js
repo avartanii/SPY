@@ -713,7 +713,7 @@ var queries = {
     getClientCaseNotes: function (clientID) {
         var queryString = 'SELECT n.id, client_id, case_manager_id, date, category, first_name, ' +
             'last_name, note, follow_up_needed, due_date, reminder_date FROM case_note n LEFT JOIN ' +
-            'casemanager m ON n.case_manager_id = m.id WHERE client_id = ' + clientID + ';';
+            'users m ON n.case_manager_id = m.id WHERE client_id = ' + clientID + ';';
 
         return queryString;
     },
@@ -727,15 +727,15 @@ var queries = {
 
     },
 
-    editCaseNote: function (payload) {
+    editCaseNote: function (noteID, payload) {
 
         var queryString = 'UPDATE case_note SET ';
 
-        queryString += 'client_id = ' + '\'' + parseProperty(payload.clientID) + '\'' + ',';
-        queryString += 'case_manager_id = ' + '\'' + parseProperty(payload.caseManagerID) + '\'' + ',';
-        queryString += 'date = ' + '\'' + parseProperty(payload.date) + '\'' + ',';
-        queryString += 'note = ' + '\'' + parseProperty(payload.note) + '\'' + ',';
-        queryString += 'category = ' + '\'' + parseProperty(payload.category) + '\'' + ',';
+        queryString += 'client_id = ' + '\'' + parseProperty(payload.clientID) + '\'' + ', ';
+        queryString += 'case_manager_id = ' + '\'' + parseProperty(payload.caseManagerID) + '\'' + ', ';
+        queryString += 'date = ' + '\'' + parseProperty(payload.date) + '\'' + ', ';
+        queryString += 'note = ' + '\'' + parseProperty(payload.note) + '\'' + ', ';
+        queryString += 'category = ' + '\'' + parseProperty(payload.category) + '\'' + ', ';
         queryString += 'follow_up_needed = ' + '\'' + parseProperty(payload.followUpNeeded) + '\'' + ',';
 
         if (parseProperty(payload.dueDate) === null) {
@@ -750,7 +750,7 @@ var queries = {
             queryString += 'reminder_date = ' + '\'' + parseProperty(payload.reminderDate) + '\'' + ' ';
         }
 
-        queryString += 'WHERE id = ' + '\'' + payload.id + '\'' + ' ';
+        queryString += 'WHERE id = ' + '\'' + noteID + '\'' + ' ';
 
         queryString += 'RETURNING client_id, case_manager_id, date, note, follow_up_needed, due_date, reminder_date;';
 
@@ -812,8 +812,7 @@ var queries = {
       return queryString;
     },
     assignRoleToUser: function (userId, payload) {
-      var queryString = 'INSERT INTO role_assignments (user_id, role_id) VALUES (' +
-                        userId + ', ' + payload.roleId + ') RETURNING id, user_id, role_id;';
+      var queryString = `INSERT INTO role_assignments (user_id, role_id) VALUES (${userId}, ${payload.roleId}) RETURNING id, user_id, role_id;`;
 
       return queryString;
     },
@@ -1105,9 +1104,9 @@ var queries = {
         return queryString;
     },
 
-    getFollowUp: function (id) {
+    getFollowUp: function (followupID) {
         var queryString = 'SELECT id, timestamp, note, casemanager_id, ' +
-                          'client_id, location FROM follow_up WHERE id = ' + id + ';';
+                          'client_id, location FROM follow_up WHERE id = ' + followupID + ';';
 
         return queryString;
     },
@@ -1119,14 +1118,14 @@ var queries = {
         return queryString;
     },
 
-    editFollowUp: function (payload) {
+    editFollowUp: function (followupID, payload) {
         var queryString = 'UPDATE follow_up SET ';
         queryString += 'timestamp = \'' + parseProperty(payload.timestamp) + '\', ';
         queryString += 'note = \'' + parseProperty(payload.note) + '\', ';
         queryString += 'casemanager_id = \'' + parseProperty(payload.casemanagerID) + '\', ';
         queryString += 'client_id = \'' + parseProperty(payload.clientID) + '\', ';
         queryString += 'location = \'' + parseProperty(payload.location) + '\' ';
-        queryString += 'WHERE id = ' + payload.id + ';';
+        queryString += 'WHERE id = ' + followupID + ';';
 
         return queryString;
     },

@@ -135,7 +135,7 @@ $(function (event) {
                     xhr.setRequestHeader('Authorization', localStorage.getItem("authorization"));
                 },
                 url: 'api/case_notes/' + data.id,
-                method: 'POST',
+                method: 'PUT',
                 data: data,
                 success: function (data) {
                     console.log(data);
@@ -196,7 +196,7 @@ $(function (event) {
                     } else {
                         table = $('#casenotes').DataTable();
                     }
-                    
+
                     // manually add placeholder for search bar on checkin table
                     $('#casenotes_filter input').prop("placeholder", "Search Case Notes");
 
@@ -208,7 +208,7 @@ $(function (event) {
                             '</label></div>')
                         .find('div').wrap('<div class="col-sm-6"></div>');
                     }
-                    
+
                     var options = [];
 
                     Object.keys(notes[0]).forEach(function (propName, index) {
@@ -241,7 +241,7 @@ $(function (event) {
                     });
 
                     $('#column-select').multiselect('dataprovider', options);
-                    
+
                     // preselecting default column visibility
                     // later this data will come from local settings
                     table.columns().every(function () { // every() is built-in from Datatables
@@ -427,7 +427,6 @@ $(function (event) {
             dueDate = $('#due-date-edit')['0'] === undefined ? null : $('#due-date-edit')['0'].value;
             reminderDate = $('#reminder-date-edit')['0'] === undefined ? null : $('#reminder-date-edit')['0'].value;
             var data = {
-                id: noteID,
                 clientID: clientID,
                 caseManagerID: caseManagerID,
                 date: date,
@@ -442,7 +441,7 @@ $(function (event) {
 
             editNote(data);
         });
-            
+
         var populateClientFlags = function () {
             $.ajax({
                 xhrFields: {
@@ -887,7 +886,7 @@ $(function (event) {
         window.viewClientRefresh.push(refreshCaseNotes);
     };
 
-    
+
 
     var globalData = [];
     globalData.push(window.sessionStorage.flagTypes);
