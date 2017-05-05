@@ -535,6 +535,22 @@ describe('Case Notes', () => {
 
 });
 
+
+describe('Notifications', () => {
+
+  it('creates a Notification by userId', () => {
+
+  });
+
+  it('retrieves all notifications for a user by userId', () => {
+
+  });
+
+  it('retrieves a specifica notification by notificationId', () => {
+
+  });
+});
+
 // or Hapi's native inject() function
 // describe("View Routes", () => {
 //     it("retrieve the main page", (done) => {
