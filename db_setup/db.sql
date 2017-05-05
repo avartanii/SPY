@@ -632,6 +632,14 @@ INSERT INTO match_roles_paths_verbs (role_id, path_id, verb_id) VALUES (1, 3, 1)
 INSERT INTO match_roles_paths_verbs (role_id, path_id, verb_id) VALUES (1, 3, 2);
 INSERT INTO match_roles_paths_verbs (role_id, path_id, verb_id) VALUES (1, 3, 3);
 INSERT INTO match_roles_paths_verbs (role_id, path_id, verb_id) VALUES (1, 3, 4);
+INSERT INTO match_roles_paths_verbs (role_id, path_id, verb_id) VALUES (1, 4, 1);
+INSERT INTO match_roles_paths_verbs (role_id, path_id, verb_id) VALUES (1, 4, 2);
+INSERT INTO match_roles_paths_verbs (role_id, path_id, verb_id) VALUES (1, 4, 3);
+INSERT INTO match_roles_paths_verbs (role_id, path_id, verb_id) VALUES (1, 4, 4);
+INSERT INTO match_roles_paths_verbs (role_id, path_id, verb_id) VALUES (1, 5, 1);
+INSERT INTO match_roles_paths_verbs (role_id, path_id, verb_id) VALUES (1, 5, 2);
+INSERT INTO match_roles_paths_verbs (role_id, path_id, verb_id) VALUES (1, 5, 3);
+INSERT INTO match_roles_paths_verbs (role_id, path_id, verb_id) VALUES (1, 5, 4);
 
 DROP TABLE IF EXISTS users;
 
