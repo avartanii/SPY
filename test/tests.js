@@ -595,7 +595,7 @@ describe('Notifications', () => {
       .get('/api/users/1/notifications')
       .expect(200)
       .then((user1response) => {
-        expect(user1response.body.result).to.equal(2);
+        expect(user1response.body.result.length).to.equal(2);
         expect(user1response.body.result[0].type).to.equal('Follow-up');
         expect(user1response.body.result[0].comment).to.equal('needs a follow up');
         expect(user1response.body.result[0].link).to.equal('#');
@@ -604,7 +604,7 @@ describe('Notifications', () => {
           .get('/api/users/2/notifications')
           .expect(200)
           .then((user2response) => {
-            expect(user2response.body.result).to.equal(2);
+            expect(user2response.body.result.length).to.equal(2);
             expect(user2response.body.result[0].type).to.equal('Meeting');
             expect(user2response.body.result[0].comment).to.equal('this is a quick message');
             expect(user2response.body.result[0].link).to.equal('#');
@@ -618,7 +618,7 @@ describe('Notifications', () => {
       .get('/api/users/1/notifications/2')
       .expect(200)
       .then((response) => {
-        expect(response.body.result).to.equal(2);
+        expect(response.body.result.length).to.equal(2);
         expect(response.body.result[0].type).to.equal('Meeting');
         expect(response.body.result[0].comment).to.equal('this is a quick message');
         expect(response.body.result[0].link).to.equal('#');
@@ -647,27 +647,90 @@ describe('Flags', () => {
   });
 
   it('creates a flag type', () => {
+    let flagtype1 = {
+      name: 'Follow-up',
+      color: '#02AEF0',
+      settings: {}
+    };
+    let flagtype2 = {
+      name: 'Checked-in',
+      color: '#02AEF0',
+      settings: {}
+    };
+    return Promise.all([
+      postRequest('/api/flags/types', flagtype1).expect(201),
+      postRequest('/api/flags/types', flagtype2).expect(201)
+    ]).then(() => {
 
-  });
-
-  it('edits flag types', () => {
-
+    });
   });
 
   it('retrieves all flag types', () => {
-
+    return request(SPY.listener)
+      .get('/api/flags/types')
+      .expect(200)
+      .then((response) => {
+        expect(response.body.result.length).to.equal(2);
+        expect(response.body.result[0].name).to.equal('Follow-up');
+        expect(response.body.result[0].color).to.equal('#02AEF0');
+        expect(response.body.result[0].settings).to.equal({});
+      });
   });
 
-  it('sets a flag for a client', () => {
+  it('edits flag types', () => {
+    return request(SPY.listener)
+      .put('/api/flags/types/2')
+      .send({ typeName: 'CM', color: '#02AEF0' })
+      .expect(201)
+      .then(() => {
 
+      });
+  });
+
+
+
+  it('sets a flag for a client', () => {
+    return Promise.all([
+      postRequest('/api/clients', client1).expect(201)
+    ]).then(() => {
+      return Promise.all([
+        postRequest('/api/clients/1/flags', {
+          typeID: 1,
+          message: 'Here is a flag message',
+          note: 'Here is a flag note',
+          settings: {}
+        })
+      ]).then(() => {
+
+      });
+    });
   });
 
   it('edits a client\'s flag', () => {
+    return request(SPY.listener)
+      .put('/api/flags')
+      .send({
+        flagID: 1,
+        message: 'Here is a flag message',
+        note: 'Here is a flag note',
+        settings: { checkinalert: true }
+      })
+      .expect(200)
+      .then(() => {
 
+      });
   });
 
   it('removes a client\'s flag', () => {
+    return request(SPY.listener)
+      .delete('/api/flags')
+      .send({
+        flagID: 1
+      })
+      .expect(200)
+      .then(() => {
 
+      });
   });
 });
 
