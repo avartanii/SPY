@@ -303,23 +303,55 @@ describe('Activities', () => {
             release();
             return done(error);
           }
-          release();
-          return done();
+          client.query('INSERT INTO program (program_name) VALUES (\'Education&Employment\');', function (error, result) {
+            if (error) {
+              release();
+              return done(error);
+            }
+            release();
+            return done();
+          });
         });
       });
     });
   });
 
   it('creates new activities', () => {
-    return request(SPY.listener)
-      .post('/api/activity')
-      .send({
-        activityname: 'Orientation',
-        programID: 1
-      })
-      .expect(201)
-      .then((response) => {
+    let activity1 = {
+      activityname: 'Orientation',
+      programID: 1
+    };
+    let activity2 = {
+      activityname: 'Gardening',
+      programID: 2
+    };
+    return Promise.all([
+      postRequest('/api/activity', activity1).expect(201),
+      postRequest('/api/activity', activity2).expect(201)
+    ]).then(() => {
 
+    });
+  });
+
+  it('retrieves all activities', () => {
+    return request(SPY.listener)
+      .get('/api/activities')
+      .expect(200)
+      .then((response) => {
+        expect(response.body.result.length).to.equal(2);
+        expect(response.body.result[0].activityname).to.equal('Orientation');
+        expect(response.body.result[0].programID).to.equal(1);
+      });
+  });
+
+  it('retrives an activity by activityID', () => {
+    return request(SPY.listener)
+      .get('/api/activities/2')
+      .expect(200)
+      .then((response) => {
+        expect(response.body.result.length).to.equal(1);
+        expect(response.body.result[0].activityname).to.equal('Gardening');
+        expect(response.body.result[0].programID).to.equal(2);
       });
   });
 
@@ -336,6 +368,8 @@ describe('Activities', () => {
 
       });
   });
+
+  it()
 });
 
 describe('Users', () => {
