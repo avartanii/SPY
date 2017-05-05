@@ -39,19 +39,6 @@ var viewRoutes = [
     },
 
     {
-        path: '/case_notes',
-        method: 'GET',
-        config: {
-            auth: false
-        },
-        handler: function (req, res) {
-            res.view('casenotepage.html', {
-
-            });
-        }
-    },
-
-    {
         path: '/frontdesk',
         method: 'GET',
         config: {
@@ -72,19 +59,6 @@ var viewRoutes = [
         },
         handler: function (req, res) {
             res.view('dropin.html', {
-
-            });
-        }
-    },
-
-    {
-        path: '/outreach',
-        method: 'GET',
-        config: {
-            auth: false
-        },
-        handler: function (req, res) {
-            res.view('outreachhomepage.html', {
 
             });
         }
@@ -176,7 +150,7 @@ var viewRoutes = [
         },
         handler: function (req, res) {
             res.view('profile.html', {
-                
+
             });
         }
     }

@@ -231,4 +231,37 @@ $(function (event) {
     buildOptions(contact, '#okay-to-contact1');
     buildOptions(contact, '#okay-to-contact2');
 
+    var casemanagement = [
+      'still',
+      'working',
+      'on',
+      'status',
+      'labels'
+    ];
+    var educationemployment = [
+      'still',
+      'working',
+      'on',
+      'status',
+      'labels'
+    ];
+    var dropin = [
+      'still',
+      'working',
+      'on',
+      'status',
+      'labels'
+    ];
+    var outreach = [
+      'still',
+      'working',
+      'on',
+      'status',
+      'labels'
+    ];
+
+    buildOptions(casemanagement, '#case-management');
+    buildOptions(educationemployment, '#education-employment');
+    buildOptions(dropin, '#dropin');
+    buildOptions(outreach, '#outreach');
 });

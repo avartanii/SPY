@@ -85,21 +85,6 @@
 */
 
 
--- DROP TABLE IF EXISTS status;
-
--- CREATE TABLE status (
---   id SERIAL PRIMARY KEY,
---   name varchar(45) DEFAULT NULL,
---   color varchar(15) DEFAULT NULL
--- );
-
--- INSERT INTO status (name, color) VALUES ('okay', '#008000'); --rgb(0, 128, 0)
--- INSERT INTO status (name, color) VALUES ('missing', '#0000FF'); --rgb(0, 0, 255)
--- INSERT INTO status (name, color) VALUES ('sick', '#FD9600'); --rgb(253, 150, 0)
--- INSERT INTO status (name, color) VALUES ('vulnerable', '#6A0072'); --rgb(106, 0, 114)
--- INSERT INTO status (name, color) VALUES ('dangerous', '#FB0000'); --rgb(251, 0, 0)
-
-
 DROP TABLE IF EXISTS client;
 
 -- Where are the rest of the intake fields for a client profile?
@@ -530,22 +515,6 @@ INSERT INTO check_in (drop_in_id, client_id) VALUES (2, 7);
 INSERT INTO check_in (drop_in_id, client_id) VALUES (2, 1);
 INSERT INTO check_in (drop_in_id, client_id) VALUES (2, 10);
 
-
--- DROP TABLE IF EXISTS caseplan;
---
--- CREATE TABLE caseplan (
---   id SERIAL PRIMARY KEY,
---   client_id integer REFERENCES client (id),
---   case_manager_id integer REFERENCES casemanager (id),
---   date date DEFAULT CURRENT_DATE,
---   note VARCHAR DEFAULT NULL
--- );
---
--- INSERT INTO caseplan (client_id, case_manager_id, date, category, note, follow_up_needed, due_date, reminder_date) VALUES (1, 1, '2016-10-31', 'CM', 'This is an initial note');
--- INSERT INTO caseplan (client_id, case_manager_id, date, category, note, follow_up_needed, due_date, reminder_date) VALUES (1, 1, '2016-11-15', 'CM', 'This is another initial note');
--- INSERT INTO caseplan (client_id, case_manager_id, date, category, note, follow_up_needed, due_date, reminder_date) VALUES (2, 3, '2016-10-31', 'CM', 'This is an initial note');
--- INSERT INTO caseplan (client_id, case_manager_id, date, category, note, follow_up_needed, due_date, reminder_date) VALUES (2, 2, '2016-10-31', 'CM', 'This is another initial note');
--- INSERT INTO caseplan (client_id, case_manager_id, date, category, note, follow_up_needed, due_date, reminder_date) VALUES (3, 1, '2016-10-31', 'CM', 'This is an initial note');
 DROP TABLE IF EXISTS roles;
 
 CREATE TABLE roles (
