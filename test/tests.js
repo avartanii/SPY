@@ -537,18 +537,95 @@ describe('Case Notes', () => {
 
 
 describe('Notifications', () => {
+  before((done) => {
+    SPY.postgres.connect((error, client, release) => {
+      if (error) {
+        release(error);
+        return done(error);
+      }
+      client.query(`SELECT truncate_tables(\'${SPY.postgres.pool._factory.user}\');`, function (error, result) {
+        if (error) {
+          release();
+          return done(error);
+        }
+        release();
+        return done();
+      });
+    });
+  });
 
   it('creates a Notification by userId', () => {
+    return Promise.all([
+      postRequest('/api/users', user1).expect(201),
+      postRequest('/api/users', user2).expect(201)
+    ]).then(() => {
+      return Promise.all([
+        postRequest('/api/users/1/notifications', {
+          type: 'Follow-up',
+          comment: 'needs a follow up',
+          link: '#',
+          checked: false
+        }),
+        postRequest('/api/users/1/notifications', {
+          type: 'Message',
+          comment: 'this is a quick message',
+          link: '#',
+          checked: false
+        }),
+        postRequest('/api/users/2/notifications', {
+          type: 'Follow-up',
+          comment: 'needs a follow up',
+          link: '#',
+          checked: false
+        }),
+        postRequest('/api/users/2/notifications', {
+          type: 'Message',
+          comment: 'this is a quick message',
+          link: '#',
+          checked: false
+        }),
+      ]).then(() => {
 
+      });
+    });
   });
 
   it('retrieves all notifications for a user by userId', () => {
-
+    return request(SPY.listener)
+      .get('/api/users/1/notifications')
+      .expect(200)
+      .then((user1response) => {
+        expect(user1response.body.result).to.equal(2);
+        expect(user1response.body.result[0].type).to.equal('Follow-up');
+        expect(user1response.body.result[0].comment).to.equal('needs a follow up');
+        expect(user1response.body.result[0].link).to.equal('#');
+        expect(user1response.body.result[0].checked).to.equal(false);
+        return request(SPY.listener)
+          .get('/api/users/2/notifications')
+          .expect(200)
+          .then((user2response) => {
+            expect(user2response.body.result).to.equal(2);
+            expect(user2response.body.result[0].type).to.equal('Meeting');
+            expect(user2response.body.result[0].comment).to.equal('this is a quick message');
+            expect(user2response.body.result[0].link).to.equal('#');
+            expect(user2response.body.result[0].checked).to.equal(false);
+          });
+      });
   });
 
-  it('retrieves a specifica notification by notificationId', () => {
-
+  it('retrieves a specific notification by notificationId', () => {
+    return request(SPY.listener)
+      .get('/api/users/1/notifications/2')
+      .expect(200)
+      .then((response) => {
+        expect(response.body.result).to.equal(2);
+        expect(response.body.result[0].type).to.equal('Meeting');
+        expect(response.body.result[0].comment).to.equal('this is a quick message');
+        expect(response.body.result[0].link).to.equal('#');
+        expect(response.body.result[0].checked).to.equal(false);
+      });
   });
+
 });
 
 // or Hapi's native inject() function
