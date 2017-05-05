@@ -534,6 +534,71 @@ describe('Case Notes', () => {
 
 });
 
+describe('Case Plan', () => {
+  before((done) => {
+    SPY.postgres.connect((error, client, release) => {
+      if (error) {
+        release(error);
+        return done(error);
+      }
+      client.query(`SELECT truncate_tables(\'${SPY.postgres.pool._factory.user}\');`, function (error, result) {
+        if (error) {
+          release();
+          return done(error);
+        }
+        release();
+        return done();
+      });
+    });
+  });
+
+  it('creates a client\'s case plan', () => {
+    let caseplan1 = {
+      clientID: 1,
+      caseManagerID: 1,
+      date: new Date(),
+      note: 'case plan contents'
+    };
+    let caseplan2 = {
+      clientID: 2,
+      caseManagerID: 1,
+      date: new Date(),
+      note: 'case plan contents'
+    };
+    return Promise.all([
+      postRequest('/api/clients', client1).expect(201),
+      postRequest('/api/clients', client2).expect(201),
+      postRequest('/api/users', user1).expect(201)
+    ]).then(() => {
+      return Promise.all([
+        postRequest('/api/clients/1/case_plan', caseplan1).expect(201),
+        postRequest('/api/clients/2/case_plan', caseplan2).expect(201),
+      ]).then(() => {
+
+      });
+    });
+  });
+
+  it('retrieves a client\'s case plan', () => {
+    return request(SPY.listener)
+      .get('/api/clients/1/case_plan')
+      .expect(200)
+      .then((response) => {
+        expect(response.body.result.length).to.equal(1);
+        expect(response.body.result[0].caseplan).to.equal('case plan contents');
+      });
+  });
+
+  it('edits a client\'s case plan', () => {
+    return request(SPY.listener)
+      .put('/api/clients/2/case_plan')
+      .send({ text: 'new case plan text' })
+      .expect(200)
+      .then(() => {
+
+      });
+  });
+});
 
 describe('Notifications', () => {
   before((done) => {
