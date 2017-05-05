@@ -628,6 +628,53 @@ describe('Notifications', () => {
 
 });
 
+describe('Flags', () => {
+  before((done) => {
+    SPY.postgres.connect((error, client, release) => {
+      if (error) {
+        release(error);
+        return done(error);
+      }
+      client.query(`SELECT truncate_tables(\'${SPY.postgres.pool._factory.user}\');`, function (error, result) {
+        if (error) {
+          release();
+          return done(error);
+        }
+        release();
+        return done();
+      });
+    });
+  });
+
+  it('creates a flag type', () => {
+
+  });
+
+  it('edits flag types', () => {
+
+  });
+
+  it('retrieves all flag types', () => {
+
+  });
+
+  it('sets a flag for a client', () => {
+
+  });
+
+  it('edits a client\'s flag', () => {
+
+  });
+
+  it('removes a client\'s flag', () => {
+
+  });
+});
+
+describe('Settings', () => {
+
+});
+
 // or Hapi's native inject() function
 // describe("View Routes", () => {
 //     it("retrieve the main page", (done) => {
