@@ -960,3 +960,14 @@ describe('Case Notes', () => {
 //         });
 //     });
 // });
+
+
+/*
+  Test Notes:
+
+  • istanbul runs mocha
+
+  • when using mocha with istanbul, need to use _mocha
+  ("mocha" is actually a wrapper for "_mocha")
+
+*/
