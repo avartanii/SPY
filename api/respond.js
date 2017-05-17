@@ -410,10 +410,10 @@ var respond = {
     },
     createCaseNote: function (reply, result) {
         reply({
-            statusCode: 200,
+            statusCode: 201,
             message: "Successfully created case note.",
             result: result
-        }).code(200);
+        }).code(201);
     },
     failedToGetClientCaseNotes: function (reply, err) {
         reply({

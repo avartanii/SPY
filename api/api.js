@@ -349,7 +349,7 @@ var api = {
     },
 
     editCaseNote: function (request, reply) {
-        Service.editCaseNote(request.postgres, request.payload, function (err, result) {
+        Service.editCaseNote(request.postgres, request.params.caseNoteID, request.payload, function (err, result) {
             if (err) {
                 Respond.failedToEditCaseNote(reply, err);
             } else {
@@ -922,7 +922,7 @@ var api = {
     },
 
     getFollowUp: function (request, reply) {
-        Service.getFollowUp(request.postgres, request.params.id, function (err, result) {
+        Service.getFollowUp(request.postgres, request.params.followupID, function (err, result) {
             if (err) {
                 Respond.failedToGetFollowUp(reply, err);
             } else {
@@ -942,7 +942,7 @@ var api = {
     },
 
     editFollowUp: function (request, reply) {
-        Service.editFollowUp(request.postgres, request.payload, function (err, result) {
+        Service.editFollowUp(request.postgres, request.params.followupID, request.payload, function (err, result) {
             if (err) {
                 Respond.failedToEditFollowUp(reply, err);
             } else {

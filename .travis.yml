@@ -15,8 +15,6 @@ env:
 script:
 - npm run travis-test
 - npm run lint
-after_script:
-- npm run codecov
 notifications:
   email: false
   slack:
