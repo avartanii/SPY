@@ -37,12 +37,12 @@ npm install
 
 ### Config Files Required
 
-*A shortcut to ensuring you have the correct config folder is to get the most recent config folder from a fellow team member on Slack.
-The most recent config is from _May 17_.*
+**A shortcut to ensuring you have the correct config folder is to get the most recent config folder from a fellow team member on Slack.
+The most recent config is from _May 17_.**
 
 Note: brackets {} indicate values that should be filled in by the developer
 
-##### Add a `config` _folder_ to the top-level of the SPY directory.
+#### Add a `config` _folder_ to the top-level of the SPY directory.
 
 Have a SQL file `create_spy.sql` in the config folder that creates the database with the following lines of SQL.
 ```
@@ -73,9 +73,9 @@ export TEST_DB={TEST_DB}
 echo 'Environment Variables Set'
 ```
 
-*Note: The environment variables in `set_test_env.sh` must be the same as their corresponding values in `create_spy_test.sh`.*
+**Note: The environment variables in `set_test_env.sh` must be the same as their corresponding values in `create_spy_test.sh`.**
 
-##### Add a `.env` _file_ to the top-level of the SPY directory.
+#### Add a `.env` _file_ to the top-level of the SPY directory.
 (filename is `.env` exactly)
 
 Within `.env` add the following lines with their appropriate values.
@@ -129,8 +129,8 @@ npm run lint
 
 To view a coverage report, run `npm test`, then `npm run report`, then open up `coverage/lcov-report/index.html` in a webbrowser
 
-[version-img]: https://img.shields.io/badge/version-beta%202-yellow.svg
-[version-url]: https://github.com/SirSeim/spy
+[version-img]: https://img.shields.io/badge/version-alpha%204-red.svg
+[version-url]: https://github.com/cf7/SPY
 
 [build-img]: https://travis-ci.org/cf7/SPY.svg?branch=master
 [build-url]: https://travis-ci.org/cf7/SPY
@@ -138,11 +138,11 @@ To view a coverage report, run `npm test`, then `npm run report`, then open up `
 [codecov-img]: https://codecov.io/gh/SirSeim/spy/branch/master/graph/badge.svg
 [codecov-url]: https://codecov.io/gh/SirSeim/spy
 
-[dependency-img]: https://david-dm.org/SirSeim/spy.svg
-[dependency-url]: https://david-dm.org/SirSeim/spy
+[dependency-img]: https://david-dm.org/cf7/SPY.svg
+[dependency-url]: https://david-dm.org/cf7/SPY
 
-[dev-dependency-img]: https://david-dm.org/SirSeim/spy/dev-status.svg
-[dev-dependency-url]: https://david-dm.org/SirSeim/spy?type=dev
+[dev-dependency-img]: https://david-dm.org/cf7/SPY/dev-status.svg
+[dev-dependency-url]: https://david-dm.org/cf7/SPY?type=dev
 
 [snyk-img]: https://snyk.io/test/github/SirSeim/spy.git/badge.svg
 [snyk-url]: https://snyk.io/test/github/SirSeim/spy.git

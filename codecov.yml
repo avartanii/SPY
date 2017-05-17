@@ -36,6 +36,7 @@ coverage:
     - coverage/.*
     - docs/.*
     - resources/.*
+    - config/.*
 
 comment:
   layout: "header, diff, changes, sunburst, uncovered, tree"
