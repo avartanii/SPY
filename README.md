@@ -4,8 +4,6 @@
 [![Codecov][codecov-img]][codecov-url]
 [![Dependency Status][dependency-img]][dependency-url]
 [![Dev Dependency Status][dev-dependency-img]][dev-dependency-url]
-[![Known Vulnerabilities][snyk-img]][snyk-url]
-
 
 [Read our Project Proposal](docs/Project_Proposal.md)
 
