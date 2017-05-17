@@ -2,7 +2,7 @@ codecov:
   branch: master
 
 coverage:
-  
+
   precision: 2
   round: down
   range: "60...100"
@@ -12,16 +12,13 @@ coverage:
       default:
         target: auto
         threshold: 1
-        branches: *
 
     patch:
       default:
         target: auto
-        branches: *
 
     changes:
       default:
-        branches: *
 
   ignore:
     - test/.*
