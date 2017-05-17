@@ -4,6 +4,7 @@
 [![Codecov][codecov-img]][codecov-url]
 [![Dependency Status][dependency-img]][dependency-url]
 [![Dev Dependency Status][dev-dependency-img]][dev-dependency-url]
+[![nsp][nsp-img]][nsp-url]
 
 [Read our Project Proposal](docs/Project_Proposal.md)
 
@@ -141,3 +142,6 @@ To view a coverage report, run `npm test`, then `npm run report`, then open up `
 
 [dev-dependency-img]: https://david-dm.org/cf7/SPY/dev-status.svg
 [dev-dependency-url]: https://david-dm.org/cf7/SPY?type=dev
+
+[nsp-img]: https://nodesecurity.io/orgs/spy-database-app/projects/a5e92551-7ea6-4500-bc8f-cedca8b8b409/badge
+[nsp-url]: https://nodesecurity.io/orgs/spy-database-app/projects/a5e92551-7ea6-4500-bc8f-cedca8b8b409
