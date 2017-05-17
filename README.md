@@ -17,6 +17,9 @@
 
 [Read our Detailed Design Specification](docs/Detailed_Design_Specification.md)
 
+Note: Commands shown below are run with bash in the terminal on Mac OS or git bash in the commandline on Windows
+(Of course, also make sure you have the git commandline tools installed for either operating system.)
+
 ### Requirements
 Install `npm` and `postgres` if you don't already have them installed
 ```
@@ -27,28 +30,63 @@ brew install postgresql
 ### Installation
 download and install packages
 ```
-git clone https://github.com/SirSeim/spy.git
-cd spy
+git clone https://github.com/cf7/SPY.git
+cd SPY
 npm install
 ```
 
-configure database with user and database for project by having `config/create_spy.sql`
+### Config Files Required
+
+*A shortcut to ensuring you have the correct config folder is to get the most recent config folder from a fellow team member on Slack.
+The most recent config is from _May 17_.*
+
+Note: brackets {} indicate values that should be filled in by the developer
+
+##### Add a `config` _folder_ to the top-level of the SPY directory.
+
+Have a SQL file `create_spy.sql` in the config folder that creates the database with the following lines of SQL.
 ```
 CREATE USER {user} WITH PASSWORD '{password}';
-CREATE DATABASE {db, default spy} OWNER {user};
+CREATE DATABASE {dbname, default spy} OWNER {user};
 ALTER USER {user} WITH SUPERUSER;
-GRANT ALL PRIVILEGES ON DATABASE "{db, default spy}" to "{user}";
+GRANT ALL PRIVILEGES ON DATABASE '{dbname, default spy}' to '{user}';
 ```
 
-configure server with database access by having `config/set_env.sh`
+Have another SQL file `create_spy_test.sql` in the config folder that creates the test database with the following lines of SQL.
 ```
-echo 'postgres://{user}:{password}@{host, default localhost}:{port, default 5432}/{db, default spy}'
+CREATE USER {TEST_DB_USERNAME};
+CREATE DATABASE {TEST_DB} OWNER '{TEST_DB_USERNAME}';
+ALTER USER {TEST_DB_USERNAME} WITH SUPERUSER;
+GRANT ALL PRIVILEGES ON DATABASE '{TEST_DB}' to '{TEST_DB_USERNAME}';
 ```
 
-Alternately, get the most recent config folder from Team member/Slack.
-The most recent config is from _Oct, 30_.
+Have a bash shell script file `set_test_env.sh` in the config folder that sets the test environment variables with the following lines.
+```
+#!/bin/bash
 
-### Using Database
+export TEST_DATABASE_URL=postgres://{TEST_DB_USERNAME}@localhost:{db_portnumber}/{TEST_DB}
+export TEST_USERNAME=testusername   # different! login credentials for an actual user account in the app
+export TEST_PASSWORD=secretpassword # different! login credentials for an actual user account in the app
+export TEST_PORT={clientside_portnumber}
+export TEST_DB_USERNAME={TEST_DB_USERNAME}
+export TEST_DB={TEST_DB}
+echo 'Environment Variables Set'
+```
+
+*Note: The environment variables in `set_test_env.sh` must be the same as their corresponding values in `create_spy_test.sh`.*
+
+##### Add a `.env` _file_ to the top-level of the SPY directory.
+(filename is `.env` exactly)
+
+Within `.env` add the following lines with their appropriate values.
+```
+DATABASE_URL=postgres://{username}:{password}@localhost:{db_portnumber}/{dbname}
+SPY_KEY={secret key}
+NODE_ENV=development
+PORT={clientside_portnumber}
+```
+
+### Using the PostgreSQL Database
 
 Initialize PostgreSQL for spy
 ```
