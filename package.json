@@ -10,7 +10,7 @@
     "start": "if [ -f node_modules/.bin/../../.env ]; then node server.js; else node server.js; fi;",
     "nodemon": "nodemon -e js,json,html,css server.js",
     "test": "npm run db-stop; source test/test_db.sh; export NODE_ENV=test; istanbul cover _mocha --recursive ./test; npm run db-stop;",
-    "travis-test": "test/test_db.sh; NODE_ENV=test istanbul cover _mocha --recursive ./test;",
+    "travis-test": "test/test_db.sh; NODE_ENV=test istanbul cover _mocha --recursive ./test; codecov;",
     "lint": "eslint server.js **/*.js",
     "report": "istanbul report",
     "report-summary": "istanbul report text-summary lcov",
