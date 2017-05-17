@@ -12,9 +12,13 @@ addons:
 sudo: required
 env:
 - TRAVIS=travis CXX=g++-4.8
+before_install:
+  - npm install codecov
 script:
 - npm run travis-test
 - npm run lint
+after_success:
+  -  codecov --file coverage/lcov.info --disable search
 notifications:
   email: false
   slack:
