@@ -135,14 +135,11 @@ To view a coverage report, run `npm test`, then `npm run report`, then open up `
 [build-img]: https://travis-ci.org/cf7/SPY.svg?branch=master
 [build-url]: https://travis-ci.org/cf7/SPY
 
-[codecov-img]: https://codecov.io/gh/SirSeim/spy/branch/master/graph/badge.svg
-[codecov-url]: https://codecov.io/gh/SirSeim/spy
+[codecov-img]: https://codecov.io/gh/cf7/SPY/branch/master/graph/badge.svg
+[codecov-url]: https://codecov.io/gh/cf7/SPY
 
 [dependency-img]: https://david-dm.org/cf7/SPY.svg
 [dependency-url]: https://david-dm.org/cf7/SPY
 
 [dev-dependency-img]: https://david-dm.org/cf7/SPY/dev-status.svg
 [dev-dependency-url]: https://david-dm.org/cf7/SPY?type=dev
-
-[snyk-img]: https://snyk.io/test/github/SirSeim/spy.git/badge.svg
-[snyk-url]: https://snyk.io/test/github/SirSeim/spy.git
