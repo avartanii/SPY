@@ -10,9 +10,6 @@ class Settings extends React.Component {
                     "Create New Activity",
                     "Import Data"];
 
-
-    this.notificationTypes = JSON.parse(window.sessionStorage.notificationTypes);
-
     // as of ES6 and React 15.5.0, we have to explicitly bind "this" in the constructor
     // so that handler functions have access to it, otherwise "this" is undefined
     // ES6 doesn't bind "this" automatically
@@ -65,7 +62,7 @@ class Settings extends React.Component {
   tabContent() {
     let contents = [
       <AccountSettings />,
-      <NotificationSettings notificationTypes={this.notificationTypes}/>,
+      <NotificationSettings />,
       <ClientProfileSettings />,
       <NewActivitySettings />,
       <ImportDataSettings />
@@ -165,6 +162,8 @@ class NotificationSettings extends React.Component {
       settingsStates: {}
     };
 
+    this.notificationTypes = JSON.parse(window.sessionStorage.notificationTypes);
+
     // this.componentDidMount = this.componentDidMount.bind(this);
     this.makeRows = this.makeRows.bind(this);
   }
@@ -196,8 +195,7 @@ class NotificationSettings extends React.Component {
   makeRows() {
     let rows = [];
     let states = this.state.settingsStates;
-    console.log(states);
-    this.props.notificationTypes.forEach(function (type) {
+    this.notificationTypes.forEach(function (type) {
       if (states[type.name]) {
         rows.push(<tr>
                   <td>{type.name}</td>
@@ -214,7 +212,7 @@ class NotificationSettings extends React.Component {
   }
 
   render() {
-    let rows = "Loading . . .";
+    let rows = <tr>Loading . . .</tr>;
     if (this.state.settingsStates) {
       rows = this.makeRows();
     }
@@ -244,11 +242,66 @@ class ClientProfileSettings extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-
+      loading: true
     };
+
+    this.componentDidMount = this.componentDidMount.bind(this);
+    this.makeRows = this.makeRows.bind(this);
+  }
+
+  componentDidMount() {
+    let globalData = [];
+    globalData.push(JSON.parse(window.sessionStorage.flagTypes));
+    globalData.push(JSON.parse(window.sessionStorage.flags));
+    // globalData.push(window.sessionStorage.flags);
+
+    let loadGlobalData = function () {
+      this.setState({
+        loading: false
+      });
+      this.flagTypes = JSON.parse(window.sessionStorage.flagTypes);
+    }.bind(this);
+    console.log(globalData);
+    if (globalData.every((array) => array)) {
+        console.log("call arrived");
+        loadGlobalData();
+    } else {
+        console.log("waiting for call");
+        window.sessionStorageListeners.push({
+            ready: loadGlobalData
+        });
+    }
+
+  }
+
+  makeRows() {
+    let flagTypes = [];
+    this.flagTypes.forEach(function (flagType) {
+        let message = flagType.settings.defaults.message;
+        let note = flagType.settings.defaults.note;
+        let buttonStyle = {
+          "background-image": 'none',
+          "background-color": flagType.color
+        };
+        flagTypes.push(
+            <tr data-id={flagType.id}>
+            <td className="color-column col" data-color={flagType.color} data-newcolor=""><button type="button" className="btn btn-primary flagType" style={buttonStyle}><span className="badge"></span></button></td>
+            <td className="type-column col" data-type={flagType.name}>{flagType.name}</td>
+            <td className="message-column col" data-message={message}>{message}</td>
+            <td className="note-column col" data-note={note}>{note}</td>
+            <td className="col-sm-3"><EditButton /></td>
+            </tr>);
+        // $('#flags-table tbody .btn.btn-primary.flagType:last').css("background-image", 'none');
+        // $('#flags-table tbody .btn.btn-primary.flagType:last').css("background-color", flagType.color);
+    });
+    return flagTypes;
   }
 
   render() {
+    let rows = <tr>Loading . . .</tr>;
+    if (!this.state.loading) {
+      rows = this.makeRows();
+    }
     return (
       <div id="client-profile-settings">
         <div className="card">
@@ -269,7 +322,7 @@ class ClientProfileSettings extends React.Component {
               </tr>
             </thead>
             <tbody>
-
+              {rows}
             </tbody>
           </table>
         </div>
@@ -290,6 +343,14 @@ class ImportDataSettings extends React.Component {
   render() {
     return (
       <div></div>
+    );
+  }
+}
+
+class EditButton extends React.Component {
+  render() {
+    return (
+      <button type="button" className="btn btn-secondary edit">Edit</button>
     );
   }
 }
