@@ -7,7 +7,6 @@ $(function () {
         };
 
         status.text("Sending");
-        console.log(data);
         $.ajax({
             url: "/api/sessions",
             method: "POST",
