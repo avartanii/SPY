@@ -114,12 +114,12 @@ $(function () {
             });
             event.stopPropagation();
         });
-        
+
         // --------------------- Notifications --------------------------
-        
-        notificationTypes.forEach(function (type) { 
+
+        notificationTypes.forEach(function (type) {
             $('#flag-notifications-table tbody').append(
-                            '<tr><td>' + type.name + '</td>' + 
+                            '<tr><td>' + type.name + '</td>' +
                             '<td><input data-name="' + type.name + '" type="checkbox" name="settings-checkbox" checked></td>' +
                             '</tr>');
         });
@@ -157,7 +157,7 @@ $(function () {
 
         // ==== statuses ====
 
-        
+
         // statuses.forEach(function (status) {
         //     $('#statuses-table tbody').append(
         //         '<tr data-id="' + status.id + '">' +
@@ -168,7 +168,7 @@ $(function () {
         // });
 
         // // according to stackoverflow, use delegate for elements that change frequently
-            
+
         // $('#statuses-table tbody').delegate('td button.edit', 'click', function (event) {
 
         //     // cancel any other active edits before opening the edit options for the current status
@@ -214,7 +214,7 @@ $(function () {
 
         //         var data = {
         //             name: $('#edit-status-name').val() ? $('#edit-status-name').val() : $('#edit-status-name').parent().data("name"),
-        //             color: newColor ? newColor : $(event.target).parents('tr').find('.dot-column').data("color") 
+        //             color: newColor ? newColor : $(event.target).parents('tr').find('.dot-column').data("color")
         //         };
 
         //         if (data.name && data.color) {
@@ -238,7 +238,7 @@ $(function () {
         //                     var dotcol = $(columns).parent().find('.dot-column');
         //                     var namecol = $(columns).parent().find('.name-column');
 
-                            
+
         //                     // using $.data() to set the data will work, but it
         //                     // does not reflect those changes in the DOM, JQuery stores
         //                     // it internally, if you want to see it reflected in the DOM
@@ -263,7 +263,7 @@ $(function () {
         //                     if (xhr.status === 401) {
         //                         localStorage.removeItem("authorization");
         //                     }
-        //                 }   
+        //                 }
         //             });
         //         }
         //     });
@@ -276,9 +276,9 @@ $(function () {
         // ==== flags ====
 
         // var data = {
-        //     type:'Showers', 
-        //     message: 'Tier 2', 
-        //     color: 'blue', 
+        //     type:'Showers',
+        //     message: 'Tier 2',
+        //     color: 'blue',
         //     note: '(name) is Tier 2 for showers this week. Will reset on a weekly basis.'
         // };
 
@@ -302,9 +302,9 @@ $(function () {
             $('#flags-table tbody .btn.btn-primary.statustype:last').css("background-image", 'none');
             $('#flags-table tbody .btn.btn-primary.statustype:last').css("background-color", statustype.color);
         });
-            
+
         // according to stackoverflow, use delegate for elements that change frequently
-        
+
         $('#flags-table tbody').delegate('td button.edit', 'click', function (event) {
 
             // cancel any other active edits before opening the edit options for the current status
@@ -332,7 +332,7 @@ $(function () {
             $('#edit-type').val($(typecol).data("type"));
             $('#edit-message').val($(messagecol).data("message"));
             $('#edit-note').val($(notecol).data("note"));
-            
+
             $(event.target).replaceWith(
                 '<button id="submit-flag" type="button" class="btn btn-primary btn-sm">Submit</button>' +
                 '<button id="cancel-flag" type="button" class="btn btn-primary btn-sm">Cancel</button>');
@@ -377,7 +377,7 @@ $(function () {
                             var messagecol = $(columns).parent().find('.message-column');
                             var notecol = $(columns).parent().find('.note-column');
 
-                            
+
                             // using $.data() to set the data will work, but it
                             // does not reflect those changes in the DOM, JQuery stores
                             // it internally, if you want to see it reflected in the DOM
@@ -405,7 +405,7 @@ $(function () {
                             if (xhr.status === 401) {
                                 localStorage.removeItem("authorization");
                             }
-                        }   
+                        }
                     });
                 }
             });
@@ -414,7 +414,7 @@ $(function () {
                 cancel($(event.target).parents('tr')); // function defined above
             });
         });
-        
+
         // ----- File Upload -----
         var formData = undefined;
         var filename = "";
@@ -468,7 +468,7 @@ $(function () {
                         if (xhr.status === 401) {
                             localStorage.removeItem("authorization");
                         }
-                    }   
+                    }
                 });
             };
         });
@@ -542,10 +542,10 @@ $(function () {
 //                  <nav className="side-nav">
 //                     <ul id="options">
 //                         <ListItem selected={this.state.nav1Selected}
-//                                   content="One Thing" 
+//                                   content="One Thing"
 //                                   click={this.handleClick1} />
 //                         <ListItem selected={this.state.nav2Selected}
-//                                   content="Another Thing" 
+//                                   content="Another Thing"
 //                                   click={this.handleClick2} />
 //                     </ul>
 //                 </nav>
