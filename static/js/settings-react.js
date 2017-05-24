@@ -23,10 +23,10 @@ class Settings extends React.Component {
     // code
   }
 
-  selectTab(event) {
+  selectTab(event) { // event is React's SyntheticEvent wrapper, event.nativeEvent is the original js event object
     let tabStates = this.state.tabStates;
     tabStates.forEach((state, index, thisArray) => {
-      if (index === parseInt(event.target.getAttribute('data-index'))) {
+      if (index === parseInt($(event.target).parents('li').data('index'))) {
         thisArray[index] = true;
       } else {
         thisArray[index] = false;
@@ -43,14 +43,14 @@ class Settings extends React.Component {
     });
     tabs.forEach((tabName, index, thisArray) => {
       if (tabName[1]) {
-        thisArray[index] = <li className="selected">
-                    <a data-index={index} onClick={this.selectTab} >
+        thisArray[index] = <li data-index={index} onClick={this.selectTab} className="selected">
+                    <a>
                       {tabName[0]}
                     </a>
                   </li>;
       } else {
-        thisArray[index] = <li>
-                    <a data-index={index} onClick={this.selectTab}>
+        thisArray[index] = <li data-index={index} onClick={this.selectTab}>
+                    <a>
                       {tabName[0]}
                     </a>
                   </li>;
@@ -242,10 +242,12 @@ class ClientProfileSettings extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      loading: true
+      loading: true,
+      rowStates: []
     };
 
     this.componentDidMount = this.componentDidMount.bind(this);
+    this.handleEditClick = this.handleEditClick.bind(this);
   }
 
   componentDidMount() {
@@ -253,12 +255,13 @@ class ClientProfileSettings extends React.Component {
     globalData.push(JSON.parse(window.sessionStorage.flagTypes));
 
     let loadGlobalData = function () {
-      this.setState({
-        loading: false
-      });
       this.flagTypes = JSON.parse(window.sessionStorage.flagTypes);
+      this.setState({
+        loading: false,
+        rowStates: Array(this.flagTypes.length).fill(false)
+      });
     }.bind(this);
-    console.log(globalData);
+
     if (globalData.every((array) => array)) {
         console.log("call arrived");
         loadGlobalData();
@@ -271,10 +274,27 @@ class ClientProfileSettings extends React.Component {
 
   }
 
+  handleEditClick(event) {
+    let rowStates = this.state.rowStates;
+    rowStates.forEach((state, index, thisArray) => {
+      if (index === parseInt($(event.target).parents('tr').data('index'))) {
+        thisArray[index] = true;
+      } else {
+        thisArray[index] = false;
+      }
+    });
+    this.setState({
+      rowStates: rowStates
+    });
+  }
+
   render() {
     let rows = <tr>Loading . . .</tr>;
     if (!this.state.loading) {
-      rows = this.flagTypes.map((flagType) => <FlagTableRow flagType={flagType} />);
+      rows = this.flagTypes.map((flagType, index) => <FlagTableRow flagType={flagType}
+                                                                   index={index}
+                                                                   editMode={this.state.rowStates[index]}
+                                                                   editClick={this.handleEditClick} />);
     }
     return (
       <div id="client-profile-settings">
@@ -308,42 +328,47 @@ class ClientProfileSettings extends React.Component {
 class FlagTableRow extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      editMode: false
-    };
 
+    this.componentWillUpdate = this.componentWillUpdate.bind(this);
     this.componentDidUpdate = this.componentDidUpdate.bind(this);
-    this.handleEditClick = this.handleEditClick.bind(this);
+  }
+
+  componentWillUpdate() {
+    if (!this.props.editMode) {
+      console.log($('#edit-color').parents('tr').find('.type-column').data('type'));
+      $('.sp-replacer').remove();
+    }
   }
 
   componentDidUpdate() {
-    if (this.state.editMode) {
+    console.log("spectrum");
+    console.log(this.props.editMode);
+    if (this.props.editMode) {
       $('#edit-color').spectrum({
               color: $('#edit-color').parent().data('color'),
               change: function(color) {
                   $('#edit-color').parent().data("newcolor", color.toHexString());
               }
           });
-    }
-  }
+      // once rendered, spectrum is untracked by React
+      // so will have to manually remove it from the DOM later
 
-  handleEditClick(event) {
-    this.setState({
-      editMode: true
-    });
+      // componentDidUpdate also gets called many times for each state change
+      // so it is likely that multiple color pickers are added
+    }
   }
 
   render() {
     let flagType = this.props.flagType;
     let message = flagType.settings.defaults.message;
     let note = flagType.settings.defaults.note;
-    if (this.state.editMode) {
+    if (this.props.editMode) {
       return (
-        <tr data-id={flagType.id}>
+        <tr data-id={flagType.id} data-index={this.props.index}>
           <td className="color-column col" data-color={flagType.color} data-newcolor=""><input type="text" id="edit-color"/></td>
-          <td className="type-column col" data-type={flagType.name}>{flagType.name}</td>
-          <td className="message-column col" data-message={message}>{message}</td>
-          <td className="note-column col" data-note={note}>{note}</td>
+          <td className="type-column col" data-type={flagType.name}><input type="text" id="edit-type" value={flagType.name}/></td>
+          <td className="message-column col" data-message={message}><input type="text" id="edit-message" value={message}/></td>
+          <td className="note-column col" data-note={note}><input type="text" id="edit-note" size="45" value={note}/></td>
           <td>
           <button id="submit-flag" type="button" className="btn btn-primary btn-sm">Submit</button>
           <button id="cancel-flag" type="button" className="btn btn-primary btn-sm">Cancel</button>
@@ -356,12 +381,12 @@ class FlagTableRow extends React.Component {
         backgroundColor: flagType.color
       };
       return (
-        <tr data-id={flagType.id}>
+        <tr data-id={flagType.id} data-index={this.props.index}>
           <td className="color-column col" data-color={flagType.color} data-newcolor=""><button type="button" className="btn btn-primary flagType" style={buttonStyle}><span className="badge"></span></button></td>
           <td className="type-column col" data-type={flagType.name}>{flagType.name}</td>
           <td className="message-column col" data-message={message}>{message}</td>
           <td className="note-column col" data-note={note}>{note}</td>
-          <td><button type="button" className="btn btn-secondary edit" onClick={this.handleEditClick}>Edit</button></td>
+          <td><button type="button" className="btn btn-secondary edit" onClick={this.props.editClick}>Edit</button></td>
         </tr>
       );
     }
