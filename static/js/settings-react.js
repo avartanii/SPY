@@ -164,7 +164,7 @@ class NotificationSettings extends React.Component {
 
     this.notificationTypes = JSON.parse(window.sessionStorage.notificationTypes);
 
-    // this.componentDidMount = this.componentDidMount.bind(this);
+    this.componentDidMount = this.componentDidMount.bind(this);
     this.makeRows = this.makeRows.bind(this);
   }
 
@@ -277,22 +277,7 @@ class ClientProfileSettings extends React.Component {
   makeRows() {
     let flagTypes = [];
     this.flagTypes.forEach(function (flagType) {
-        let message = flagType.settings.defaults.message;
-        let note = flagType.settings.defaults.note;
-        let buttonStyle = {
-          "background-image": 'none',
-          "background-color": flagType.color
-        };
-        flagTypes.push(
-            <tr data-id={flagType.id}>
-            <td className="color-column col" data-color={flagType.color} data-newcolor=""><button type="button" className="btn btn-primary flagType" style={buttonStyle}><span className="badge"></span></button></td>
-            <td className="type-column col" data-type={flagType.name}>{flagType.name}</td>
-            <td className="message-column col" data-message={message}>{message}</td>
-            <td className="note-column col" data-note={note}>{note}</td>
-            <td className="col-sm-3"><EditButton /></td>
-            </tr>);
-        // $('#flags-table tbody .btn.btn-primary.flagType:last').css("background-image", 'none');
-        // $('#flags-table tbody .btn.btn-primary.flagType:last').css("background-color", flagType.color);
+        flagTypes.push(<FlagTableRow flagType={flagType} />);
     });
     return flagTypes;
   }
@@ -331,6 +316,65 @@ class ClientProfileSettings extends React.Component {
   }
 }
 
+class FlagTableRow extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      editMode: false
+    };
+
+    this.handleEditClick = this.handleEditClick.bind(this);
+  }
+
+  handleEditClick(event) {
+    this.setState({
+      editMode: true
+    });
+  }
+
+  render() {
+    let flagType = this.props.flagType;
+    let message = flagType.settings.defaults.message;
+    let note = flagType.settings.defaults.note;
+    let buttonStyle = {
+      backgroundImage: 'none',
+      backgroundColor: flagType.color
+    };
+    return (
+      <tr data-id={flagType.id}>
+      <td className="color-column col" data-color={flagType.color} data-newcolor=""><button type="button" className="btn btn-primary flagType" style={buttonStyle}><span className="badge"></span></button></td>
+      <td className="type-column col" data-type={flagType.name}>{flagType.name}</td>
+      <td className="message-column col" data-message={message}>{message}</td>
+      <td className="note-column col" data-note={note}>{note}</td>
+      <EditButton editMode={this.state.editMode}
+                  editClick={this.handleEditClick}/>
+      </tr>
+    );
+  }
+}
+class EditButton extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {};
+  }
+
+  render() {
+    if (this.props.editMode) {
+      return (
+        <td>
+        <button id="submit-flag" type="button" className="btn btn-primary btn-sm">Submit</button>
+        <button id="cancel-flag" type="button" className="btn btn-primary btn-sm">Cancel</button>
+        </td>
+      );
+    } else {
+      return (
+        <td><button type="button" className="btn btn-secondary edit" onClick={this.props.editClick}>Edit</button></td>
+      );
+    }
+
+  }
+}
+
 class NewActivitySettings extends React.Component {
   render() {
     return (
@@ -347,13 +391,6 @@ class ImportDataSettings extends React.Component {
   }
 }
 
-class EditButton extends React.Component {
-  render() {
-    return (
-      <button type="button" className="btn btn-secondary edit">Edit</button>
-    );
-  }
-}
 
 ReactDOM.render(
   <Settings />,
