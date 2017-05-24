@@ -16,7 +16,7 @@ var viewRoutes = require(Path.join(__dirname, 'routes/view_routes.js'));
 var postgresqlPool = {
     register: function (server, options, next) {
         var dbconfig = PGConnectionString.parse(process.env.NODE_ENV === "test" ? process.env.TEST_DATABASE_URL : process.env.DATABASE_URL);
-        // dbconfig.ssl = process.env.NODE_ENV === "production";
+        dbconfig.ssl = process.env.NODE_ENV === "production";
         dbconfig.max = 20;
         dbconfig.min = 4;
 
