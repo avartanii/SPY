@@ -246,14 +246,11 @@ class ClientProfileSettings extends React.Component {
     };
 
     this.componentDidMount = this.componentDidMount.bind(this);
-    this.makeRows = this.makeRows.bind(this);
   }
 
   componentDidMount() {
     let globalData = [];
     globalData.push(JSON.parse(window.sessionStorage.flagTypes));
-    globalData.push(JSON.parse(window.sessionStorage.flags));
-    // globalData.push(window.sessionStorage.flags);
 
     let loadGlobalData = function () {
       this.setState({
@@ -274,18 +271,10 @@ class ClientProfileSettings extends React.Component {
 
   }
 
-  makeRows() {
-    let flagTypes = [];
-    this.flagTypes.forEach(function (flagType) {
-        flagTypes.push(<FlagTableRow flagType={flagType} />);
-    });
-    return flagTypes;
-  }
-
   render() {
     let rows = <tr>Loading . . .</tr>;
     if (!this.state.loading) {
-      rows = this.makeRows();
+      rows = this.flagTypes.map((flagType) => <FlagTableRow flagType={flagType} />);
     }
     return (
       <div id="client-profile-settings">
@@ -323,7 +312,19 @@ class FlagTableRow extends React.Component {
       editMode: false
     };
 
+    this.componentDidUpdate = this.componentDidUpdate.bind(this);
     this.handleEditClick = this.handleEditClick.bind(this);
+  }
+
+  componentDidUpdate() {
+    if (this.state.editMode) {
+      $('#edit-color').spectrum({
+              color: $('#edit-color').parent().data('color'),
+              change: function(color) {
+                  $('#edit-color').parent().data("newcolor", color.toHexString());
+              }
+          });
+    }
   }
 
   handleEditClick(event) {
@@ -336,42 +337,34 @@ class FlagTableRow extends React.Component {
     let flagType = this.props.flagType;
     let message = flagType.settings.defaults.message;
     let note = flagType.settings.defaults.note;
-    let buttonStyle = {
-      backgroundImage: 'none',
-      backgroundColor: flagType.color
-    };
-    return (
-      <tr data-id={flagType.id}>
-      <td className="color-column col" data-color={flagType.color} data-newcolor=""><button type="button" className="btn btn-primary flagType" style={buttonStyle}><span className="badge"></span></button></td>
-      <td className="type-column col" data-type={flagType.name}>{flagType.name}</td>
-      <td className="message-column col" data-message={message}>{message}</td>
-      <td className="note-column col" data-note={note}>{note}</td>
-      <EditButton editMode={this.state.editMode}
-                  editClick={this.handleEditClick}/>
-      </tr>
-    );
-  }
-}
-class EditButton extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
-
-  render() {
-    if (this.props.editMode) {
+    if (this.state.editMode) {
       return (
-        <td>
-        <button id="submit-flag" type="button" className="btn btn-primary btn-sm">Submit</button>
-        <button id="cancel-flag" type="button" className="btn btn-primary btn-sm">Cancel</button>
-        </td>
+        <tr data-id={flagType.id}>
+          <td className="color-column col" data-color={flagType.color} data-newcolor=""><input type="text" id="edit-color"/></td>
+          <td className="type-column col" data-type={flagType.name}>{flagType.name}</td>
+          <td className="message-column col" data-message={message}>{message}</td>
+          <td className="note-column col" data-note={note}>{note}</td>
+          <td>
+          <button id="submit-flag" type="button" className="btn btn-primary btn-sm">Submit</button>
+          <button id="cancel-flag" type="button" className="btn btn-primary btn-sm">Cancel</button>
+          </td>
+        </tr>
       );
     } else {
+      let buttonStyle = {
+        backgroundImage: 'none',
+        backgroundColor: flagType.color
+      };
       return (
-        <td><button type="button" className="btn btn-secondary edit" onClick={this.props.editClick}>Edit</button></td>
+        <tr data-id={flagType.id}>
+          <td className="color-column col" data-color={flagType.color} data-newcolor=""><button type="button" className="btn btn-primary flagType" style={buttonStyle}><span className="badge"></span></button></td>
+          <td className="type-column col" data-type={flagType.name}>{flagType.name}</td>
+          <td className="message-column col" data-message={message}>{message}</td>
+          <td className="note-column col" data-note={note}>{note}</td>
+          <td><button type="button" className="btn btn-secondary edit" onClick={this.handleEditClick}>Edit</button></td>
+        </tr>
       );
     }
-
   }
 }
 
