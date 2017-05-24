@@ -243,11 +243,18 @@ class ClientProfileSettings extends React.Component {
     super(props);
     this.state = {
       loading: true,
-      rowStates: []
+      rowStates: [],
+      typeValue: "",
+      messageValue: "",
+      noteValue: ""
     };
 
     this.componentDidMount = this.componentDidMount.bind(this);
     this.handleEditClick = this.handleEditClick.bind(this);
+    this.handleCancelClick = this.handleCancelClick.bind(this);
+    this.handleTypeChange = this.handleTypeChange.bind(this);
+    this.handleMessageChange = this.handleMessageChange.bind(this);
+    this.handleNoteChange = this.handleNoteChange.bind(this);
   }
 
   componentDidMount() {
@@ -276,15 +283,36 @@ class ClientProfileSettings extends React.Component {
 
   handleEditClick(event) {
     let rowStates = this.state.rowStates;
-    rowStates.forEach((state, index, thisArray) => {
-      if (index === parseInt($(event.target).parents('tr').data('index'))) {
-        thisArray[index] = true;
-      } else {
-        thisArray[index] = false;
-      }
-    });
+    rowStates.fill(false);
+    rowStates[parseInt($(event.target).parents('tr').data('index'))] = true;
     this.setState({
       rowStates: rowStates
+    });
+  }
+
+  handleCancelClick(event) {
+    let rowStates = this.state.rowStates;
+    rowStates.fill(false);
+    this.setState({
+      rowStates: rowStates
+    });
+  }
+
+  handleTypeChange(event) {
+    this.setState({
+      typeValue: event.target.value
+    });
+  }
+
+  handleMessageChange(event) {
+    this.setState({
+      messageValue: event.target.value
+    });
+  }
+
+  handleNoteChange(event) {
+    this.setState({
+      noteValue: event.target.value
     });
   }
 
@@ -294,7 +322,14 @@ class ClientProfileSettings extends React.Component {
       rows = this.flagTypes.map((flagType, index) => <FlagTableRow flagType={flagType}
                                                                    index={index}
                                                                    editMode={this.state.rowStates[index]}
-                                                                   editClick={this.handleEditClick} />);
+                                                                   editClick={this.handleEditClick}
+                                                                   cancelClick={this.handleCancelClick}
+                                                                   typeValue={this.state.typeValue}
+                                                                   messageValue={this.state.messageValue}
+                                                                   noteValue={this.state.noteValue}
+                                                                   typeChange={this.handleTypeChange}
+                                                                   messageChange={this.handleMessageChange}
+                                                                   noteChange={this.handleNoteChange} />);
     }
     return (
       <div id="client-profile-settings">
@@ -335,14 +370,11 @@ class FlagTableRow extends React.Component {
 
   componentWillUpdate() {
     if (!this.props.editMode) {
-      console.log($('#edit-color').parents('tr').find('.type-column').data('type'));
-      $('.sp-replacer').remove();
+      $('.sp-replacer').remove(); // removing spectrum manually
     }
   }
 
   componentDidUpdate() {
-    console.log("spectrum");
-    console.log(this.props.editMode);
     if (this.props.editMode) {
       $('#edit-color').spectrum({
               color: $('#edit-color').parent().data('color'),
@@ -366,12 +398,12 @@ class FlagTableRow extends React.Component {
       return (
         <tr data-id={flagType.id} data-index={this.props.index}>
           <td className="color-column col" data-color={flagType.color} data-newcolor=""><input type="text" id="edit-color"/></td>
-          <td className="type-column col" data-type={flagType.name}><input type="text" id="edit-type" value={flagType.name}/></td>
-          <td className="message-column col" data-message={message}><input type="text" id="edit-message" value={message}/></td>
-          <td className="note-column col" data-note={note}><input type="text" id="edit-note" size="45" value={note}/></td>
+          <td className="type-column col" data-type={flagType.name}><input type="text" id="edit-type" placeholder={flagType.name} value={this.props.typeValue} onChange={this.props.typeChange}/></td>
+          <td className="message-column col" data-message={message}><input type="text" id="edit-message" placeholder={message} value={this.props.messageValue} onChange={this.props.messageChange}/></td>
+          <td className="note-column col" data-note={note}><input type="text" id="edit-note" size="45" placeholder={note} value={this.props.noteValue} onChange={this.props.noteChange}/></td>
           <td>
           <button id="submit-flag" type="button" className="btn btn-primary btn-sm">Submit</button>
-          <button id="cancel-flag" type="button" className="btn btn-primary btn-sm">Cancel</button>
+          <button id="cancel-flag" type="button" className="btn btn-primary btn-sm" onClick={this.props.cancelClick}>Cancel</button>
           </td>
         </tr>
       );
