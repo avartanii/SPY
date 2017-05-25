@@ -502,9 +502,156 @@ class FlagTableRow extends React.Component {
 }
 
 class NewActivitySettings extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      loading: true,
+      warning: false,
+      name: "",
+      location: "",
+      startTime: "",
+      endTime: "",
+      program: 0
+    };
+
+    this.componentDidMount = this.componentDidMount.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleActivityNameChange = this.handleActivityNameChange.bind(this);
+    this.handleLocationChange = this.handleLocationChange.bind(this);
+    this.handleStartTimeChange = this.handleStartTimeChange.bind(this);
+    this.handleEndTimeChange = this.handleEndTimeChange.bind(this);
+    this.handleProgramChange = this.handleProgramChange.bind(this);
+  }
+
+  componentDidMount() {
+    $('#createActivityStart').combodate();
+    $('#createActivityEnd').combodate();
+    $.ajax({
+      xhrFields: {
+        withCredentials: true
+      },
+      beforeSend: function (xhr) {
+        xhr.setRequestHeader('Authorization', localStorage.getItem("authorization"));
+      },
+      url: 'api/programs',
+      method: "GET"
+    }).done(function (data) {
+      console.log(data);
+      this.programOptions = data.result;
+      this.setState({
+        loading: false
+      });
+    }.bind(this)).fail(function (xhr) {
+      console.error(xhr);
+      if (xhr.status === 401) {
+        localStorage.removeItem("authorization");
+      }
+    });
+  }
+
+  handleSubmit(event) {
+    if (this.state.name === "" || this.state.location === "" || this.state.program === 0) {
+      this.setState({
+        warning: true
+      });
+    } else {
+      $.ajax({
+        xhrFields: {
+          withCredentials: true
+        },
+        beforeSend: function (xhr) {
+          xhr.setRequestHeader('Authorization', localStorage.getItem("authorization"));
+        },
+        url: 'api/activity',
+        method: "POST",
+        data: {
+          programid: this.state.program,
+          activityname: this.state.name,
+          location: this.state.location,
+          ongoing: true,
+          starttime: this.state.startTime,
+          endtime: this.state.endTime
+        }
+      }).done(function (data) {
+        console.log("Activity added!");
+      }).fail(function (xhr) {
+        console.error(xhr);
+        if (xhr.status === 401) {
+          localStorage.removeItem("authorization");
+        }
+      });
+    }
+  }
+
+  handleActivityNameChange(event) {
+    this.setState({
+      name: event.target.value
+    });
+  }
+
+  handleLocationChange(event) {
+    this.setState({
+      location: event.target.value
+    });
+  }
+
+  handleStartTimeChange(event) {
+    this.setState({
+      startTime: $('#createActivityStart').combodate('getValue', 'HH:mm')
+    });
+  }
+
+  handleEndTimeChange(event) {
+    this.setState({
+      endTime: $('#createActivityEnd').combodate('getValue', 'HH:mm')
+    });
+  }
+
+  handleProgramChange(event) {
+    this.setState({
+      program: event.target.value
+    });
+  }
+
   render() {
+    let options;
+    let warning;
+    if (!this.state.loading) {
+      options = this.programOptions.map((program) => <option value={program.id}>{program.programName}</option>);
+    }
+    if (this.state.warning) {
+      warning = <div><span className="activityWarning warning">Your activity must have a name, location, and program.</span></div>;
+    }
     return (
-      <div></div>
+      <div id="create-new-activity">
+        <div id="create-activity">
+          <div className="card">
+            <div className="card-header">
+              <h4>
+                Create New Activity
+              </h4>
+              <p>Determine which flags you would like to receive alerts for.</p>
+            </div>
+            <div>
+              <div>Activity Name: <input type="text" id="createActivityName" onChange={this.handleActivityNameChange}/></div>
+              <div>Location: <input type="text" id="createActivityLocation" onChange={this.handleLocationChange}/></div>
+              <div>Start Time: <input type="text" id="createActivityStart" onChange={this.handleStartTimeChange} data-format="h:mm a" data-template="hh : mm a" name="datetime" value="12:00 am" /></div>
+              <div>End Time: <input type="text" id="createActivityEnd" onChange={this.handleEndTimeChange} data-format="h:mm a" data-template="hh : mm a" name="datetime" value="12:00 am" /></div>
+              <div>
+                Program:
+                <select id="createActivityPrograms" name="programs" value="select">
+                  <option value="0">Select a Program</option>
+                  {options}
+                </select>
+                {warning}
+              </div>
+            </div>
+            <div>
+              <button type="button" className="btn btn-primary" id="createactivity-modal-save-button" onClick={this.handleSubmit}>Submit</button>
+            </div>
+            </div>
+          </div>
+        </div>
     );
   }
 }
