@@ -244,49 +244,99 @@ class ClientProfileSettings extends React.Component {
     this.state = {
       loading: true,
       rowStates: [],
+      colorValue: "",
       typeValue: "",
       messageValue: "",
       noteValue: ""
     };
 
+    this.loadFlagTypes = this.loadFlagTypes.bind(this);
     this.componentDidMount = this.componentDidMount.bind(this);
     this.handleEditClick = this.handleEditClick.bind(this);
+    this.handleSubmitClick = this.handleSubmitClick.bind(this);
     this.handleCancelClick = this.handleCancelClick.bind(this);
+    this.handleColorChange = this.handleColorChange.bind(this);
     this.handleTypeChange = this.handleTypeChange.bind(this);
     this.handleMessageChange = this.handleMessageChange.bind(this);
     this.handleNoteChange = this.handleNoteChange.bind(this);
   }
 
-  componentDidMount() {
-    let globalData = [];
-    globalData.push(JSON.parse(window.sessionStorage.flagTypes));
-
-    let loadGlobalData = function () {
-      this.flagTypes = JSON.parse(window.sessionStorage.flagTypes);
+  loadFlagTypes() {
+    $.ajax({
+      xhrFields: {
+        withCredentials: true
+      },
+      beforeSend: function (xhr) {
+        xhr.setRequestHeader('Authorization', localStorage.getItem("authorization"));
+      },
+      url: "api/flags/types",
+      method: "GET"
+    }).done(function (data) {
+      console.log(data);
+      this.flagTypes = data.result;
       this.setState({
         loading: false,
         rowStates: Array(this.flagTypes.length).fill(false)
       });
-    }.bind(this);
-
-    if (globalData.every((array) => array)) {
-        console.log("call arrived");
-        loadGlobalData();
-    } else {
-        console.log("waiting for call");
-        window.sessionStorageListeners.push({
-            ready: loadGlobalData
-        });
-    }
-
+    }.bind(this)).fail(function (xhr) {
+      console.error(xhr);
+      if (xhr.status === 401) {
+          localStorage.removeItem("authorization");
+      }
+    });
   }
 
-  handleEditClick(event) {
+  componentDidMount() {
+    this.loadFlagTypes();
+  }
+
+  handleSubmitClick(event) {
+    let newColor = this.state.colorValue;
+    let data = {
+      color: newColor ? newColor : $(event.target).parents('tr').find('.color-column').data("color"),
+      typeName: this.state.typeValue,
+      message: this.state.messageValue,
+      note: this.state.noteValue
+    };
+    $.ajax({
+        xhrFields: {
+            withCredentials: true
+        },
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader('Authorization', localStorage.getItem("authorization"));
+        },
+        url: 'api/flags/types/' + $(event.target).parents('tr').data("id"),
+        method: 'PUT',
+        data: data
+    }).done(function (data) {
+        console.log(data);
+        this.loadFlagTypes();
+        var color = data.result[0].color;
+
+        var columns = $(event.target).parent().siblings();
+        var colorcol = $(columns).parent().find('.color-column');
+
+        $(event.target).parents('tr').data("id", data.result[0].id);
+        $(colorcol).data("color", color);
+      }.bind(this)).fail(function (xhr) {
+        console.error(xhr);
+        if (xhr.status === 401) {
+          localStorage.removeItem("authorization");
+        }
+      });
+    this.handleCancelClick();
+  }
+
+  handleEditClick(event, flagType) {
     let rowStates = this.state.rowStates;
     rowStates.fill(false);
     rowStates[parseInt($(event.target).parents('tr').data('index'))] = true;
     this.setState({
-      rowStates: rowStates
+      rowStates: rowStates,
+      colorValue: flagType.color,
+      typeValue: flagType.name,
+      messageValue: flagType.settings.defaults.message,
+      noteValue: flagType.settings.defaults.note
     });
   }
 
@@ -294,7 +344,17 @@ class ClientProfileSettings extends React.Component {
     let rowStates = this.state.rowStates;
     rowStates.fill(false);
     this.setState({
-      rowStates: rowStates
+      rowStates: rowStates,
+      colorValue: "",
+      typeValue: "",
+      messageValue: "",
+      noteValue: ""
+    });
+  }
+
+  handleColorChange(color) {
+    this.setState({
+      colorValue: color
     });
   }
 
@@ -323,10 +383,13 @@ class ClientProfileSettings extends React.Component {
                                                                    index={index}
                                                                    editMode={this.state.rowStates[index]}
                                                                    editClick={this.handleEditClick}
+                                                                   submitClick={this.handleSubmitClick}
                                                                    cancelClick={this.handleCancelClick}
+                                                                   colorValue={this.state.colorValue}
                                                                    typeValue={this.state.typeValue}
                                                                    messageValue={this.state.messageValue}
                                                                    noteValue={this.state.noteValue}
+                                                                   colorChange={this.handleColorChange}
                                                                    typeChange={this.handleTypeChange}
                                                                    messageChange={this.handleMessageChange}
                                                                    noteChange={this.handleNoteChange} />);
@@ -376,12 +439,14 @@ class FlagTableRow extends React.Component {
 
   componentDidUpdate() {
     if (this.props.editMode) {
+      console.log($('#edit-color').parent().data('color'));
+      console.log(this.props.colorValue);
       $('#edit-color').spectrum({
-              color: $('#edit-color').parent().data('color'),
-              change: function(color) {
-                  $('#edit-color').parent().data("newcolor", color.toHexString());
-              }
-          });
+              color: this.props.colorValue ? this.props.colorValue : $('#edit-color').parent().data('color'),
+              change: function (color) {
+                  this.props.colorChange(color.toHexString());
+              }.bind(this)
+          }).bind(this);
       // once rendered, spectrum is untracked by React
       // so will have to manually remove it from the DOM later
 
@@ -390,19 +455,30 @@ class FlagTableRow extends React.Component {
     }
   }
 
+  /*
+     Note:
+      Arrow functions allow passing an argument to a handler callback
+      <button onClick={(event) => this.props.editClick(event, flagType)}></button>
+  */
+
   render() {
     let flagType = this.props.flagType;
+    let name = flagType.name;
     let message = flagType.settings.defaults.message;
     let note = flagType.settings.defaults.note;
+    let typeValue = this.props.typeValue ? this.props.typeValue : name;
+    let messageValue = this.props.messageValue ? this.props.messageValue : message;
+    let noteValue = this.props.noteValue ? this.props.noteValue : note;
+
     if (this.props.editMode) {
       return (
         <tr data-id={flagType.id} data-index={this.props.index}>
-          <td className="color-column col" data-color={flagType.color} data-newcolor=""><input type="text" id="edit-color"/></td>
-          <td className="type-column col" data-type={flagType.name}><input type="text" id="edit-type" placeholder={flagType.name} value={this.props.typeValue} onChange={this.props.typeChange}/></td>
-          <td className="message-column col" data-message={message}><input type="text" id="edit-message" placeholder={message} value={this.props.messageValue} onChange={this.props.messageChange}/></td>
-          <td className="note-column col" data-note={note}><input type="text" id="edit-note" size="45" placeholder={note} value={this.props.noteValue} onChange={this.props.noteChange}/></td>
+          <td className="color-column col" data-color={flagType.color}><input type="text" id="edit-color"/></td>
+          <td className="type-column col"><input type="text" id="edit-type" value={typeValue} onChange={this.props.typeChange}/></td>
+          <td className="message-column col"><input type="text" id="edit-message" value={messageValue} onChange={this.props.messageChange}/></td>
+          <td className="note-column col"><input type="text" id="edit-note" size="45" value={noteValue} onChange={this.props.noteChange}/></td>
           <td>
-          <button id="submit-flag" type="button" className="btn btn-primary btn-sm">Submit</button>
+          <button id="submit-flag" type="button" className="btn btn-primary btn-sm" onClick={this.props.submitClick}>Submit</button>
           <button id="cancel-flag" type="button" className="btn btn-primary btn-sm" onClick={this.props.cancelClick}>Cancel</button>
           </td>
         </tr>
@@ -414,11 +490,11 @@ class FlagTableRow extends React.Component {
       };
       return (
         <tr data-id={flagType.id} data-index={this.props.index}>
-          <td className="color-column col" data-color={flagType.color} data-newcolor=""><button type="button" className="btn btn-primary flagType" style={buttonStyle}><span className="badge"></span></button></td>
-          <td className="type-column col" data-type={flagType.name}>{flagType.name}</td>
-          <td className="message-column col" data-message={message}>{message}</td>
-          <td className="note-column col" data-note={note}>{note}</td>
-          <td><button type="button" className="btn btn-secondary edit" onClick={this.props.editClick}>Edit</button></td>
+          <td className="color-column col"><button type="button" className="btn btn-primary flagType" style={buttonStyle}><span className="badge"></span></button></td>
+          <td className="type-column col">{flagType.name}</td>
+          <td className="message-column col">{message}</td>
+          <td className="note-column col">{note}</td>
+          <td><button type="button" className="btn btn-secondary edit" onClick={(event) => this.props.editClick(event, flagType)}>Edit</button></td>
         </tr>
       );
     }
