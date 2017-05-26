@@ -673,6 +673,7 @@ class ImportDataSettings extends React.Component {
 
     this.handleUpload = this.handleUpload.bind(this);
     this.handleSelect = this.handleSelect.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   handleUpload(event) {
