@@ -608,9 +608,15 @@ class NewActivitySettings extends React.Component {
   }
 
   handleProgramChange(event) {
-    this.setState({
-      program: event.target.value
-    });
+    if (event.target.value !== 0) {
+      this.setState({
+        program: event.target.value
+      });
+    } else {
+      this.setState({
+        warning: true
+      });
+    }
   }
 
   render() {
@@ -639,7 +645,7 @@ class NewActivitySettings extends React.Component {
               <div>End Time: <input type="text" id="createActivityEnd" onChange={this.handleEndTimeChange} data-format="h:mm a" data-template="hh : mm a" name="datetime" value="12:00 am" /></div>
               <div>
                 Program:
-                <select id="createActivityPrograms" name="programs" value="select">
+                <select id="createActivityPrograms" name="programs" onChange={this.handleProgramChange}>
                   <option value="0">Select a Program</option>
                   {options}
                 </select>
@@ -657,13 +663,120 @@ class NewActivitySettings extends React.Component {
 }
 
 class ImportDataSettings extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      fileType: "",
+      formData: undefined,
+      filename: "",
+    };
+
+    this.handleUpload = this.handleUpload.bind(this);
+    this.handleSelect = this.handleSelect.bind(this);
+  }
+
+  handleUpload(event) {
+    // <input type='file' id="file-input"... />
+    // automatically stores files uploaded in an array in
+    // the DOM element itself --> $('#file-input').files;
+    // $('#file-input').files[0]
+    let file = $('#uploadSpreadsheet').files[0];
+    if (file === undefined) {
+      this.setState({
+        formData: undefined
+      });
+    } else {
+      if (file.type !== "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet") {
+        console.log("BAD!");
+      } else {
+        let formData = new FormData();
+        formData.set("file", file);
+        formData.set("type", this.state.fileType);
+
+        this.setState({
+          formData: formData,
+          filename: file.name
+        });
+      }
+    }
+  }
+
+  handleSelect(event) {
+    this.setState({
+      fileType: event.target.value
+    });
+  }
+
+  handleSubmit(event) {
+    if (this.state.formData === undefined) {
+      console.log("Error message here.");
+    } else if (this.state.formData.get("type") === 0) {
+      console.log("Also an error.");
+    } else {
+      $.ajax({
+        xhrFields: {
+            withCredentials: true
+        },
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader('Authorization', localStorage.getItem("authorization"));
+        },
+        url: 'api/uploadSpreadsheet',
+        method: 'POST',
+        data: this.state.formData,
+        processData: false,
+        contentType: false,
+        success: function (data) {
+          console.log("WOO!");
+          console.log(data);
+        },
+        error: function (xhr) {
+          console.error(xhr);
+          if (xhr.status === 401) {
+            localStorage.removeItem("authorization");
+          }
+        }
+      });
+    }
+  }
+
   render() {
     return (
-      <div></div>
+      <div id="import-data-settings">
+        <div id="import-data">
+          <div className="card">
+            <div className="card-header">
+              <h4>
+                Import Data
+              </h4>
+              <p>Import a spreadsheet into the database.</p>
+            </div>
+            <div className="uploadOptions">
+                <div>Upload a file. File must be in .xlsx format (for now).</div>
+                <div><input type='file' name='uploadSpreadsheet' id='uploadSpreadsheet' onChange={this.handleUpload} accept='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' /></div>
+                <div>
+                  <select value="0" id="uploadSpreadsheetSelect" onChange={this.handleSelect}>
+                    <option value="0">Select a Spreadsheet Type</option>
+                    {/*
+                    <option value="1">Case Management Caseload</option>
+                    <option value="2">Housed Youth Excel Document</option>
+                    <option value="3">Return Home Tracker</option>
+                    <option value="4">Backpack and Sleeping Bag Wait List</option>
+                    <option value="5">Drop-In Data</option>
+                    <option value="6">Front Desk Appointments</option>
+                    <option value="7">Shower Sign-Up</option>
+                    */}
+                    <option value="8">Youth Master List</option>
+                    {/* <option value="9">Outreach Daily Stats</option> */}
+                  </select>
+                </div>
+                <div><input type="button" value="Submit" id='submitSpreadsheet' onClick={this.handleSubmit} /></div>
+            </div>
+          </div>
+        </div>
+      </div>
     );
   }
 }
-
 
 ReactDOM.render(
   <Settings />,
