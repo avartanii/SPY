@@ -136,7 +136,7 @@ var viewRoutes = [
             auth: false
         },
         handler: function (req, res) {
-            res.view('settings-react.html', {
+            res.view('settings.html', {
 
             });
         }
