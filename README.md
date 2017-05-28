@@ -85,7 +85,7 @@ NODE_ENV=development
 PORT={clientside_portnumber}
 ```
 
-### Using the PostgreSQL Database in Mac/Linux Environments
+### Using the PostgreSQL Database in Mac Environments
 
 
 Initialize PostgreSQL for spy
