@@ -85,7 +85,7 @@ NODE_ENV=development
 PORT={clientside_portnumber}
 ```
 
-### Using the PostgreSQL Database in Non-Windows Environments
+### Using the PostgreSQL Database in Mac/Linux Environments
 
 
 Initialize PostgreSQL for spy
@@ -110,9 +110,9 @@ npm run db-reset
 ### Using the PostgreSQL Database in Windows Environments
 
 * Note before running, ensure that a process of "postgres.exe" is not running already.
-  * This can be done by opening up TaskManager or typing tasklist in CMD or Git Bash.
-  * If it is running, open up CMD or Git Bash with administrative privileges and enter,
-    taskkill /IM postgres.exe /F
+  * This can be done by opening up TaskManager or entering the command "tasklist" (remove the quotes) in CMD or Git Bash.
+  * If "postgres.exe" is listed that means it's running. Let's close it. Open up CMD or Git Bash with administrative privileges
+    and  enter, "taskkill /IM postgres.exe /F" (remove the quotes). 
 * After fresh installations of PostGreSQL ensure that it is not set to run automatically
   by opening Services and looking for an entry named something similar to "postgresql..."
    * If it is not set to "manual", right click it, click properties, then set start up
