@@ -279,7 +279,7 @@ var QueryBuilderInterface = React.createClass({
       this.setState({
         displayInput: false
       });
-    };
+    }
   },
   render: function () {
     var classNames = "queryBuilderUI " + (this.props.display ? "" : "hidden"),

@@ -104,6 +104,7 @@
     "vision": "^4.1.0"
   },
   "devDependencies": {
+    "babel-eslint": "^7.2.3",
     "chai": "^3.5.0",
     "codecov": "^1.0.1",
     "eslint": "^3.7.1",

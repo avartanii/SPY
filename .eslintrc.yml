@@ -11,6 +11,7 @@ env:
 globals:
   React: true
   ReactDOM: true
+parser: babel-eslint
 parserOptions:
   ecmaFeatures:
     jsx: true
