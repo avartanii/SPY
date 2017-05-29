@@ -56,7 +56,7 @@
               </div>
               <table class="table table-hover" id="flag-notifications-table">
                 <tbody>
-                
+
                 </tbody>
               </table>
             </div>
@@ -77,7 +77,7 @@
                 Location: <input type="text" id="createActivityLocation">  <br>
                 Start Time: <input type="text" id="createActivityStart" data-format="h:mm a" data-template="hh : mm a" name="datetime" value="12:00 am"> <br>
                 End Time: <input type="text" id="createActivityEnd" data-format="h:mm a" data-template="hh : mm a" name="datetime" value="12:00 am"> <br>
-                Program: 
+                Program:
                 <select id="createActivityPrograms" name="programs" value="select">
                   <option value="0">Select a Program</option>
                 </select> <br>
@@ -89,7 +89,6 @@
               </div>
             </div>
           </div> <!-- Flag Notificaitons -->
-        </div>
 
         <div id="import-data-settings" class="hidden">
           <div id="import-data">
@@ -140,7 +139,7 @@
                 </tr>
               </thead>
               <tbody>
-                
+
               </tbody>
             </table>
           </div>
@@ -170,17 +169,16 @@
       </div>
     </div>
 
-    <div id="react-content">
+    <div id="settings-content">
 
     </div>
-  </div>
 
     {% include "modals/newflag.html" %}
     {% include "components/_basescript.html" %}
-  
+
     <!-- <script type="text/babel" src="/static/js/settings.js"></script> -->
     <script type="text/babel" src="/static/js/settings.js"></script>
     <script src="/static/js/modals/newflag.js"></script>
     <script src="/static/js/createnewactivity.js"></script>
-  
+
     {% include "components/_footer.html" %}

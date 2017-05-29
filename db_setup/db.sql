@@ -366,19 +366,6 @@ CREATE TABLE forms (
   backpack boolean DEFAULT NULL
 );
 
-DROP TABLE IF EXISTS match;
-
--- matching case managers with their clients
-
-CREATE TABLE match (
-  id integer PRIMARY KEY,
-  casemanager_id integer REFERENCES casemanager (id),
-  client_id integer REFERENCES client (id)
-);
-
-/* INSERT INTO match VALUES (1, 1, 1), (2, 2, 2), (3, 3, 3), (4, 1, 4); */
-
-
 /* should we use inheritance here?
 Programs definitely "contain" subprograms,
 but is a subprogram also a program?
@@ -564,6 +551,8 @@ INSERT INTO paths (name) VALUES ('/flags');
 INSERT INTO paths (name) VALUES ('/flags/?');
 INSERT INTO paths (name) VALUES ('/files');
 INSERT INTO paths (name) VALUES ('/files/{clientID}');
+INSERT INTO paths (name) VALUES ('/programs');
+
 
 DROP TABLE IF EXISTS verbs;
 

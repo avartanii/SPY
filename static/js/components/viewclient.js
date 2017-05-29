@@ -15,6 +15,7 @@ $(function (event) {
         var caseNoteID;
 
         $('#setflag-button').click(function (event) {
+            $('#setflag-modal-data').data({ clientID: $('#client-id')['0'].textContent });
             $('#setflag-modal').modal('toggle');
         });
 
@@ -544,6 +545,7 @@ $(function (event) {
                 }
                 $('#client-phonenumber').text( data.result.rows[0].phone_number);
                 $('#client-email').text(data.result.rows[0].email);
+
 
                 setupCaseNotes($('#client-id')['0'].textContent);
 

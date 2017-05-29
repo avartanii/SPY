@@ -1094,7 +1094,7 @@ var queries = {
 
     //  ========= Import Data ========
     getPrograms: function () {
-        var queryString = 'SELECT program_name FROM program';
+        var queryString = 'SELECT id, program_name FROM program;';
 
         return queryString;
     },

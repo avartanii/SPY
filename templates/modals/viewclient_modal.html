@@ -11,7 +11,7 @@
 
           <div class="modal-body">
                 <div class="row">
-                  <div class="col-xs-2"><img id="client-photo" width="100" height="100" src="http://hhp.ufl.edu/wp-content/uploads/place-holder.jpg"></div>
+                  <div class="col-xs-2"><img id="client-modal-photo" width="100" height="100" src="http://hhp.ufl.edu/wp-content/uploads/place-holder.jpg"></div>
                   <div class="col-xs-10"id="client-badges">
                     <div class="row">
                       <a class="tablinks" href="#case-management">
@@ -72,8 +72,15 @@
           </div>
 
           <div class="modal-footer">
-            <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cancel</button>
-            <button id="viewclient-modal-save-button" type="button" class="btn btn-outline-primary">Save</button>
+            <div class="col-sm-3">
+              <button type="button" class="btn btn-outline-primary" id="viewclient-modal-setflag" title="sets a flag for this client"> Set a Flag</button>
+            </div>
+            <div class="col-sm-2">
+            </div>
+            <div class="col-sm-6">
+              <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cancel</button>
+              <button id="viewclient-modal-save-button" type="button" class="btn btn-outline-primary">Save</button>
+            </div>
           </div>
 
         </div>
