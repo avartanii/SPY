@@ -420,6 +420,12 @@ a:hover {
   background-color: #e3f2fd;
 }
 
+/* line 9, ../sass/partials/_search.scss */
+.displayInline {
+  display: inline;
+  padding: 5px;
+}
+
 /*button.badge-button.btn.btn-primary.btn-xs {
     background-image: none;
     background-color: $spy-blue;

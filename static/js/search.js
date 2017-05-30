@@ -1,3 +1,5 @@
+/* global moment */
+/* eslint-disable no-console */
 var Search = React.createClass({
   // TO DO: Change date search
   getInitialState: function () {
@@ -20,7 +22,7 @@ var Search = React.createClass({
       secondYear: moment().year(),
       currentDataForDateSearch: "",
       people: {}
-    }
+    };
   },
   displayDetail: function (data) {
     this.setState({
@@ -34,7 +36,7 @@ var Search = React.createClass({
   toggleQueryBuilder: function () {
     this.setState({
       displayQueryBuilder: !this.state.displayQueryBuilder
-    })
+    });
   },
   writeToTable: function (data) {
     this.setState({
@@ -44,7 +46,7 @@ var Search = React.createClass({
   changeColumns: function (data) {
     this.setState({
       columns: data
-    })
+    });
   },
   formatColumnName: function (column) {
     var columnSplit = column.split("_");
@@ -57,14 +59,14 @@ var Search = React.createClass({
   getInitialData: function (data) {
     var handleColumns = this.changeColumns;
     var writeToTable = this.writeToTable;
-    var formatColumnName = this.formatColumnName
+    var formatColumnName = this.formatColumnName;
     var url = "api/search/" + data;
     this.setState({
       currentTable: data
     });
-    if (this.state.searchInterval != "") {
+    if (this.state.searchInterval !== "") {
       clearInterval(this.state.searchInterval);
-    };
+    }
     $.ajax({
       xhrFields: {
         withCredentials: true
@@ -78,10 +80,10 @@ var Search = React.createClass({
         var fields = data.result.fields;
         var columnNames = [];
         var formattedName = "";
-        for(var i = 0; i < fields.length; i++) {
+        for (var i = 0; i < fields.length; i++) {
           formattedName = formatColumnName(fields[i].name);
           columnNames.push({name: formattedName, type: fields[i].dataTypeID});
-        };
+        }
         handleColumns(columnNames);
         writeToTable(data.result.rows);
         console.log(data.result.rows);
@@ -111,10 +113,10 @@ var Search = React.createClass({
       this.setState({
         currentData: moment().date(this.state.firstDate).month(this.state.firstMonth).year(this.state.firstYear).toISOString(),
         currentDataForDateSearch: moment().date(this.state.secondDate).month(this.state.secondMonth).year(this.state.secondYear).toISOString()
-      })
+      });
     } else {
       this.setState({
-        currentData: (dataType != 16 ? "" : "unused")
+        currentData: (dataType !== 16 ? "" : "unused")
       });
     }
   },
@@ -145,7 +147,7 @@ var Search = React.createClass({
         secondDate: date,
         currentDataForDateSearch: moment().date(date).month(this.state.secondMonth).year(this.state.secondYear).toISOString()
       });
-    };
+    }
   },
   changeMonth: function (date, index) {
     if (index === 0) {
@@ -158,7 +160,7 @@ var Search = React.createClass({
         secondMonth: date,
         currentDataForDateSearch: moment().date(this.state.secondDate).month(date).year(this.state.secondYear).toISOString()
       });
-    };
+    }
   },
   changeYear: function (date, index) {
     if (index === 0) {
@@ -171,7 +173,7 @@ var Search = React.createClass({
         secondYear: date,
         currentDataForDateSearch: moment().date(this.state.secondDate).month(this.state.secondMonth).year(date).toISOString()
       });
-    };
+    }
   },
   search: function (data) {
     var props = {
@@ -179,16 +181,16 @@ var Search = React.createClass({
       columnType: this.state.currentColumnType,
       status: this.state.currentSearchParameter,
       data: this.state.currentData
-    }
-    if (props.column != "") {
+    };
+    if (props.column !== "") {
       if (props.columnType === 1082) {
         props.secondData = this.state.currentDataForDateSearch;
       }
-      var url = "api/search/" + this.state.currentTable
-           + ((props.data != "") ?
+      var url = "api/search/" + this.state.currentTable +
+           ((props.data !== "") ?
               "/" + JSON.stringify(props) :
               "");
-      //console.log(url);
+      // console.log(url);
       var writeToTable = this.writeToTable;
       $.ajax({
         xhrFields: {
@@ -200,7 +202,7 @@ var Search = React.createClass({
         url: url,
         method: "GET",
         success: function (data) {
-          //console.log(data.result.rows);
+          // console.log(data.result.rows);
           writeToTable(data.result.rows);
         },
         error: function (xhr) {
@@ -212,7 +214,7 @@ var Search = React.createClass({
           }
         }
       });
-    };
+    }
   },
   render: function () {
     return (
@@ -242,7 +244,7 @@ var Search = React.createClass({
                      displayDetail={this.displayDetail}
                      extendWidth={this.state.displayQueryBuilder} />
       </div>
-    )
+    );
   }
 });
 
@@ -258,7 +260,7 @@ var QueryBuilderInterface = React.createClass({
   toggleSelector: function (data) {
     this.setState({
       displaySelector: data
-    })
+    });
   },
   changeDropdown: function (data) {
     this.setState({
@@ -312,13 +314,13 @@ var QueryBuilderInterface = React.createClass({
           {/* <ViewManager /> */}
         </div>
       </div>
-    )
+    );
   }
-})
+});
 
 var ResourceSelector = React.createClass({
   handleChange: function (e) {
-    if (e.target.value != "none") {
+    if (e.target.value !== "none") {
       this.props.handleChange(e.target.value);
       this.props.changeDisplay(true);
     } else {
@@ -334,16 +336,16 @@ var ResourceSelector = React.createClass({
           <option value="clients">Client</option>
         </select>
       </div>
-    )
+    );
   }
 });
 
 var QueryBuilder = React.createClass({
   handleColumnChange: function (e) {
-    if (e.target.value != "none") {
+    if (e.target.value !== "none") {
       this.props.showInput(true);
       this.props.changeColumn(e.target.value);
-    };
+    }
   },
   handleStrictnessChange: function (e) {
     this.props.updateStatus(parseInt(e.target.value));
@@ -392,7 +394,7 @@ var QueryBuilder = React.createClass({
       columns.push(
         <option value={JSON.stringify(columnName)}
                 key={JSON.stringify(columnName)}>{columnName.name}</option>
-      )
+      );
     });
     var classNames = "qbBlock " + (this.props.display ? "" : "hidden"),
         inputClassNames = "qbText " + (this.props.displayInput ? "" : "hidden");
@@ -428,7 +430,7 @@ var QueryBuilder = React.createClass({
         <option value="4">Is Between</option>
         <option value="5">Is Not Between</option>
       </select>;
-    //var columnIsDateBox = <DateDropdown />
+    // var columnIsDateBox = <DateDropdown />
     var selectedDropdown;
     var selectedInput;
     if (this.props.currentType === 1043) { // string
@@ -462,7 +464,7 @@ var QueryBuilder = React.createClass({
                                         year={this.props.yearValues[1]} />
                         </div>;
       } else {
-        //console.log(date);
+        // console.log(date);
         selectedInput = <DateDropdown name={1}
                                       handleDayChange={this.changeFirstDay}
                                       handleMonthChange={this.changeFirstMonth}
@@ -485,11 +487,11 @@ var QueryBuilder = React.createClass({
         {selectedDropdown}
         {selectedInput}
       </div>
-    )
+    );
   }
 });
 
-/*var ViewManager = React.createClass({
+/* var ViewManager = React.createClass({
   render: function () {
     return (
       <div className="viewSaver">
@@ -511,7 +513,7 @@ var FilterTable = React.createClass({
                           isEven={isEven}
                           key={keyString}
                           displayDetail={this.props.displayDetail} />
-        )
+        );
       }
       var className = (this.props.extendWidth ? "filterTableExtend" : "filterTable");
       return (
@@ -523,7 +525,7 @@ var FilterTable = React.createClass({
             </tbody>
           </table>
         </div>
-      )
+      );
    }
 });
 
@@ -532,12 +534,12 @@ var FilterTableHeader = React.createClass({
     var headers = [];
     this.props.header.forEach(function (header) {
       headers.push(<td key={header.name} className="ftHead ftCell">{header.name}</td>);
-    })
+    });
     return (
       <tr className="ftRow">
         {headers}
       </tr>
-    )
+    );
   }
 });
 
@@ -551,7 +553,7 @@ var FilterTableRow = React.createClass({
       colorClass = "ftEven";
     } else {
       colorClass = "ftOdd";
-    };
+    }
     var classNames = "ftRow " + colorClass;
     var person = this.props.person;
     var info = [];
@@ -561,14 +563,14 @@ var FilterTableRow = React.createClass({
       if (person.hasOwnProperty(prop)) {
         keyString = person["id"] + prop + person[prop];
         targetText = (person[prop] === null) ? "" : person[prop].toString();
-        info.push(<td key={keyString} className={classNames}>{targetText}</td>)
+        info.push(<td key={keyString} className={classNames}>{targetText}</td>);
       }
-    };
+    }
     return (
       <tr key={person["id"]} className={classNames} onClick={this.handleClick}>
         {info}
       </tr>
-    )
+    );
   }
 });
 
@@ -589,7 +591,7 @@ var DetailPane = React.createClass({
           {details}
         </div>
       </div>
-    )
+    );
   }
 });
 
@@ -597,7 +599,7 @@ var DateDropdown = React.createClass({
   render: function () {
     var date = moment().date(this.props.day)
                        .month(this.props.month)
-                       .year(this.props.year)
+                       .year(this.props.year);
     var totalDays = date.daysInMonth();
     return (
       <div>
@@ -622,7 +624,7 @@ var DateDropdown = React.createClass({
         <YearDropdown handleYearChange={this.props.handleYearChange}
                       year={this.props.year} />
       </div>
-    )
+    );
   }
 });
 
@@ -634,7 +636,7 @@ var DayDropdown = React.createClass({
     var name = "birthDay" + this.props.name;
     if ($("select[name='" + name + "']").val() > this.props.totalDays) {
       $("select[name='" + name + "']").val(this.props.totalDays);
-    };
+    }
     return (
       <select name={name} defaultValue={this.props.date} onChange={this.props.handleDayChange}>
           <option value="1">1</option>
@@ -669,7 +671,7 @@ var DayDropdown = React.createClass({
           <option value="30" className={showThirtieth}>30</option>
           <option value="31" className={showThirtyFirst}>31</option>
         </select>
-    )
+    );
   }
 });
 
@@ -677,14 +679,14 @@ var YearDropdown = React.createClass({
   render: function () {
     var yearOptions = [];
     var currentYear = moment().year();
-    for(var i = currentYear - 50; i <= currentYear; i++) {
+    for (var i = currentYear - 50; i <= currentYear; i++) {
       yearOptions.push(<option key={i} value={i}>{i}</option>);
     }
     return (
       <select name="birthYear" defaultValue={this.props.year} onChange={this.props.handleYearChange}>
         {yearOptions}
       </select>
-    )
+    );
   }
 });
 

@@ -1,6 +1,58 @@
 /* Messing around with a data browser refactor since we're converting to Neo. */
 /* eslint-disable no-console */
 
+class ResourceSelector extends React.Component {
+  render() {
+    return (
+      <div className="displayInline">
+        <select className="custom-select mr-sm-2 mb-sm-0">
+          <option defaultValue>Select a Resource</option>
+          <option value="1">Clients</option>
+          <option value="2">Another</option>
+          <option value="3">And Another</option>
+        </select>
+      </div>
+    );
+  }
+}
+
+class ColumnSelector extends React.Component {
+  render() {
+    return (
+      <div className="displayInline">
+        <select className="custom-select mr-sm-2 mb-sm-0">
+          <option defaultValue>Select a Column</option>
+          <option value="1">Any</option>
+          <option value="2">First Name</option>
+          <option value="3">Last Name</option>
+          <option value="4">#</option>
+        </select>
+      </div>
+    );
+  }
+}
+
+class FilterText extends React.Component {
+  render() {
+    return (
+      <div className="displayInline">
+        <label className="sr-only" htmlFor="inlineFormInput">Name</label>
+        <input type="text" className="form-control mr-sm-2 mb-sm-0 disabled" id="inlineFormInput" placeholder="Jane Doe" />
+      </div>
+    );
+  }
+}
+
+class QueryBuilder extends React.Component {
+  // This will be an "advanced" modal
+  render() {
+    return (
+      <div>
+      </div>
+    );
+  }
+}
+
 class FilterBar extends React.Component {
   constructor() {
     super();
@@ -11,7 +63,11 @@ class FilterBar extends React.Component {
     return (
       <div>
         <nav className="navbar navbar-light dataBrowserFilterBar">
-          <a className="navbar-brand" href="#">Search Bar Woooo</a>
+          <form className="form-inline">
+            <ResourceSelector />
+            <ColumnSelector />
+            <FilterText />
+          </form>
         </nav>
       </div>
     );
@@ -51,40 +107,6 @@ class SearchResults extends React.Component {
   }
 }
 
-class ModalHeader extends React.Component {
-  render() {
-    return (
-      <div className="modal-header">
-        <h5 className="modal-title" id="exampleModalLabel">Modal title</h5>
-        <button type="button" className="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-    );
-  }
-}
-
-class ModalBody extends React.Component {
-  render() {
-    return (
-      <div className="modal-body">
-        ...
-      </div>
-    );
-  }
-}
-
-class ModalFooter extends React.Component {
-  render () {
-    return (
-      <div className="modal-footer">
-        <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" className="btn btn-primary">Save changes</button>
-      </div>
-    );
-  }
-}
-
 class DetailedInfo extends React.Component {
   constructor() {
     super();
@@ -96,9 +118,19 @@ class DetailedInfo extends React.Component {
       <div className="modal fade" id="myModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div className="modal-dialog" role="document">
           <div className="modal-content">
-            <ModalHeader />
-            <ModalBody />
-            <ModalFooter />
+            <div className="modal-header">
+              <h5 className="modal-title" id="exampleModalLabel">Name Here</h5>
+              <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div className="modal-body">
+              - Infos here -
+            </div>
+            <div className="modal-footer">
+              <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button type="button" className="btn btn-primary">Save changes</button>
+            </div>
           </div>
         </div>
       </div>
