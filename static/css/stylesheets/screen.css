@@ -426,6 +426,13 @@ a:hover {
   padding: 5px;
 }
 
+/* line 14, ../sass/partials/_search.scss */
+.dataBrowserAdvancedButton {
+  float: right;
+  line-height: 1;
+  margin: 0;
+}
+
 /*button.badge-button.btn.btn-primary.btn-xs {
     background-image: none;
     background-color: $spy-blue;
