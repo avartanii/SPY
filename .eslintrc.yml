@@ -65,7 +65,7 @@ rules:
   spaced-comment:
     error
   lines-around-comment:
-    error
+    off
   max-len:
     - error
     - 250
