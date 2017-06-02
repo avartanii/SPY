@@ -551,6 +551,8 @@ INSERT INTO paths (name) VALUES ('/flags');
 INSERT INTO paths (name) VALUES ('/flags/?');
 INSERT INTO paths (name) VALUES ('/files');
 INSERT INTO paths (name) VALUES ('/files/{clientID}');
+INSERT INTO paths (name) VALUES ('/programs');
+
 
 DROP TABLE IF EXISTS verbs;
 

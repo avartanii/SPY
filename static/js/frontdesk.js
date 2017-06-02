@@ -12,8 +12,8 @@ $(function () {
                       return { name: propName, data: propName, title: propName };
                     }) // setting property names as column headers for now
         });
-        
-        // manually add placeholder for search bar on checkin table      
+
+        // manually add placeholder for search bar on checkin table
         $('#checked-in_filter input').prop("placeholder", "Search Check-Ins");
 
         // modify the clientprofiletable once it comes onto the page
@@ -74,7 +74,7 @@ $(function () {
                     alert(checkinalert);
                 });
             }
-            
+
             if (signups.length === 0) {
                 $('#checkin-feedback').empty().append(
                             '<div><h4>Please select clients to check in</h4>' +
@@ -170,8 +170,8 @@ $(function () {
                                         firstName: client.firstName,
                                         lastName: client.lastName,
                                         dob: moment(client.dob).format('MM-DD-YY'),
-                                        status: client.status 
-                                    }); 
+                                        status: client.status
+                                    });
                                     // var currentStatus = window.getDataById(flags, $(row.node()).data("status"));
                                     // $(row.node()).find('td span.dot').css('background-color', currentStatus.color);
                                     // according to stackoverflow, need to manually reattach event handlers
@@ -195,7 +195,7 @@ $(function () {
         $('#checkin-button').click(function (event) {
             sendUpClientsForCheckin(refreshCheckinTable);
         });
-        
+
 
         $('#viewclient-modal-save-button').click(function (event) {
             // TODO
@@ -221,7 +221,7 @@ $(function () {
                 },
                 error: function (xhr) {
                     console.error(xhr);
-    
+
                     if (xhr.status === 401) {
                         localStorage.removeItem("authorization");
                     }
@@ -230,13 +230,13 @@ $(function () {
                 var dataset = [];
                 var checkins = data.result.clients;
                 $('#checked-in tbody').empty();
-               
+
                 // manually setting these for testing
                 // will probably have these in a local "check-in table settings"
                 // button attached to the table later on
                 checkinTable.column(5).visible(false);
                 checkinTable.column(6).visible(false);
-    
+
                 // initial solution for parametrizing tables
                 // add button for toggling column visibility
                 $('#checked-in_wrapper').find('div.row:first div.col-sm-6:first')
@@ -245,13 +245,13 @@ $(function () {
                     '<label>Show columns <select multiple="multiple" name="multiselect[]" id="column-select"></select>' +
                     '</label></div>')
                     .find('div').wrap('<div class="col-sm-6"></div>');
-    
+
                 var options = [];
-    
+
                 Object.keys(clients[0]).forEach(function (propName, index) {
                     options.push({label: propName, title: propName, value: index});
                 });
-                
+
                 $('#column-select').multiselect({
                     includeSelectAllOption: true,
                     enableHTML: false, // to protect against XSS injections
@@ -277,7 +277,7 @@ $(function () {
                     }
                 });
                 $('#column-select').multiselect('dataprovider', options); // this must follow configurations
-    
+
                 // preselecting default column visibility
                 // later this data will come from local settings
                 checkinTable.columns().every(function () { // every() is built-in from Datatables
@@ -308,8 +308,8 @@ $(function () {
                                 firstName: client.firstName,
                                 lastName: client.lastName,
                                 dob: moment(client.dob).format('MM-DD-YY'),
-                                status: client.status 
-                            }); 
+                                status: client.status
+                            });
                             // var currentStatus = window.getDataById(flags, $(row.node()).data("status"));
                             // $(row.node()).find('td span.dot').css('background-color', currentStatus.color);
                             // according to stackoverflow, need to manually reattach event handlers
@@ -363,7 +363,7 @@ $(function () {
                 data.result.forEach(function (activity) {
                     $('#activities-bar').append('<div class="card card-inverse text-xs-center activity-card ' +
                                             activity.programName + '" style="width: 13rem;display:inline-block;*display:inline;" data-id="' + activity.id + '" data-program-id="' +
-                                            activity.programId + '"><div class="card-block"><blockquote class="card-blockquote"><p>'+ activity.name + 
+                                            activity.programId + '"><div class="card-block"><blockquote class="card-blockquote"><p>'+ activity.name +
                                             '</p><footer><button type="button" class="btn btn-secondary btn-sm thumbnail-dismiss">Remove</button></footer></blockquote></div></div>');
                 });
 
@@ -493,11 +493,11 @@ $(function () {
         //     activities.forEach(function (activity) {
         //         var idName = activity.name.toLowerCase().replace(/[\s]/, '-');
         //         $('#activity-tables').append(
-        //             '<div class="col-sm-4">' + 
+        //             '<div class="col-sm-4">' +
         //             '<div class="panel panel-default enrollment-panel"><div class="panel-heading">' +
         //             '<h4>' + activity.name + '</h4><input id="activity-search" type="text" class="form-control input-sm" maxlength="128" placeholder="Search" /></div>' +
         //             '<table id="' + idName + '-table" data-id="' + activity.id + '" class="table table-hover activity">' +
-        //             '<thead><tr><th name="participants"></th></tr></thead>' + 
+        //             '<thead><tr><th name="participants"></th></tr></thead>' +
         //             '<tbody></tbody></table></div></div>');
         //     });
         // }).then(function () {

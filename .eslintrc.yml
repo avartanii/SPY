@@ -1,12 +1,19 @@
 extends: eslint:recommended
 plugins:
   - import
+  - react
 env:
   browser: true
   jasmine: true
   jquery: true
   node: true
   es6: true
+globals:
+  React: true
+  ReactDOM: true
+parserOptions:
+  ecmaFeatures:
+    jsx: true
 rules:
   no-extra-parens:
     off
@@ -44,7 +51,7 @@ rules:
   indent:
     off
   key-spacing:
-    error
+    off
   keyword-spacing:
     error
   semi-spacing:
@@ -61,7 +68,7 @@ rules:
     error
   max-len:
     - error
-    - 180
+    - 250
   new-parens:
     error
   no-tabs:

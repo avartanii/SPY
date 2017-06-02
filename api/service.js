@@ -936,7 +936,7 @@ var service = {
                     settings: local.settings
                 });
             }
-            callback(undefined, arr);
+            return callback(undefined, arr);
         });
     },
 
@@ -960,7 +960,7 @@ var service = {
                     settings: local.settings
                 });
             }
-            callback(undefined, arr);
+            return callback(undefined, arr);
         });
     },
 
@@ -969,7 +969,7 @@ var service = {
             if (err) {
                 return callback(err);
             }
-            callback(undefined, result);
+            return callback(undefined, result);
         });
     },
 
@@ -991,7 +991,7 @@ var service = {
                     settings: local.settings
                 });
             }
-            callback(undefined, arr);
+            return callback(undefined, arr);
         });
     },
 
@@ -1015,7 +1015,7 @@ var service = {
             //     });
             // }
             // callback(undefined, arr);
-            callback(undefined, result);
+            return callback(undefined, result);
         });
     },
     setClientFlag: function (postgres, payload, callback) {
@@ -1038,7 +1038,7 @@ var service = {
             //     });
             // }
             // callback(undefined, arr);
-            callback(undefined, result);
+            return callback(undefined, result);
         });
     },
     editClientFlag: function (postgres, payload, callback) {
@@ -1061,7 +1061,7 @@ var service = {
             //     });
             // }
             // callback(undefined, arr);
-            callback(undefined, result);
+            return callback(undefined, result);
         });
     },
     removeClientFlag: function (postgres, payload, callback) {
@@ -1084,7 +1084,7 @@ var service = {
             //     });
             // }
             // callback(undefined, arr);
-            callback(undefined, result);
+            return callback(undefined, result);
         });
     },
     uploadFile: function (postgres, payload, callback) {
@@ -1092,7 +1092,7 @@ var service = {
             if (err) {
                 return callback(err);
             }
-            callback(undefined, result);
+            return callback(undefined, result);
         });
     },
 
@@ -1101,7 +1101,7 @@ var service = {
             if (err) {
                 return callback(err);
             }
-            callback(undefined, result);
+            return callback(undefined, result);
         });
     },
 
@@ -1119,7 +1119,7 @@ var service = {
             if (err) {
                 return callback(err);
             }
-            callback(undefined, result);
+            return callback(undefined, result);
         });
     },
 
@@ -1128,7 +1128,7 @@ var service = {
             if (err) {
                 return callback(err);
             }
-            callback(undefined, result);
+            return callback(undefined, result);
         });
     },
 
@@ -1149,7 +1149,7 @@ var service = {
                     formTypeID: local.form_type_id
                 });
             }
-            callback(undefined, arr);
+            return callback(undefined, arr);
             // callback(undefined, result);
         });
     },
@@ -1159,7 +1159,19 @@ var service = {
             if (err) {
                 return callback(err);
             }
-            callback(undefined, result);
+            if (!result.rows[0]) {
+                return callback();
+            }
+            var arr = [];
+            for (var i = 0; i < result.rows.length; i++) {
+                var local = result.rows[i];
+                arr.push({
+                    id: local.id,
+                    programName: local.program_name
+                });
+            }
+            return callback(undefined, arr);
+            // callback(undefined, result);
         });
     },
 
@@ -1168,7 +1180,7 @@ var service = {
             if (err) {
                 return callback(err);
             }
-            callback(undefined, result);
+            return callback(undefined, result);
         });
     },
 
@@ -1177,7 +1189,7 @@ var service = {
             if (err) {
                 return callback(err);
             }
-            callback(undefined, result);
+            return callback(undefined, result);
         });
     },
 
@@ -1186,7 +1198,7 @@ var service = {
             if (err) {
                 return callback(err);
             }
-            callback(undefined, result);
+            return callback(undefined, result);
         });
     },
 
@@ -1195,7 +1207,7 @@ var service = {
             if (err) {
                 return callback(err);
             }
-            callback(undefined, result);
+            return callback(undefined, result);
         });
     },
 
@@ -1204,7 +1216,7 @@ var service = {
             if (err) {
                 return callback(err);
             }
-            callback(undefined, result);
+            return callback(undefined, result);
         });
     },
 
@@ -1213,7 +1225,7 @@ var service = {
             if (err) {
                 return callback(err);
             }
-            callback(undefined, result);
+            return callback(undefined, result);
         });
     },
 
@@ -1222,7 +1234,7 @@ var service = {
             if (err) {
                 return callback(err);
             }
-            callback(undefined, result);
+            return callback(undefined, result);
         });
     }
 };
