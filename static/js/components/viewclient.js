@@ -517,6 +517,24 @@ $(function (event) {
             return yearDifference + (passedBirthday ? 1 : 0);
         }
 
+        var buildOptions = function (array, identifier) {
+            array.forEach(function (element, index) {
+                $(identifier).append(
+                    '<option value="' + index + '">' + element + '</option>'
+                );
+            });
+        };
+
+        var caseManager = [
+            'Jeanine',
+            'Ben',
+            'Rebecca',
+            'Rob',
+            'Amanda'
+        ];
+
+        buildOptions(caseManager, '#case-manager');
+
         var displayClientProfile = function (client) {
             $('#client-age').text(calculateAge());
             $.ajax({
@@ -618,6 +636,7 @@ $(function (event) {
         });
 
         var editClient = function (data) {
+
             $.ajax({
                 xhrFields: {
                     withCredentials: true
@@ -644,7 +663,7 @@ $(function (event) {
                     $('#client-phonenumber').replaceWith('<td id="client-phonenumber">' + data.result.rows[0].phone_number + '</td>');
                     $('#client-email').replaceWith('<td id="client-email">' + data.result.rows[0].email + '</td>');
                     $('#last-meeting').replaceWith('<td id="last-meeting">' + clientLastMeeting + '</td>');
-                    $('#case-manager').replaceWith('<td id="case-manager">' + data.result.rows[0].case_manager + '</td>');
+                    // $('#case-manager').replaceWith('<td id="case-manager">' + data.result.rows[0].case_manager + '</td>');
                     $('#edit-client').show();
                     $('#cancel-edit').hide();
                     $('#submit-edit').hide();
@@ -840,7 +859,8 @@ $(function (event) {
             $('#client-phonenumber').replaceWith('<input type="text" id="client-phonenumber" class="form-control" value="' + clientPhone + '" />');
             $('#client-email').replaceWith('<input type="text" id="client-email" class="form-control" value="' + clientMail + '" />');
             $('#last-meeting').replaceWith('<input type="text" id="last-meeting" class="form-control" value="' + clientLastMeeting + '" />');
-            $('#case-manager').replaceWith('<input type="text" id="case-manager" class="form-control" value="' + clientCaseManager + '" />');
+            // $('#case-manager').replaceWith('<input type="text" id="case-manager" class="form-control" value="' + clientCaseManager + '" />');
+            $('#case-manager').attr('disabled', false);
 
             $('.dropdown-menu li a').click(function (event) {
                 $(this).parents('.dropdown').find('.btn').data("id", $(this).parent().data("id"));
@@ -861,7 +881,8 @@ $(function (event) {
             $('#client-phonenumber').replaceWith('<td id="client-phonenumber">' + clientPhone + '</td>');
             $('#client-email').replaceWith('<td id="client-email">' + clientMail + '</td>');
             $('#last-meeting').replaceWith('<td id="last-meeting">' + clientLastMeeting + '</td>');
-            $('#case-manager').replaceWith('<td id="case-manager">' + clientCaseManager + '</td>');
+            // $('#case-manager').replaceWith('<td id="case-manager">' + clientCaseManager + '</td>');
+            $('#case-manager').attr('disabled', true);
         });
 
         $('#submit-edit').click(function () {
@@ -877,6 +898,7 @@ $(function (event) {
             var email = $('#client-email')['0'].value;
             var lastMeeting = $('#last-meeting')['0'].value;
             var caseManager = $('#case-manager')['0'].value;
+            $('#case-manager').attr('disabled', true);
 
             var data = {
                 id: id,
