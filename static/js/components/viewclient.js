@@ -501,7 +501,24 @@ $(function (event) {
             </tr>
         */
 
+        var calculateAge = function(){
+            var today = new Date();
+            var y = today.getFullYear();
+            var m = today.getMonth() + 1;
+            var d = today.getDate();
+            var clientBirthday = $('#client-birthday')['0'].textContent;
+            var birthdayArray = clientBirthday.split("/");
+            var bYear = birthdayArray[2];
+            var bDate = birthdayArray[1];
+            var bMonth = birthdayArray[0];
+
+            var yearDifference = y - bYear - 1;
+            var passedBirthday = m === bMonth ? d > bDate : m > bMonth;
+            return yearDifference + (passedBirthday ? 1 : 0);
+        }
+
         var displayClientProfile = function (client) {
+            $('#client-age').text(calculateAge());
             $.ajax({
                 xhrFields: {
                     withCredentials: true
