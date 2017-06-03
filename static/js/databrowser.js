@@ -63,12 +63,31 @@ class DetailedInfo extends React.Component {
       <div>
         <Modal
           modalId={"detailedInfo"}
-          title={this.props.name}
-          content={"- Infos here -"}
+          title={"Detailed Information"}
+          content={this.props.name}
           dismissText={"Close"}
           saveText={"Save"}
         />
       </div>
+    );
+  }
+}
+
+class SearchTableHeader extends React.Component {
+  constructor(props) {
+    super(props);
+
+    console.log("The search table header.");
+  }
+
+  render() {
+    let cells = [];
+    return (
+      <tr>
+        <th>#</th>
+        <th>First Name</th>
+        <th>Last Name</th>
+      </tr>
     );
   }
 }
@@ -83,23 +102,24 @@ class SearchTableRow extends React.Component {
   handleClick = () => {
     console.log("Handling the click");
     this.props.displayDetail(this.props.data);
-    // this.props.displayDetailModal(this.props);
   }
 
   render() {
+    let cells = [];
+    for (let prop in this.props.data) {
+      cells.push(<td key={prop}>{this.props.data[prop]}</td>);
+    }
     return (
       <tr onClick={this.handleClick}>
-        <td>{this.props.index}</td>
-        <td>{this.props.data.firstName}</td>
-        <td>{this.props.data.lastName}</td>
+        {cells}
       </tr>
     );
   }
 }
 
 class SearchResults extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       currentName: "",
     };
@@ -116,37 +136,25 @@ class SearchResults extends React.Component {
   }
 
   render() {
+    // let header = <SearchTableHeader />;
+    let rows = [];
+    for (let i = 0; i < this.props.results.length; i += 1) {
+      rows.push(
+        <SearchTableRow
+          key={i}
+          displayDetail={this.showModal}
+          data={this.props.results[i]}
+        />
+      );
+    }
     return (
       <div>
         <table className="table table-sm table-hover">
           <thead>
-            <tr>
-              <th>#</th>
-              <th>First Name</th>
-              <th>Last Name</th>
-            </tr>
+            <SearchTableHeader />
           </thead>
           <tbody>
-            <SearchTableRow
-              displayDetail={this.showModal}
-              index={1}
-              data={
-                {
-                  firstName: "John",
-                  lastName: "Doe",
-                }
-              }
-            />
-            <SearchTableRow
-              displayDetail={this.showModal}
-              index={2}
-              data={
-                {
-                  firstName: "Jane",
-                  lastName: "Doe",
-                }
-              }
-            />
+            {rows}
           </tbody>
         </table>
         <DetailedInfo
@@ -158,14 +166,18 @@ class SearchResults extends React.Component {
 }
 
 class ResourceSelector extends React.Component {
+  onResourceChange = (e) => {
+    this.props.handleResourceChange(e.target.value);
+  }
+
   render() {
     return (
       <div className="displayInline">
-        <select className="custom-select mr-sm-2 mb-sm-0">
-          <option defaultValue>Select a Resource</option>
-          <option value="1">Clients</option>
-          <option value="2">Another</option>
-          <option value="3">And Another</option>
+        <select onChange={this.onResourceChange} className="custom-select mr-sm-2 mb-sm-0">
+          <option value="0" defaultValue>Select a Resource</option>
+          <option value="clients">Clients</option>
+          <option value="another">Another</option>
+          <option value="and_another">And Another</option>
         </select>
       </div>
     );
@@ -173,15 +185,19 @@ class ResourceSelector extends React.Component {
 }
 
 class ColumnSelector extends React.Component {
+  onColumnChange = (e) => {
+    this.props.handleColumnChange(e.target.value);
+  }
+
   render() {
     return (
       <div className="displayInline">
-        <select className="custom-select mr-sm-2 mb-sm-0">
-          <option defaultValue>Select a Column</option>
-          <option value="1">Any</option>
-          <option value="2">First Name</option>
-          <option value="3">Last Name</option>
-          <option value="4">#</option>
+        <select onChange={this.onColumnChange} className="custom-select mr-sm-2 mb-sm-0">
+          <option value="0" defaultValue>Select a Column</option>
+          <option value="any">Any</option>
+          <option value="first_name">First Name</option>
+          <option value="last_Name">Last Name</option>
+          <option value="Number">#</option>
         </select>
       </div>
     );
@@ -200,7 +216,6 @@ class FilterText extends React.Component {
 }
 
 class QueryBuilder extends React.Component {
-  // This will be an "advanced" modal
   render() {
     return (
       <div>
@@ -219,10 +234,11 @@ class QueryBuilder extends React.Component {
 class FilterBar extends React.Component {
   constructor() {
     super();
-    // this.state = {
-    //   resourceSelected: false,
-    //   columnSelected: false,
-    // };
+    this.state = {
+      // A value of 0 means nothing has been selected
+      resourceSelected: "0",
+      columnSelected: "0",
+    };
 
     console.log("A filter bar.");
   }
@@ -234,14 +250,41 @@ class FilterBar extends React.Component {
     $("#advancedSearch").modal("toggle");
   }
 
+  handleResourceChange = (resource) => {
+    this.setState({
+      resourceSelected: resource,
+    });
+
+    if (this.state.columnSelected !== "0" && resource === "0") {
+      this.handleColumnChange("0");
+    }
+
+    if (resource !== "0") {
+      this.props.getResourceColumns();
+    }
+  }
+
+  handleColumnChange = (selected) => {
+    this.setState({
+      columnSelected: selected,
+    });
+  }
+
   render() {
+    let columnSelector = this.state.resourceSelected !== "0" ?
+                            <ColumnSelector
+                              handleColumnChange={this.handleColumnChange}
+                            /> : null;
+    let filterText = this.state.columnSelected !== "0" ? <FilterText /> : null;
     return (
       <div>
         <nav className="navbar sticky-top navbar-light dataBrowserFilterBar">
           <form className="form-inline">
-            <ResourceSelector />
-            <ColumnSelector />
-            <FilterText />
+            <ResourceSelector
+              handleResourceChange={this.handleResourceChange}
+            />
+            {columnSelector}
+            {filterText}
             <ul className="navbar-nav displayInline dataBrowserAdvancedButton">
               <li className="nav-item">
                 <a className="nav-link" href="#" onClick={this.showModal}>Advanced Search</a>
@@ -258,14 +301,52 @@ class FilterBar extends React.Component {
 class DataBrowser extends React.Component {
   constructor() {
     super();
+    this.state = {
+      results: {},
+    };
+
     console.log("The whole big data browser.");
+  }
+
+  getResourceColumns = (resource) => {
+    const changeResultsState = (value) => {
+      this.setState({
+        results: value
+      });
+    };
+
+    $.ajax({
+      xhrFields: {
+        withCredentials: true
+      },
+      beforeSend: function (xhr) {
+        xhr.setRequestHeader('Authorization', localStorage.getItem("authorization"));
+      },
+      url: "api/search/clients", // "api/search/" + resource
+      method: "GET",
+      success: function (data) {
+        console.log("Success!");
+        changeResultsState(data.result.rows);
+      },
+      error: function (xhr) {
+        console.error(xhr);
+
+        if (xhr.status === 401) {
+          localStorage.removeItem("authorization");
+        }
+      }
+    });
   }
 
   render() {
     return (
       <div className="dataBrowser">
-        <FilterBar />
-        <SearchResults />
+        <FilterBar
+          getResourceColumns={this.getResourceColumns}
+        />
+        <SearchResults
+          results={this.state.results}
+        />
       </div>
     );
   }
