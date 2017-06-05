@@ -11,10 +11,10 @@
     <div id="housing-history" class="collapse" role="tabpanel" aria-labelledby="headingOne">
       <div class="card-block">
         <p><b>Where did you sleep last night?</b></p>
-        <ul class="client-info-checkboxes" id="housing-history-checkboxes">
-        </ul>
+        <ul class="client-info-checkboxes" id="housing-history-checkboxes"></ul>
         <p><b>How long have you been sleeping there?</b></p>
-        <select id="how-long-sleeping-there"></select>
+        <select id="how-long-sleeping-there" onchange="choseOther()"></select>
+        <input type="text" id="sleeping-duration-other"></input>
         <p><b>Approximate date you no longer had stable housing <i>(start date of first episode)</i>:</b></p>
         <p><b>Approximate date of <i>current</i> episode of houselessness began:</b></p>
         <p><b>Approximate length of current episode:</b></p>

@@ -83,6 +83,32 @@ $(function (event) {
 
     buildOptions(sleepingDurations, '#how-long-sleeping-there');
 
+    $('#sleeping-duration-other').hide();
+
+    console.log($( "#how-long-sleeping-there option:selected" ).text());
+
+    function choseOther() {
+        console.log("WHY NOT");
+        console.log("AAAAAAAAAAAAAAAAAAAAAADSD@!#");
+        $('#sleeping-duration-other').show();
+        if($("#how-long-sleeping-there option:selected").text() === 'Other'){
+            $('#sleeping-duration-other').show();
+        }else{
+            $('#sleeping-duration-other').hide();
+        }
+    }
+
+    // $('#how-long-sleeping-there').onchange = function(){
+    //   console.log("WHY NOT");
+    //     console.log("AAAAAAAAAAAAAAAAAAAAAADSD@!#");
+    //     $('#sleeping-duration-other').show();
+    //     if($("#how-long-sleeping-there option:selected").text() === 'Other'){
+    //         $('#sleeping-duration-other').show();
+    //     }else{
+    //         $('#sleeping-duration-other').hide();
+    //     }
+    // };
+
     var numberEpisodes = ['1', '2', '3', '4', 'more than 4']; // add text box
 
     buildOptions(numberEpisodes, '#number-episodes');
