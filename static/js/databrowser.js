@@ -1,6 +1,15 @@
 /* Messing around with a data browser refactor since we're converting to Neo. */
 /* eslint-disable no-console */
 
+const formatProperty = (name) => {
+  let splitNameWithoutUnderscores = name.split("_");
+  let capitalizeFirstLetters = splitNameWithoutUnderscores.map((word) => {
+    return word.charAt(0).toUpperCase() + word.slice(1);
+  });
+  let formattedName = capitalizeFirstLetters.join(" ");
+  return formattedName;
+};
+
 class ModalHeader extends React.Component {
   render() {
     return (
@@ -26,11 +35,6 @@ class ModalFooter extends React.Component {
 }
 
 class Modal extends React.Component {
-  constructor(props) {
-    super(props);
-    console.log("A modal with id " + this.props.modalId);
-  }
-
   render() {
     return (
       <div className="modal fade" id={this.props.modalId} tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -52,19 +56,34 @@ class Modal extends React.Component {
 }
 
 class DetailedInfo extends React.Component {
-  constructor(props) {
-    super(props);
-
-    console.log("The modal that pops up when you click on a row containing detailed info.");
-  }
-
   render() {
+    let content = [];
+    for (let prop in this.props.data) {
+      content.push(
+        <tr key={prop}>
+          <td className="dataBrowserDetailDisplay">{formatProperty(prop)}:</td>
+          <td>
+            {
+              this.props.data[prop] !== null ?
+                this.props.data[prop] :
+                <span className="grayOut">n/a</span>
+            }
+          </td>
+        </tr>
+      );
+    }
+    let table =
+      <table>
+        <tbody>
+          {content}
+        </tbody>
+      </table>;
     return (
       <div>
         <Modal
           modalId={"detailedInfo"}
           title={"Detailed Information"}
-          content={this.props.name}
+          content={table}
           dismissText={"Close"}
           saveText={"Save"}
         />
@@ -74,34 +93,29 @@ class DetailedInfo extends React.Component {
 }
 
 class SearchTableHeader extends React.Component {
-  constructor(props) {
-    super(props);
-
-    console.log("The search table header.");
-  }
-
   render() {
-    let cells = [];
+    // let headers = [];
+    // for (let i = 0; i < this.props.columns.length; i += 1) {
+    //   headers.push(
+    //     <th key={i}>{this.props.columns[i].formattedName}</th>
+    //   );
+    // }
+    // Commenting this out while I think of a better way to format this.
+    // I'm thinking a grid system would be better than a table.
     return (
       <tr>
-        <th>#</th>
+        <th>Id</th>
         <th>First Name</th>
         <th>Last Name</th>
+        <th>Nickname</th>
       </tr>
     );
   }
 }
 
 class SearchTableRow extends React.Component {
-  constructor(props) {
-    super(props);
-
-    console.log("A search table row.");
-  }
-
   handleClick = () => {
-    console.log("Handling the click");
-    this.props.displayDetail(this.props.data);
+    this.props.displayDetailedInfo(this.props.data);
   }
 
   render() {
@@ -121,28 +135,24 @@ class SearchResults extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      currentName: "",
+      selectedRowData: {},
     };
-
-    console.log("The search results table.");
   }
 
-  showModal = (data) => {
-    console.log(data);
+  showDetailModal = (data) => {
     this.setState({
-      currentName: data.firstName + " " + data.lastName,
+      selectedRowData: data,
     });
     $("#detailedInfo").modal("toggle");
   }
 
   render() {
-    // let header = <SearchTableHeader />;
     let rows = [];
     for (let i = 0; i < this.props.results.length; i += 1) {
       rows.push(
         <SearchTableRow
           key={i}
-          displayDetail={this.showModal}
+          displayDetailedInfo={this.showDetailModal}
           data={this.props.results[i]}
         />
       );
@@ -151,14 +161,14 @@ class SearchResults extends React.Component {
       <div>
         <table className="table table-sm table-hover">
           <thead>
-            <SearchTableHeader />
+            <SearchTableHeader columns={this.props.columns}/>
           </thead>
           <tbody>
             {rows}
           </tbody>
         </table>
         <DetailedInfo
-          name={this.state.currentName}
+          data={this.state.selectedRowData}
         />
       </div>
     );
@@ -190,14 +200,21 @@ class ColumnSelector extends React.Component {
   }
 
   render() {
+    let columnNames = [];
+    for (let i = 0; i < this.props.columns.length; i += 1) {
+      columnNames.push(
+        <option
+          key={i}
+          value={this.props.columns[i].name}>
+            {this.props.columns[i].formattedName}
+        </option>
+      );
+    }
     return (
       <div className="displayInline">
         <select onChange={this.onColumnChange} className="custom-select mr-sm-2 mb-sm-0">
-          <option value="0" defaultValue>Select a Column</option>
-          <option value="any">Any</option>
-          <option value="first_name">First Name</option>
-          <option value="last_Name">Last Name</option>
-          <option value="Number">#</option>
+          <option value="0" defaultValue>Search by...</option>
+          {columnNames}
         </select>
       </div>
     );
@@ -239,15 +256,13 @@ class FilterBar extends React.Component {
       resourceSelected: "0",
       columnSelected: "0",
     };
-
-    console.log("A filter bar.");
   }
 
   // Using this syntax keeps us from needing to use bind for "this"
   // Keep in mind that we'll have to use the eslint parser babel-eslint
   // for this syntax to work, as this is ES7 exclusive at the moment.
   showModal = () => {
-    $("#advancedSearch").modal("toggle");
+    // $("#advancedSearch").modal("toggle");
   }
 
   handleResourceChange = (resource) => {
@@ -260,7 +275,7 @@ class FilterBar extends React.Component {
     }
 
     if (resource !== "0") {
-      this.props.getResourceColumns();
+      this.props.queryResourceAndGetColumns();
     }
   }
 
@@ -274,6 +289,7 @@ class FilterBar extends React.Component {
     let columnSelector = this.state.resourceSelected !== "0" ?
                             <ColumnSelector
                               handleColumnChange={this.handleColumnChange}
+                              columns={this.props.columns}
                             /> : null;
     let filterText = this.state.columnSelected !== "0" ? <FilterText /> : null;
     return (
@@ -285,12 +301,12 @@ class FilterBar extends React.Component {
             />
             {columnSelector}
             {filterText}
-            <ul className="navbar-nav displayInline dataBrowserAdvancedButton">
+            {/* <ul className="navbar-nav displayInline dataBrowserAdvancedButton">
               <li className="nav-item">
                 <a className="nav-link" href="#" onClick={this.showModal}>Advanced Search</a>
               </li>
             </ul>
-            <QueryBuilder />
+             <QueryBuilder /> */}
           </form>
         </nav>
       </div>
@@ -303,15 +319,23 @@ class DataBrowser extends React.Component {
     super();
     this.state = {
       results: {},
+      columns: []
     };
-
-    console.log("The whole big data browser.");
   }
 
-  getResourceColumns = (resource) => {
-    const changeResultsState = (value) => {
+  queryResourceAndGetColumns = (resource) => {
+    const changeResultsState = (values) => {
       this.setState({
-        results: value
+        results: values
+      });
+    };
+
+    const changeColumnsState = (columnData) => {
+      for (let i = 0; i < columnData.length; i += 1) {
+        columnData[i].formattedName = formatProperty(columnData[i].name);
+      }
+      this.setState({
+        columns: columnData
       });
     };
 
@@ -325,8 +349,8 @@ class DataBrowser extends React.Component {
       url: "api/search/clients", // "api/search/" + resource
       method: "GET",
       success: function (data) {
-        console.log("Success!");
         changeResultsState(data.result.rows);
+        changeColumnsState(data.result.fields);
       },
       error: function (xhr) {
         console.error(xhr);
@@ -342,10 +366,12 @@ class DataBrowser extends React.Component {
     return (
       <div className="dataBrowser">
         <FilterBar
-          getResourceColumns={this.getResourceColumns}
+          queryResourceAndGetColumns={this.queryResourceAndGetColumns}
+          columns={this.state.columns}
         />
         <SearchResults
           results={this.state.results}
+          columns={this.state.columns}
         />
       </div>
     );

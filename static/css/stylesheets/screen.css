@@ -433,6 +433,18 @@ a:hover {
   margin: 0;
 }
 
+/* line 20, ../sass/partials/_search.scss */
+.dataBrowserDetailDisplay {
+  padding: 0 10px 5px 0;
+  text-align: right;
+  font-weight: bold;
+}
+
+/* line 26, ../sass/partials/_search.scss */
+.grayOut {
+  color: #cccccc;
+}
+
 /*button.badge-button.btn.btn-primary.btn-xs {
     background-image: none;
     background-color: $spy-blue;
