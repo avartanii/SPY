@@ -87,7 +87,7 @@ $(function (event) {
 
     console.log($( "#how-long-sleeping-there option:selected" ).text());
 
-    function choseOther() {
+    var choseOther = function() {
         console.log("WHY NOT");
         console.log("AAAAAAAAAAAAAAAAAAAAAADSD@!#");
         $('#sleeping-duration-other').show();
@@ -97,6 +97,8 @@ $(function (event) {
             $('#sleeping-duration-other').hide();
         }
     }
+
+    $("#choseOther").submit(choseOther);
 
     // $('#how-long-sleeping-there').onchange = function(){
     //   console.log("WHY NOT");
@@ -120,10 +122,42 @@ $(function (event) {
         'End of relationship/break-up',
         'Parent/caregiver\'s mental health',
         'Release from hospital',
-        'adding more soon . . .'
+        'Exiting foster care',
+        'Exiting jail/prison',
+        'Exiting juvenile detention',
+        'Family homelessness',
+        'Parent/caregiver substance use',
+        'Release from mental health facility',
+        'Kicked out',
+        'Loss of job',
+        'Pregnancy',
+        'Personal health issues',
+        'Low/no income',
+        'Personal mental health',
+        'Sexual orientation',
+        'Run away from DCFS',
+        'Personal substance use',
+        'Other'
     ];
 
     buildListItems(initialCauses, '#initial-causes', 'initial-causes-checkbox');
+
+    var stableHousing = [
+        'Unemployment',
+        'Personal substance use',
+        'Partner/friends',
+        'Personal choice',
+        'Don’t want to return to foster care',
+        'Mental health',
+        'Not sure what’s available',
+        'Health issues',
+        'Don’t want emergency shelter',
+        'Traveling',
+        'Not enough savings/income',
+        'Others'
+    ];
+
+    buildListItems(stableHousing, '#keeping-from-stable-housing', 'keeping-from-stable-housing-checkbox');
 
     var genderIdentity = [
         'Man',
