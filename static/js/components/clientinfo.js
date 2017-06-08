@@ -78,7 +78,7 @@ $(function (event) {
         '1-3 months',
         '4-12 months',
         '> 1 year',
-        'Other' // add text box
+        'Other'
     ];
 
     buildOptions(sleepingDurations, '#how-long-sleeping-there');
@@ -86,16 +86,27 @@ $(function (event) {
     $('#sleeping-duration-other').hide();
 
     $('#how-long-sleeping-there').change(function () {
-        if($("#how-long-sleeping-there option:selected").text() === 'Other'){
+        if($('#how-long-sleeping-there option:selected').text() === 'Other'){
             $('#sleeping-duration-other').show();
         }else{
             $('#sleeping-duration-other').hide();
         }
     });
 
-    var numberEpisodes = ['1', '2', '3', '4', 'more than 4']; // add text box
+    var numberEpisodes = ['1', '2', '3', '4', 'more than 4'];
 
     buildOptions(numberEpisodes, '#number-episodes');
+
+    $('#number-episodes-other').hide();
+
+    $('#number-episodes').change(function () {
+        if($('#number-episodes option:selected').text() === 'more than 4'){
+            $('#number-episodes-other').show();
+        }else{
+            $('#number-episodes-other').hide();
+        }
+    });
+
 
     var initialCauses = [
         'Abuse by parent/caregiver',
@@ -123,6 +134,19 @@ $(function (event) {
     ];
 
     buildListItems(initialCauses, '#initial-causes', 'initial-causes-checkbox');
+
+    $('#initial-causes-other').hide();
+
+    $('#initial-causes').change(function () {
+        console.log($('.initial-causes-checkbox:checked').val())
+        console.log($('#initial-causes').next('label').text());
+        if($('#initial-causes-other label:selected').text() === 'Other'){
+            $('#initial-causes-other').show();
+        }else{
+            $('#initial-causes-other').hide();
+        }
+    });
+
 
     var stableHousing = [
         'Unemployment',
