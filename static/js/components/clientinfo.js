@@ -86,22 +86,9 @@ $(function (event) {
     $('#sleeping-duration-other').hide();
 
     console.log($( "#how-long-sleeping-there option:selected" ).text());
-
-    var choseOther = function() {
-        console.log("WHY NOT");
-        console.log("AAAAAAAAAAAAAAAAAAAAAADSD@!#");
-        $('#sleeping-duration-other').show();
-        if($("#how-long-sleeping-there option:selected").text() === 'Other'){
-            $('#sleeping-duration-other').show();
-        }else{
-            $('#sleeping-duration-other').hide();
-        }
-    }
-
-    $("#choseOther").submit(choseOther);
-
-    // $('#how-long-sleeping-there').onchange = function(){
-    //   console.log("WHY NOT");
+    //
+    // var choseOther = function() {
+    //     console.log("WHY NOT");
     //     console.log("AAAAAAAAAAAAAAAAAAAAAADSD@!#");
     //     $('#sleeping-duration-other').show();
     //     if($("#how-long-sleeping-there option:selected").text() === 'Other'){
@@ -109,7 +96,19 @@ $(function (event) {
     //     }else{
     //         $('#sleeping-duration-other').hide();
     //     }
-    // };
+    // }
+
+    // $("#choseOther").submit(choseOther);
+
+    $('#how-long-sleeping-there').change(function () {
+        console.log("WHY NOT");
+        console.log("AAAAAAAAAAAAAAAAAAAAAADSD@!#");
+        if($("#how-long-sleeping-there option:selected").text() === 'Other'){
+            $('#sleeping-duration-other').show();
+        }else{
+            $('#sleeping-duration-other').hide();
+        }
+    });
 
     var numberEpisodes = ['1', '2', '3', '4', 'more than 4']; // add text box
 
