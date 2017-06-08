@@ -862,6 +862,7 @@ $(function (event) {
             // $('#case-manager').replaceWith('<input type="text" id="case-manager" class="form-control" value="' + clientCaseManager + '" />');
             $('#case-manager').attr('disabled', false);
 
+
             $('.dropdown-menu li a').click(function (event) {
                 $(this).parents('.dropdown').find('.btn').data("id", $(this).parent().data("id"));
                 $(this).parents('.dropdown').find('.btn').html($(this).text() + ' <span class="caret"></span>');
@@ -883,6 +884,7 @@ $(function (event) {
             $('#last-meeting').replaceWith('<td id="last-meeting">' + clientLastMeeting + '</td>');
             // $('#case-manager').replaceWith('<td id="case-manager">' + clientCaseManager + '</td>');
             $('#case-manager').attr('disabled', true);
+
         });
 
         $('#submit-edit').click(function () {
@@ -899,6 +901,7 @@ $(function (event) {
             var lastMeeting = $('#last-meeting')['0'].value;
             var caseManager = $('#case-manager')['0'].value;
             $('#case-manager').attr('disabled', true);
+
 
             var data = {
                 id: id,
