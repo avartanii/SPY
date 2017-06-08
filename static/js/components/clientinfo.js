@@ -85,24 +85,7 @@ $(function (event) {
 
     $('#sleeping-duration-other').hide();
 
-    console.log($( "#how-long-sleeping-there option:selected" ).text());
-    //
-    // var choseOther = function() {
-    //     console.log("WHY NOT");
-    //     console.log("AAAAAAAAAAAAAAAAAAAAAADSD@!#");
-    //     $('#sleeping-duration-other').show();
-    //     if($("#how-long-sleeping-there option:selected").text() === 'Other'){
-    //         $('#sleeping-duration-other').show();
-    //     }else{
-    //         $('#sleeping-duration-other').hide();
-    //     }
-    // }
-
-    // $("#choseOther").submit(choseOther);
-
     $('#how-long-sleeping-there').change(function () {
-        console.log("WHY NOT");
-        console.log("AAAAAAAAAAAAAAAAAAAAAADSD@!#");
         if($("#how-long-sleeping-there option:selected").text() === 'Other'){
             $('#sleeping-duration-other').show();
         }else{
@@ -157,6 +140,19 @@ $(function (event) {
     ];
 
     buildListItems(stableHousing, '#keeping-from-stable-housing', 'keeping-from-stable-housing-checkbox');
+
+    var housingOptions = [
+        'Emergency shelter',
+        'Permanent housing',
+        'Family reunification',
+        'Sober living'
+    ];
+
+    buildListItems(housingOptions, '#housing-options', 'housing-options-checkbox');
+
+    var chronicallyHomeless = ['Yes', 'No'];
+
+    buildOptions(chronicallyHomeless, '#chronically-homeless');
 
     var genderIdentity = [
         'Man',
